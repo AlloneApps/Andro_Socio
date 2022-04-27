@@ -12,6 +12,7 @@ public class ComplaintMaster implements Parcelable {
     private String complaintCreatedBy;
     private String complaintCreatedOn;
     private String complaintType;
+    private String complaintAccessType;
     private String complaintCity;
     private String complaintAcceptedOfficerId;
     private String complaintAcceptedOfficerName;
@@ -32,6 +33,7 @@ public class ComplaintMaster implements Parcelable {
         complaintCreatedBy = in.readString();
         complaintCreatedOn = in.readString();
         complaintType = in.readString();
+        complaintAccessType = in.readString();
         complaintCity = in.readString();
         complaintAcceptedOfficerId = in.readString();
         complaintAcceptedOfficerName = in.readString();
@@ -93,6 +95,14 @@ public class ComplaintMaster implements Parcelable {
 
     public void setComplaintType(String complaintType) {
         this.complaintType = complaintType;
+    }
+
+    public String getComplaintAccessType() {
+        return complaintAccessType;
+    }
+
+    public void setComplaintAccessType(String complaintAccessType) {
+        this.complaintAccessType = complaintAccessType;
     }
 
     public String getComplaintCity() {
@@ -175,6 +185,7 @@ public class ComplaintMaster implements Parcelable {
                 ", complaintCreatedBy='" + complaintCreatedBy + '\'' +
                 ", complaintCreatedOn='" + complaintCreatedOn + '\'' +
                 ", complaintType='" + complaintType + '\'' +
+                ", complaintAccessType='" + complaintAccessType + '\'' +
                 ", complaintCity='" + complaintCity + '\'' +
                 ", complaintAcceptedOfficerId='" + complaintAcceptedOfficerId + '\'' +
                 ", complaintAcceptedOfficerName='" + complaintAcceptedOfficerName + '\'' +
@@ -199,6 +210,7 @@ public class ComplaintMaster implements Parcelable {
         parcel.writeString(complaintCreatedBy);
         parcel.writeString(complaintCreatedOn);
         parcel.writeString(complaintType);
+        parcel.writeString(complaintAccessType);
         parcel.writeString(complaintCity);
         parcel.writeString(complaintAcceptedOfficerId);
         parcel.writeString(complaintAcceptedOfficerName);

@@ -51,7 +51,9 @@ import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.model.citydetails.City;
+import com.apps.andro_socio.model.complaint.ComplaintMaster;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
+import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -87,13 +89,14 @@ public class CreateIssueOrComplaint extends Fragment {
     private View rootView;
     private CoordinatorLayout issueOrComplaintCoordinator;
 
-    private TextView textCity;
+    private TextView textCity, textIssueAccessTypeHeader;
     private EditText editIssueOrComplaintTitle, editIssueOrComplaintDesc;
     private ImageView imageSelectedPhoto, imageCameraIcon;
     private Button btnSubmit;
     private ProgressDialog progressDialog;
     private long MAX_2_MB = 2000000;
     private String issueOrComplaintType = "";
+    private String issueAccessType = AppConstants.ISSUE_ACCESS_TYPE_PRIVATE;
 
     String[] permissions = new String[]{
             Manifest.permission.CAMERA,
@@ -109,7 +112,6 @@ public class CreateIssueOrComplaint extends Fragment {
     private Uri cropImageUri, photoUploadUri;
     private String cameraFilePath;
 
-
     // Firebase Storage
     FirebaseDatabase firebaseDatabase;
     private DatabaseReference mUserReferenceComplaint;
@@ -120,7 +122,8 @@ public class CreateIssueOrComplaint extends Fragment {
     private List<City> cityList = new ArrayList<>();
     private List<String> cityStringList = new ArrayList<>();
 
-    private RadioGroup radioGroupIssueOrComplaint;
+    private RadioGroup radioGroupIssueOrComplaint, radioIssueAccessType;
+    private MainActivityInteractor mainActivityInteractor;
 
     public CreateIssueOrComplaint() {
         // Required empty public constructor
@@ -135,9 +138,17 @@ public class CreateIssueOrComplaint extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInteractor = (MainActivityInteractor) requireActivity();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
+            mainActivityInteractor.setScreenTitle(getString(R.string.create_complaint_issue));
+
             progressDialog = new ProgressDialog(requireContext());
 
             firebaseDatabase = FirebaseDatabase.getInstance();
@@ -164,6 +175,13 @@ public class CreateIssueOrComplaint extends Fragment {
             editIssueOrComplaintDesc = rootView.findViewById(R.id.edit_complaint_or_issue_desc);
 
             radioGroupIssueOrComplaint = rootView.findViewById(R.id.radio_issue_or_complaint);
+            radioIssueAccessType = rootView.findViewById(R.id.radio_issue_access_type);
+
+            textIssueAccessTypeHeader = rootView.findViewById(R.id.text_issue_access_type_header);
+
+            radioIssueAccessType.setVisibility(View.GONE);
+            textIssueAccessTypeHeader.setVisibility(View.GONE);
+
             imageSelectedPhoto = rootView.findViewById(R.id.place_image);
             imageCameraIcon = rootView.findViewById(R.id.image_camera_icon);
             btnSubmit = rootView.findViewById(R.id.btn_submit);
@@ -175,10 +193,33 @@ public class CreateIssueOrComplaint extends Fragment {
                         switch (id) {
                             case R.id.radio_issue: {
                                 issueOrComplaintType = AppConstants.MUNICIPAL_ISSUE_TYPE;
+                                radioIssueAccessType.setVisibility(View.VISIBLE);
+                                textIssueAccessTypeHeader.setVisibility(View.VISIBLE);
                                 break;
                             }
                             case R.id.radio_complaint: {
+                                radioIssueAccessType.setVisibility(View.GONE);
+                                radioIssueAccessType.clearCheck();
+                                textIssueAccessTypeHeader.setVisibility(View.GONE);
                                 issueOrComplaintType = AppConstants.COMPLAINT_TYPE;
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            radioIssueAccessType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int id) {
+                    if (id != 0) {
+                        switch (id) {
+                            case R.id.radio_issue_access_private: {
+                                issueAccessType = AppConstants.ISSUE_ACCESS_TYPE_PRIVATE;
+                                break;
+                            }
+                            case R.id.radio_issue_access_public: {
+                                issueAccessType = AppConstants.ISSUE_ACCESS_TYPE_PUBLIC;
                                 break;
                             }
                         }
@@ -223,58 +264,19 @@ public class CreateIssueOrComplaint extends Fragment {
                 public void onClick(View view) {
                     if (NetworkUtil.getConnectivityStatus(requireContext())) {
                         if (validateFields()) {
-
-                            User loginUser = Utils.getLoginUserDetails(requireContext());
-
-                            String userId = loginUser.getMobileNumber();
-                            String userName = loginUser.getFullName();
-                            String selectedCity = textCity.getText().toString().trim();
-
-                            MnIssueMaster mnIssueMaster = new MnIssueMaster();
-                            mnIssueMaster.setMnIssueCity(selectedCity);
-                            mnIssueMaster.setMnIssueType(AppConstants.MUNICIPAL_ISSUE_TYPE);
-                            mnIssueMaster.setMnIssueHeader(editIssueOrComplaintTitle.getText().toString().trim());
-                            mnIssueMaster.setMnIssueDescription(editIssueOrComplaintDesc.getText().toString().trim());
-                            mnIssueMaster.setMnIssueAcceptedOfficerId(userId);
-                            mnIssueMaster.setMnIssueAcceptedOfficerName(userName);
-                            mnIssueMaster.setMnIssuePlacePhotoId(Utils.getCurrentTimeStampWithSecondsAsId());
-                            mnIssueMaster.setMnIssuePlacePhotoUploadedDate(Utils.getCurrentTimeStampWithSeconds());
-                            // Initial PhotoPath is Empty
-                            mnIssueMaster.setMnIssuePlacePhotoPath("");
-                            mnIssueMaster.setMnIssueCreatedOn(Utils.getCurrentTimeStampWithSeconds());
-                            mnIssueMaster.setMnIssuePlaceLatitude(0.0);
-                            mnIssueMaster.setMnIssuePlaceLongitude(0.0);
-
-                            long photoSize = getFileSize(photoUploadUri);
-
-                            Log.d(TAG, "onClick: photoSize:" + photoSize);
-                            if (photoSize > MAX_2_MB) {
-                                int scaleDivider = 4;
-
-                                try {
-                                    // 1. Convert uri to bitmap
-                                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), photoUploadUri);
-
-                                    // 2. Get the downsized image content as a byte[]
-                                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
-                                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
-                                    byte[] downsizedImageBytes =
-                                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
-
-                                    if (downsizedImageBytes != null) {
-                                        Log.d(TAG, "onClick: mnIssueMaster down: " + mnIssueMaster);
-                                        Log.d(TAG, "onClick: mnIssueMaster down: " + downsizedImageBytes);
-                                        upLoadPlacePhotoMoreSize(mnIssueMaster, downsizedImageBytes, userId);
+                            switch (radioGroupIssueOrComplaint.getCheckedRadioButtonId()) {
+                                case R.id.radio_issue: {
+                                    if (radioIssueAccessType.getCheckedRadioButtonId() == R.id.radio_issue_access_public) {
+                                        submitMnIssue(AppConstants.ISSUE_ACCESS_TYPE_PUBLIC);
                                     } else {
-                                        AndroSocioToast.showErrorToast(requireContext(), "Failed to reduce photo size, try again.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                                        submitMnIssue(AppConstants.ISSUE_ACCESS_TYPE_PRIVATE);
                                     }
-                                } catch (IOException ioEx) {
-                                    ioEx.printStackTrace();
+                                    break;
                                 }
-                            } else {
-                                Log.d(TAG, "onClick: mnIssueMaster: " + mnIssueMaster);
-                                Log.d(TAG, "onClick: photoUploadUri: " + photoUploadUri);
-                                upLoadPlacePhotoOfMnIssue(mnIssueMaster, photoUploadUri, userId);
+                                case R.id.radio_complaint: {
+                                    submitPoliceComplaint();
+                                    break;
+                                }
                             }
                         }
                     } else {
@@ -283,8 +285,6 @@ public class CreateIssueOrComplaint extends Fragment {
                 }
             });
 
-//            RxView.clicks(imageCameraIcon).subscribe(view -> CropImage.startPickImageActivity(requireActivity()));
-//            RxView.clicks(imageCameraIcon).subscribe(view -> CropImage.startPickImageActivity(requireActivity()));
             RxView.clicks(imageCameraIcon).subscribe(new Action1<Void>() {
                 @Override
                 public void call(Void unused) {
@@ -301,6 +301,126 @@ public class CreateIssueOrComplaint extends Fragment {
         }
     }
 
+    private void submitMnIssue(String issueAccessType) {
+        try {
+            User loginUser = Utils.getLoginUserDetails(requireContext());
+
+            String userId = loginUser.getMobileNumber();
+            String userName = loginUser.getFullName();
+            String selectedCity = textCity.getText().toString().trim();
+
+            MnIssueMaster mnIssueMaster = new MnIssueMaster();
+            mnIssueMaster.setMnIssueCity(selectedCity);
+            mnIssueMaster.setMnIssueType(AppConstants.MUNICIPAL_ISSUE_TYPE);
+            mnIssueMaster.setMnIssueAccessType(issueAccessType);
+            mnIssueMaster.setMnIssueHeader(editIssueOrComplaintTitle.getText().toString().trim());
+            mnIssueMaster.setMnIssueDescription(editIssueOrComplaintDesc.getText().toString().trim());
+            mnIssueMaster.setMnIssueAcceptedOfficerId(userId);
+            mnIssueMaster.setMnIssueAcceptedOfficerName(userName);
+            mnIssueMaster.setMnIssuePlacePhotoId(Utils.getCurrentTimeStampWithSecondsAsId());
+            mnIssueMaster.setMnIssuePlacePhotoUploadedDate(Utils.getCurrentTimeStampWithSeconds());
+            // Initial PhotoPath is Empty
+            mnIssueMaster.setMnIssuePlacePhotoPath("");
+            mnIssueMaster.setMnIssueCreatedOn(Utils.getCurrentTimeStampWithSeconds());
+            mnIssueMaster.setMnIssuePlaceLatitude(0.0);
+            mnIssueMaster.setMnIssuePlaceLongitude(0.0);
+
+            long photoSize = getFileSize(photoUploadUri);
+
+            Log.d(TAG, "onClick: photoSize:" + photoSize);
+            if (photoSize > MAX_2_MB) {
+                int scaleDivider = 4;
+
+                try {
+                    // 1. Convert uri to bitmap
+                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), photoUploadUri);
+
+                    // 2. Get the downsized image content as a byte[]
+                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
+                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
+                    byte[] downsizedImageBytes =
+                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
+
+                    if (downsizedImageBytes != null) {
+                        Log.d(TAG, "onClick: mnIssueMaster down: " + mnIssueMaster);
+                        Log.d(TAG, "onClick: mnIssueMaster down: " + downsizedImageBytes);
+                        upLoadPlacePhotoMoreSizeMnIssue(mnIssueMaster, downsizedImageBytes, userId);
+                    } else {
+                        AndroSocioToast.showErrorToast(requireContext(), "Failed to reduce photo size, try again.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                    }
+                } catch (IOException ioEx) {
+                    ioEx.printStackTrace();
+                }
+            } else {
+                Log.d(TAG, "onClick: mnIssueMaster: " + mnIssueMaster);
+                Log.d(TAG, "onClick: photoUploadUri: " + photoUploadUri);
+                upLoadPlacePhotoOfMnIssue(mnIssueMaster, photoUploadUri, userId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void submitPoliceComplaint() {
+        try {
+            User loginUser = Utils.getLoginUserDetails(requireContext());
+
+            String userId = loginUser.getMobileNumber();
+            String userName = loginUser.getFullName();
+            String selectedCity = textCity.getText().toString().trim();
+
+            ComplaintMaster complaintMaster = new ComplaintMaster();
+            complaintMaster.setComplaintCity(selectedCity);
+            complaintMaster.setComplaintType(AppConstants.COMPLAINT_TYPE);
+            complaintMaster.setComplaintAccessType(AppConstants.ISSUE_ACCESS_TYPE_PRIVATE);
+            complaintMaster.setComplaintHeader(editIssueOrComplaintTitle.getText().toString().trim());
+            complaintMaster.setComplaintDescription(editIssueOrComplaintDesc.getText().toString().trim());
+            complaintMaster.setComplaintAcceptedOfficerId(userId);
+            complaintMaster.setComplaintAcceptedOfficerName(userName);
+            complaintMaster.setComplaintPlacePhotoId(Utils.getCurrentTimeStampWithSecondsAsId());
+            complaintMaster.setComplaintPlacePhotoUploadedDate(Utils.getCurrentTimeStampWithSeconds());
+            // Initial PhotoPath is Empty
+            complaintMaster.setComplaintPlacePhotoPath("");
+            complaintMaster.setComplaintCreatedOn(Utils.getCurrentTimeStampWithSeconds());
+            complaintMaster.setComplaintPlaceLatitude(0.0);
+            complaintMaster.setComplaintPlaceLongitude(0.0);
+
+            long photoSize = getFileSize(photoUploadUri);
+
+            Log.d(TAG, "onClick: photoSize:" + photoSize);
+            if (photoSize > MAX_2_MB) {
+                int scaleDivider = 4;
+
+                try {
+                    // 1. Convert uri to bitmap
+                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), photoUploadUri);
+
+                    // 2. Get the downsized image content as a byte[]
+                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
+                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
+                    byte[] downsizedImageBytes =
+                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
+
+                    if (downsizedImageBytes != null) {
+                        Log.d(TAG, "onClick: complaintMaster down: " + complaintMaster);
+                        Log.d(TAG, "onClick: complaintMaster down: " + downsizedImageBytes);
+                        upLoadPlacePhotoMoreSizeComplaint(complaintMaster, downsizedImageBytes, userId);
+                    } else {
+                        AndroSocioToast.showErrorToast(requireContext(), "Failed to reduce photo size, try again.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                    }
+                } catch (IOException ioEx) {
+                    ioEx.printStackTrace();
+                }
+            } else {
+                Log.d(TAG, "onClick: complaintMaster: " + complaintMaster);
+                Log.d(TAG, "onClick: photoUploadUri: " + photoUploadUri);
+                upLoadPlacePhotoOfComplaint(complaintMaster, photoUploadUri, userId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean validateFields() {
         try {
             if (textCity.getText().toString().trim().isEmpty()) {
@@ -308,6 +428,9 @@ public class CreateIssueOrComplaint extends Fragment {
                 return false;
             } else if ((!(radioGroupIssueOrComplaint.getCheckedRadioButtonId() == R.id.radio_issue || radioGroupIssueOrComplaint.getCheckedRadioButtonId() == R.id.radio_complaint))) {
                 AndroSocioToast.showErrorToast(requireContext(), "Please select option Issue or Complaint", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                return false;
+            } else if ((radioGroupIssueOrComplaint.getCheckedRadioButtonId() == R.id.radio_issue) && (!(radioIssueAccessType.getCheckedRadioButtonId() == R.id.radio_issue_access_private || radioIssueAccessType.getCheckedRadioButtonId() == R.id.radio_issue_access_public))) {
+                AndroSocioToast.showErrorToast(requireContext(), "Please select Issue Access Type", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                 return false;
             } else if (editIssueOrComplaintTitle.getText().toString().trim().isEmpty()) {
                 AndroSocioToast.showErrorToast(requireContext(), "Please enter issue or complaint title", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
@@ -357,12 +480,11 @@ public class CreateIssueOrComplaint extends Fragment {
         }
     }
 
-
     private void upLoadPlacePhotoOfMnIssue(MnIssueMaster mnIssueMaster, Uri photoUploadUri, String userId) {
         try {
             showProgressDialog("Processing your request..");
 
-            String photoExt = mnIssueMaster.getMnIssueCity() +"_"+userId+"_"+mnIssueMaster.getMnIssuePlacePhotoId()+"." + getFileExtension(photoUploadUri);
+            String photoExt = mnIssueMaster.getMnIssueCity() + "_" + userId + "_" + mnIssueMaster.getMnIssuePlacePhotoId() + "." + getFileExtension(photoUploadUri);
             StorageReference fileRef = storageReference.child(photoExt);
             fileRef.putFile(photoUploadUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -371,7 +493,7 @@ public class CreateIssueOrComplaint extends Fragment {
                     fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Log.d(TAG, "onSuccess: uri: "+uri);
+                            Log.d(TAG, "onSuccess: uri: " + uri);
                             mnIssueMaster.setMnIssuePlacePhotoPath(uri.toString());
                             hideProgressDialog();
                             submitPhotoMnIssueDetails(mnIssueMaster, userId);
@@ -398,10 +520,50 @@ public class CreateIssueOrComplaint extends Fragment {
         }
     }
 
-    private void upLoadPlacePhotoMoreSize(MnIssueMaster mnIssueMaster, byte[] downsizedImageBytes, String userId) {
+    private void upLoadPlacePhotoOfComplaint(ComplaintMaster complaintMaster, Uri photoUploadUri, String userId) {
         try {
             showProgressDialog("Processing your request..");
-            String photoExt = mnIssueMaster.getMnIssueCity() +"_"+userId+"_"+mnIssueMaster.getMnIssuePlacePhotoId()+"." + getFileExtension(photoUploadUri);
+
+            String photoExt = complaintMaster.getComplaintCity() + "_" + userId + "_" + complaintMaster.getComplaintPlacePhotoId() + "." + getFileExtension(photoUploadUri);
+            StorageReference fileRef = storageReference.child(photoExt);
+            fileRef.putFile(photoUploadUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d(TAG, "onSuccess: uri: " + uri);
+                            complaintMaster.setComplaintPlacePhotoPath(uri.toString());
+                            hideProgressDialog();
+                            submitPhotoComplaintDetails(complaintMaster, userId);
+                        }
+                    });
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+                    hideProgressDialog();
+                    AndroSocioToast.showErrorToast(requireContext(), "Failed to upload photo", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideProgressDialog();
+            AndroSocioToast.showErrorToast(requireContext(), e.getMessage(), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            e.printStackTrace();
+        }
+    }
+
+    private void upLoadPlacePhotoMoreSizeMnIssue(MnIssueMaster mnIssueMaster, byte[] downsizedImageBytes, String userId) {
+        try {
+            showProgressDialog("Processing your request..");
+            String photoExt = mnIssueMaster.getMnIssueCity() + "_" + userId + "_" + mnIssueMaster.getMnIssuePlacePhotoId() + "." + getFileExtension(photoUploadUri);
             StorageReference fileRef = storageReference.child(photoExt);
             fileRef.putBytes(downsizedImageBytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -410,10 +572,47 @@ public class CreateIssueOrComplaint extends Fragment {
                     fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Log.d(TAG, "onSuccess: 2: "+uri);
+                            Log.d(TAG, "onSuccess: 2: " + uri);
                             mnIssueMaster.setMnIssuePlacePhotoPath(uri.toString());
                             hideProgressDialog();
                             submitPhotoMnIssueDetails(mnIssueMaster, userId);
+                        }
+                    });
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+                    hideProgressDialog();
+                    AndroSocioToast.showErrorToast(requireContext(), "Failed to upload photo", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideProgressDialog();
+            AndroSocioToast.showErrorToast(requireContext(), e.getMessage(), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            e.printStackTrace();
+        }
+    }
+    private void upLoadPlacePhotoMoreSizeComplaint(ComplaintMaster complaintMaster, byte[] downsizedImageBytes, String userId) {
+        try {
+            showProgressDialog("Processing your request..");
+            String photoExt = complaintMaster.getComplaintCity() + "_" + userId + "_" + complaintMaster.getComplaintPlacePhotoId() + "." + getFileExtension(photoUploadUri);
+            StorageReference fileRef = storageReference.child(photoExt);
+            fileRef.putBytes(downsizedImageBytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d(TAG, "onSuccess: 2: " + uri);
+                            complaintMaster.setComplaintPlacePhotoPath(uri.toString());
+                            hideProgressDialog();
+                            submitPhotoComplaintDetails(complaintMaster, userId);
                         }
                     });
                 }
@@ -460,7 +659,7 @@ public class CreateIssueOrComplaint extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             hideProgressDialog();
-                            AndroSocioToast.showSuccessToast(requireContext(), "Issue details submitted successfully.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                            AndroSocioToast.showSuccessToast(requireContext(), "Municipal issue submitted successfully.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
                             clearAllFields();
                         }
                     })
@@ -468,7 +667,34 @@ public class CreateIssueOrComplaint extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             hideProgressDialog();
-                            AndroSocioToast.showErrorToast(requireContext(), "Failed to submit issue details", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                            AndroSocioToast.showErrorToast(requireContext(), "Failed to submit municipal issue", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                        }
+                    });
+        } catch (Exception e) {
+            hideProgressDialog();
+            AndroSocioToast.showErrorToast(requireContext(), e.getMessage(), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            e.printStackTrace();
+        }
+    }
+
+    public void submitPhotoComplaintDetails(ComplaintMaster complaintMaster, String userId) {
+        try {
+            showProgressDialog("Submitting please wait.");
+
+            mUserReferenceComplaint.child(complaintMaster.getComplaintCity()).child(complaintMaster.getComplaintType()).child(userId).child(complaintMaster.getComplaintPlacePhotoId()).setValue(complaintMaster)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            hideProgressDialog();
+                            AndroSocioToast.showSuccessToast(requireContext(), "Police complaint submitted successfully.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                            clearAllFields();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            hideProgressDialog();
+                            AndroSocioToast.showErrorToast(requireContext(), "Failed to submit police complaint", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                         }
                     });
         } catch (Exception e) {
@@ -482,12 +708,16 @@ public class CreateIssueOrComplaint extends Fragment {
         try {
             textCity.setText("");
             radioGroupIssueOrComplaint.clearCheck();
+            radioIssueAccessType.clearCheck();
             photoUploadUri = null;
             cropImageUri = null;
             editIssueOrComplaintTitle.setText("");
             editIssueOrComplaintDesc.setText("");
             imageSelectedPhoto.setImageURI(null);
             imageSelectedPhoto.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.empty_image, null));
+
+            radioIssueAccessType.setVisibility(View.GONE);
+            textIssueAccessTypeHeader.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -549,24 +779,16 @@ public class CreateIssueOrComplaint extends Fragment {
 
     private void showProfilePicChooser() {
         try {
-            /*Typeface typefaceRegular = Typeface.createFromAsset(requireActivity().getApplicationContext().getAssets(), "fonts/SF-Pro-Text-Regular.ttf");
-            Typeface typefaceTextBold = Typeface.createFromAsset(requireActivity().getApplicationContext().getAssets(), "fonts/SF-Pro-Text-Bold.ttf");
-*/
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());// , android.R.style.Theme_Translucent
             View dialogView = getLayoutInflater().inflate(R.layout.alert_dialog_with_centered_icon_profile_pic_chooser, null);
 
             ImageView imageCamera = dialogView.findViewById(R.id.image_camera);
             TextView textCamera = dialogView.findViewById(R.id.text_camera);
 
-//            textCamera.setTypeface(typefaceRegular);
-
             ImageView imageGallery = dialogView.findViewById(R.id.image_gallery);
             TextView textGallery = dialogView.findViewById(R.id.text_gallery);
 
-//            textGallery.setTypeface(typefaceRegular);
-
             TextView textCancel = dialogView.findViewById(R.id.text_cancel_button);
-//            textCancel.setTypeface(typefaceTextBold);
 
             builder.setCancelable(false);
             builder.setView(dialogView);
@@ -791,27 +1013,6 @@ public class CreateIssueOrComplaint extends Fragment {
         }
     }
 
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            Log.d(TAG, "onActivityResult: Request Code: " + requestCode);
-            if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
-                CropImage.startPickImageActivity(requireActivity());
-            }
-            if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
-                if (cropImageUri != null) {
-                    // required permissions granted, start crop image activity
-                    cropImage(cropImageUri);
-                } else {
-                    Toast.makeText(requireContext(), requireActivity().getResources().getString(R.string.canceling_permission_not_granted), Toast.LENGTH_LONG).show();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         try {
@@ -866,27 +1067,5 @@ public class CreateIssueOrComplaint extends Fragment {
         }
         return true;
     }
-
-
-   /* @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        try {
-            switch (requestCode) {
-                case MULTIPLE_PERMISSIONS: {
-                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        // permissions granted.
-                    } else {
-                        String perStr = "";
-                        for (String per : permissions) {
-                            perStr += "\n" + per;
-                        }
-                        // permissions list of don't granted permission
-                    }
-                    return;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
 
 }

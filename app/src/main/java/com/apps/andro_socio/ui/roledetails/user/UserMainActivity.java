@@ -90,7 +90,6 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
             case 3:
                 AndroSocioToast.showInfoToast(UserMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
-
                 break;
         }
     }
@@ -208,11 +207,6 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            Log.d(TAG, "onActivityResult: main requestCode: "+requestCode);
-            Log.d(TAG, "onActivityResult: main resultCode: "+resultCode);
-            Log.d(TAG, "onActivityResult: main Activity.RESULT_OK: "+Activity.RESULT_OK);
-            Log.d(TAG, "onActivityResult: main CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE: "+CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
-            Log.d(TAG, "onActivityResult: main CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE: "+CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE);
             if (resultCode == Activity.RESULT_OK) {
                 switch (requestCode) {
                     case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
@@ -225,7 +219,6 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                         fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main).onActivityResult(requestCode, resultCode, data);
                         break;
                 }
-
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main)).onActivityResult(requestCode, resultCode, data);
             }

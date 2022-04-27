@@ -50,6 +50,10 @@ public class AppConstants {
     public static final String COMPLAINT_TYPE = "Complaint";
     public static final String MUNICIPAL_ISSUE_TYPE = "Municipal Issue";
 
+    // Issue Access Types
+    public static final String ISSUE_ACCESS_TYPE_PRIVATE = "Private";
+    public static final String ISSUE_ACCESS_TYPE_PUBLIC = "Public";
+
     // Gender Types
     public static final String MALE_GENDER = "Male";
     public static final String FEMALE_GENDER = "Female";

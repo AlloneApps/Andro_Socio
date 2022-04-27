@@ -12,6 +12,7 @@ public class MnIssueMaster implements Parcelable {
     private String mnIssueHeader;
     private String mnIssueDescription;
     private String mnIssueType;
+    private String mnIssueAccessType;
     private String mnIssueCity;
     private String mnIssueAcceptedOfficerId;
     private String mnIssueAcceptedOfficerName;
@@ -32,6 +33,7 @@ public class MnIssueMaster implements Parcelable {
         mnIssueHeader = in.readString();
         mnIssueDescription = in.readString();
         mnIssueType = in.readString();
+        mnIssueAccessType = in.readString();
         mnIssueCity = in.readString();
         mnIssueAcceptedOfficerId = in.readString();
         mnIssueAcceptedOfficerName = in.readString();
@@ -79,6 +81,14 @@ public class MnIssueMaster implements Parcelable {
 
     public void setMnIssueType(String mnIssueType) {
         this.mnIssueType = mnIssueType;
+    }
+
+    public String getMnIssueAccessType() {
+        return mnIssueAccessType;
+    }
+
+    public void setMnIssueAccessType(String mnIssueAccessType) {
+        this.mnIssueAccessType = mnIssueAccessType;
     }
 
     public String getMnIssueCity() {
@@ -175,6 +185,7 @@ public class MnIssueMaster implements Parcelable {
                 "mnIssueHeader='" + mnIssueHeader + '\'' +
                 ", mnIssueDescription='" + mnIssueDescription + '\'' +
                 ", mnIssueType='" + mnIssueType + '\'' +
+                ", mnIssueAccessType='" + mnIssueAccessType + '\'' +
                 ", mnIssueCity='" + mnIssueCity + '\'' +
                 ", mnIssueAcceptedOfficerId='" + mnIssueAcceptedOfficerId + '\'' +
                 ", mnIssueAcceptedOfficerName='" + mnIssueAcceptedOfficerName + '\'' +
@@ -199,6 +210,7 @@ public class MnIssueMaster implements Parcelable {
         parcel.writeString(mnIssueHeader);
         parcel.writeString(mnIssueDescription);
         parcel.writeString(mnIssueType);
+        parcel.writeString(mnIssueAccessType);
         parcel.writeString(mnIssueCity);
         parcel.writeString(mnIssueAcceptedOfficerId);
         parcel.writeString(mnIssueAcceptedOfficerName);
