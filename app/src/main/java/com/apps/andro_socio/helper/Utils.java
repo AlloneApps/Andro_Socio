@@ -1,0 +1,158 @@
+package com.apps.andro_socio.helper;
+
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import com.apps.andro_socio.model.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Utils {
+    private static final String TAG = "Utils";
+
+    public static boolean isEmptyField(String value) {
+        return value.trim().isEmpty();
+    }
+
+    public static String getFieldValue(EditText editTextField) {
+        return editTextField.getText().toString().trim();
+    }
+
+    public static void saveLoginUserDetails(Context context, User user) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String loginUserDetails = gson.toJson(user);
+        sharedPreferences.edit().putString(AppConstants.LOGIN_USER_DETAILS, loginUserDetails).apply();
+    }
+
+    public static User getLoginUserDetails(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String userDetailsString = sharedPreferences.getString(AppConstants.LOGIN_USER_DETAILS, "");
+        return gson.fromJson(userDetailsString, User.class);
+    }
+
+    public static void removeLoginUserDetails(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+        sharedPreferences.edit().remove(AppConstants.LOGIN_USER_DETAILS).apply();
+    }
+
+    public static String getSharedPrefsString(Context context, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(key, "");
+    }
+
+    public static void saveSharedPrefsString(Context context, String key, String value) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+        sharedPreferences.edit().putString(key, value).apply();
+    }
+
+    public static void removeSharedPrefsString(Context context, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+        sharedPreferences.edit().remove(key).apply();
+    }
+
+    public static User getUserDetails(Context context, String mobileNumber) {
+        Log.d(TAG, "getUserDetails: userEmail");
+        User userMaster = null;
+        try {
+            ArrayList<User> userList;
+            // load tasks from preference
+            SharedPreferences prefs = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
+            Gson gson = new Gson();
+            String readString = prefs.getString(AppConstants.USER_LIST, "");
+            if (!TextUtils.isEmpty(readString)) {
+                Type type = new TypeToken<ArrayList<User>>() {
+                }.getType();
+                userList = gson.fromJson(readString, type);
+                int count = 0;
+                assert userList != null;
+                for (User userSub : userList) {
+                    if (userSub.getMobileNumber().equals(mobileNumber)) {
+                        Log.d(TAG, "getUserDetails: userDetails: " + userSub);
+                        return userSub;
+                    }
+                }
+            } else {
+                return userMaster;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return userMaster;
+        }
+        return userMaster;
+    }
+
+    public static void removeAllDataWhenLogout(Context context) {
+        removeLoginUserDetails(context);
+        removeSharedPrefsString(context, AppConstants.LOGIN_TOKEN);
+        removeSharedPrefsString(context, AppConstants.USER_ROLE);
+        removeSharedPrefsString(context, AppConstants.LOGIN_USER_DETAILS);
+    }
+
+    public static String getCurrentTimeStampWithSeconds() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String currentDateTime = dateFormat.format(new Date()); // Find todays date
+
+            return currentDateTime;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        try {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            //Find the currently focused view, so we can grab the correct window token from it.
+            View view = activity.getCurrentFocus();
+            //If no view currently has focus, create a new one, just so we can grab a window token from it
+            if (view == null) {
+                view = new View(activity);
+            }
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String> getAdminSettingsOption() {
+        List<String> settingsOptionList = new ArrayList<>();
+        settingsOptionList.add(AppConstants.ADMIN_SETTINGS_ADD_CITY);
+//        settingsOptionList.add(AppConstants.ADMIN_SETTINGS_PROFILE);
+        return settingsOptionList;
+    }
+
+    public static String applyMaskAndShowLastDigits(String originalText, int digits) {
+        String dynamicRegex = "\\w(?=\\w{" + digits + "})";
+        return originalText.replaceAll(dynamicRegex, "x");
+    }
+
+    public static String getCurrentTimeStampWithSecondsAsId() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            String currentDateTime = dateFormat.format(new Date()); // Find todays date
+
+            return currentDateTime;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+}
