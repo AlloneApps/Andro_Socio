@@ -52,7 +52,9 @@ import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.model.citydetails.City;
 import com.apps.andro_socio.model.complaint.ComplaintMaster;
+import com.apps.andro_socio.model.complaint.ComplaintSubDetails;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
+import com.apps.andro_socio.model.issue.MnIssueSubDetails;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -307,6 +309,7 @@ public class CreateIssueOrComplaint extends Fragment {
 
             String userId = loginUser.getMobileNumber();
             String userName = loginUser.getFullName();
+            String role = loginUser.getMainRole();
             String selectedCity = textCity.getText().toString().trim();
 
             MnIssueMaster mnIssueMaster = new MnIssueMaster();
@@ -324,6 +327,18 @@ public class CreateIssueOrComplaint extends Fragment {
             mnIssueMaster.setMnIssueCreatedOn(Utils.getCurrentTimeStampWithSeconds());
             mnIssueMaster.setMnIssuePlaceLatitude(0.0);
             mnIssueMaster.setMnIssuePlaceLongitude(0.0);
+
+            List<MnIssueSubDetails>  mnIssueSubDetailsList = new ArrayList<>();
+            MnIssueSubDetails mnIssueSubDetails = new MnIssueSubDetails();
+            mnIssueSubDetails.setMnIssueId("");
+            mnIssueSubDetails.setMnIssueAcceptedId("");
+            mnIssueSubDetails.setMnIssueStatus(AppConstants.NEW_STATUS);
+            mnIssueSubDetails.setMnIssueModifiedBy(userId);
+            mnIssueSubDetails.setMnIssueModifiedOn(Utils.getCurrentTimeStampWithSeconds());
+            mnIssueSubDetails.setMnIssueAcceptedRole(role);
+
+            mnIssueSubDetailsList.add(mnIssueSubDetails);
+            mnIssueMaster.setMnIssueSubDetailsList(mnIssueSubDetailsList);
 
             long photoSize = getFileSize(photoUploadUri);
 
@@ -367,6 +382,7 @@ public class CreateIssueOrComplaint extends Fragment {
 
             String userId = loginUser.getMobileNumber();
             String userName = loginUser.getFullName();
+            String role = loginUser.getMainRole();
             String selectedCity = textCity.getText().toString().trim();
 
             ComplaintMaster complaintMaster = new ComplaintMaster();
@@ -384,6 +400,18 @@ public class CreateIssueOrComplaint extends Fragment {
             complaintMaster.setComplaintCreatedOn(Utils.getCurrentTimeStampWithSeconds());
             complaintMaster.setComplaintPlaceLatitude(0.0);
             complaintMaster.setComplaintPlaceLongitude(0.0);
+
+            List<ComplaintSubDetails>  complaintSubDetailsList = new ArrayList<>();
+            ComplaintSubDetails complaintSubDetails = new ComplaintSubDetails();
+            complaintSubDetails.setComplaintId("");
+            complaintSubDetails.setComplaintAcceptedId("");
+            complaintSubDetails.setComplaintStatus(AppConstants.NEW_STATUS);
+            complaintSubDetails.setModifiedBy(userId);
+            complaintSubDetails.setModifiedOn(Utils.getCurrentTimeStampWithSeconds());
+            complaintSubDetails.setComplaintAcceptedRole(role);
+
+            complaintSubDetailsList.add(complaintSubDetails);
+            complaintMaster.setComplaintsSubDetailsList(complaintSubDetailsList);
 
             long photoSize = getFileSize(photoUploadUri);
 
