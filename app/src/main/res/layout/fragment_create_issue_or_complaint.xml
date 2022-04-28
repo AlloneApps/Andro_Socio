@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
-                android:text="Select City"
+                android:text="Your City"
                 android:textColor="@color/colorSecondaryText"
                 android:textStyle="bold" />
 
@@ -39,8 +39,7 @@
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
                 android:background="@drawable/text_border"
-                android:drawableEnd="@drawable/ic_drop_down"
-                android:hint="Select City"
+                android:hint="your City"
                 android:nextFocusDown="@+id/btn_signup"
                 android:textColor="@color/colorBlack"
                 android:textCursorDrawable="@null" />

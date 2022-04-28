@@ -1,4 +1,4 @@
-package com.apps.andro_socio.ui.roledetails.user;
+package com.apps.andro_socio.ui.roledetails.user.createissueorcomplaint;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -188,6 +188,42 @@ public class CreateIssueOrComplaint extends Fragment {
             imageCameraIcon = rootView.findViewById(R.id.image_camera_icon);
             btnSubmit = rootView.findViewById(R.id.btn_submit);
 
+            User loginUser = Utils.getLoginUserDetails(requireContext());
+
+            if (loginUser != null) {
+                textCity.setText(loginUser.getUserCity());
+            } else {
+                RxView.touches(textCity).subscribe(motionEvent -> {
+                    try {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(requireContext());
+                            builderSingle.setTitle("Select City");
+
+                            final ArrayAdapter<String> citySelectionAdapter = new ArrayAdapter<String>(requireContext(),
+                                    android.R.layout.select_dialog_singlechoice, cityStringList) {
+                                @NonNull
+                                @Override
+                                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                    View view = super.getView(position, convertView, parent);
+                                    TextView text = view.findViewById(android.R.id.text1);
+                                    text.setTextColor(Color.BLACK);
+                                    return view;
+                                }
+                            };
+
+                            builderSingle.setNegativeButton("Cancel", (dialog, position) -> dialog.dismiss());
+
+                            builderSingle.setAdapter(citySelectionAdapter, (dialog, position) -> {
+                                textCity.setText(citySelectionAdapter.getItem(position));
+                            });
+                            builderSingle.show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+
             radioGroupIssueOrComplaint.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int id) {
@@ -230,36 +266,6 @@ public class CreateIssueOrComplaint extends Fragment {
             });
 
             imageSelectedPhoto.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.empty_image, null));
-
-            RxView.touches(textCity).subscribe(motionEvent -> {
-                try {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        AlertDialog.Builder builderSingle = new AlertDialog.Builder(requireContext());
-                        builderSingle.setTitle("Select City");
-
-                        final ArrayAdapter<String> citySelectionAdapter = new ArrayAdapter<String>(requireContext(),
-                                android.R.layout.select_dialog_singlechoice, cityStringList) {
-                            @NonNull
-                            @Override
-                            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                                View view = super.getView(position, convertView, parent);
-                                TextView text = view.findViewById(android.R.id.text1);
-                                text.setTextColor(Color.BLACK);
-                                return view;
-                            }
-                        };
-
-                        builderSingle.setNegativeButton("Cancel", (dialog, position) -> dialog.dismiss());
-
-                        builderSingle.setAdapter(citySelectionAdapter, (dialog, position) -> {
-                            textCity.setText(citySelectionAdapter.getItem(position));
-                        });
-                        builderSingle.show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
 
             btnSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -312,6 +318,8 @@ public class CreateIssueOrComplaint extends Fragment {
             String role = loginUser.getMainRole();
             String selectedCity = textCity.getText().toString().trim();
 
+            String mainIssueId = Utils.getCurrentTimeStampWithSeconds();
+
             MnIssueMaster mnIssueMaster = new MnIssueMaster();
             mnIssueMaster.setMnIssueCity(selectedCity);
             mnIssueMaster.setMnIssueType(AppConstants.MUNICIPAL_ISSUE_TYPE);
@@ -324,14 +332,14 @@ public class CreateIssueOrComplaint extends Fragment {
             mnIssueMaster.setMnIssuePlacePhotoUploadedDate(Utils.getCurrentTimeStampWithSeconds());
             // Initial PhotoPath is Empty
             mnIssueMaster.setMnIssuePlacePhotoPath("");
-            mnIssueMaster.setMnIssueCreatedOn(Utils.getCurrentTimeStampWithSeconds());
+            mnIssueMaster.setMnIssueCreatedOn(mainIssueId);
             mnIssueMaster.setMnIssuePlaceLatitude(0.0);
             mnIssueMaster.setMnIssuePlaceLongitude(0.0);
 
-            List<MnIssueSubDetails>  mnIssueSubDetailsList = new ArrayList<>();
+            List<MnIssueSubDetails> mnIssueSubDetailsList = new ArrayList<>();
             MnIssueSubDetails mnIssueSubDetails = new MnIssueSubDetails();
-            mnIssueSubDetails.setMnIssueId("");
-            mnIssueSubDetails.setMnIssueAcceptedId("");
+            mnIssueSubDetails.setMnIssueId(mainIssueId);
+            mnIssueSubDetails.setMnIssueAcceptedId(userId);
             mnIssueSubDetails.setMnIssueStatus(AppConstants.NEW_STATUS);
             mnIssueSubDetails.setMnIssueModifiedBy(userId);
             mnIssueSubDetails.setMnIssueModifiedOn(Utils.getCurrentTimeStampWithSeconds());
@@ -385,6 +393,8 @@ public class CreateIssueOrComplaint extends Fragment {
             String role = loginUser.getMainRole();
             String selectedCity = textCity.getText().toString().trim();
 
+            String mainComplaintId = Utils.getCurrentTimeStampWithSeconds();
+
             ComplaintMaster complaintMaster = new ComplaintMaster();
             complaintMaster.setComplaintCity(selectedCity);
             complaintMaster.setComplaintType(AppConstants.COMPLAINT_TYPE);
@@ -397,14 +407,14 @@ public class CreateIssueOrComplaint extends Fragment {
             complaintMaster.setComplaintPlacePhotoUploadedDate(Utils.getCurrentTimeStampWithSeconds());
             // Initial PhotoPath is Empty
             complaintMaster.setComplaintPlacePhotoPath("");
-            complaintMaster.setComplaintCreatedOn(Utils.getCurrentTimeStampWithSeconds());
+            complaintMaster.setComplaintCreatedOn(mainComplaintId);
             complaintMaster.setComplaintPlaceLatitude(0.0);
             complaintMaster.setComplaintPlaceLongitude(0.0);
 
-            List<ComplaintSubDetails>  complaintSubDetailsList = new ArrayList<>();
+            List<ComplaintSubDetails> complaintSubDetailsList = new ArrayList<>();
             ComplaintSubDetails complaintSubDetails = new ComplaintSubDetails();
-            complaintSubDetails.setComplaintId("");
-            complaintSubDetails.setComplaintAcceptedId("");
+            complaintSubDetails.setComplaintId(mainComplaintId);
+            complaintSubDetails.setComplaintAcceptedId(userId);
             complaintSubDetails.setComplaintStatus(AppConstants.NEW_STATUS);
             complaintSubDetails.setModifiedBy(userId);
             complaintSubDetails.setModifiedOn(Utils.getCurrentTimeStampWithSeconds());
@@ -626,6 +636,7 @@ public class CreateIssueOrComplaint extends Fragment {
             e.printStackTrace();
         }
     }
+
     private void upLoadPlacePhotoMoreSizeComplaint(ComplaintMaster complaintMaster, byte[] downsizedImageBytes, String userId) {
         try {
             showProgressDialog("Processing your request..");
@@ -734,7 +745,6 @@ public class CreateIssueOrComplaint extends Fragment {
 
     private void clearAllFields() {
         try {
-            textCity.setText("");
             radioGroupIssueOrComplaint.clearCheck();
             radioIssueAccessType.clearCheck();
             photoUploadUri = null;

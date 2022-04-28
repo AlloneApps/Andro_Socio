@@ -1,4 +1,4 @@
-package com.apps.andro_socio.ui.roledetails.user;
+package com.apps.andro_socio.ui.roledetails.user.usermain;
 
 import android.Manifest;
 import android.content.Context;

@@ -1,9 +1,8 @@
-package com.apps.andro_socio.ui.roledetails.user;
+package com.apps.andro_socio.ui.roledetails.user.usermain;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +19,9 @@ import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
+import com.apps.andro_socio.ui.roledetails.user.createissueorcomplaint.CreateIssueOrComplaint;
+import com.apps.andro_socio.ui.roledetails.user.viewcomplaints.ViewUserComplaints;
+import com.apps.andro_socio.ui.roledetails.user.viewissues.ViewUserIssues;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.Objects;
@@ -83,13 +85,13 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                 break;
             case 2:
                 if (checkInternet()) {
-                    AndroSocioToast.showInfoToast(UserMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewUserIssues()).commit();
                 }
                 break;
             case 3:
-                AndroSocioToast.showInfoToast(UserMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
+                if (checkInternet()) {
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewUserComplaints()).commit();
+                }
                 break;
         }
     }

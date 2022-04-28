@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.roledetails.user.UserMainActivity"
+            android:name=".ui.roledetails.user.usermain.UserMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

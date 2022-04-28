@@ -91,31 +91,6 @@ public class RegistrationActivity extends AppCompatActivity {
         textUserFullNameHeader = findViewById(R.id.text_user_full_name_header);
         textGender = findViewById(R.id.text_gender);
 
-        // Radio Group of selecting Role of User or Police/Municipality Member
-        radioGroupRole.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int radioButtonId) {
-                switch (radioButtonId) {
-                    case R.id.radio_role_user: {
-                        textSelectSubRoleInfo.setVisibility(View.GONE);
-                        radioGroupRoleSub.setVisibility(View.GONE);
-
-                        textCityHeader.setVisibility(View.GONE);
-                        textCity.setVisibility(View.GONE);
-                        break;
-                    }
-                    case R.id.radio_role_police_municipal_officer: {
-                        textSelectSubRoleInfo.setVisibility(View.VISIBLE);
-                        radioGroupRoleSub.setVisibility(View.VISIBLE);
-
-                        textCityHeader.setVisibility(View.VISIBLE);
-                        textCity.setVisibility(View.VISIBLE);
-                        break;
-                    }
-                }
-            }
-        });
-
         // Radio Group of selecting User Type
         radioGroupUserType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -225,7 +200,7 @@ public class RegistrationActivity extends AppCompatActivity {
         } else if ((radioGroupRole.getCheckedRadioButtonId() == R.id.radio_role_police_municipal_officer) && (!(radioGroupRoleSub.getCheckedRadioButtonId() == R.id.radio_role_police || radioGroupRoleSub.getCheckedRadioButtonId() == R.id.radio_role_municipal_officer))) {
             AndroSocioToast.showErrorToast(RegistrationActivity.this, getString(R.string.select_sub_role), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
             return false;
-        } else if ((radioGroupRole.getCheckedRadioButtonId() == R.id.radio_role_police_municipal_officer) && (TextUtils.isEmpty(textCity.getText().toString()))) {
+        } else if (TextUtils.isEmpty(textCity.getText().toString())) {
             AndroSocioToast.showErrorToast(RegistrationActivity.this, getString(R.string.select_city_alert), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
             return false;
         } else if ((radioGroupUserType.getCheckedRadioButtonId() == R.id.radio_user_general) && TextUtils.isEmpty(editUserFullName.getText().toString())) {
@@ -251,6 +226,7 @@ public class RegistrationActivity extends AppCompatActivity {
             user.setUserCity(textCity.getText().toString().trim());
             user.setIsActive(AppConstants.IN_ACTIVE_USER);
         } else {
+            user.setUserCity(textCity.getText().toString().trim());
             user.setMainRole(AppConstants.ROLE_USER);
             user.setIsActive(AppConstants.ACTIVE_USER);
         }

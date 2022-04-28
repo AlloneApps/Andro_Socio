@@ -57,4 +57,6 @@
     <string name="canceling_permission_not_granted">Cancelling, required permissions are not granted</string>
     <string name="permission_mandatory_alert">Some core functions of the app might not work correctly without these permissions. Please ALLOW them in app settings</string>
     <string name="create_complaint_issue">Create Complaint/Issue</string>
+    <string name="view_complaints">View Complaints</string>
+    <string name="view_municipal_issues">View Municipal Issues</string>
 </resources>

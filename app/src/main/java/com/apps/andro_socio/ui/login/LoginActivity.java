@@ -26,7 +26,7 @@ import com.apps.andro_socio.ui.registration.RegistrationActivity;
 import com.apps.andro_socio.ui.roledetails.admin.AdminMainActivity;
 import com.apps.andro_socio.ui.roledetails.mnofficer.MnOfficerMainActivity;
 import com.apps.andro_socio.ui.roledetails.police.PoliceMainActivity;
-import com.apps.andro_socio.ui.roledetails.user.UserMainActivity;
+import com.apps.andro_socio.ui.roledetails.user.usermain.UserMainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

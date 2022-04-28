@@ -12,7 +12,7 @@ import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.ui.roledetails.admin.AdminMainActivity;
 import com.apps.andro_socio.ui.roledetails.mnofficer.MnOfficerMainActivity;
 import com.apps.andro_socio.ui.roledetails.police.PoliceMainActivity;
-import com.apps.andro_socio.ui.roledetails.user.UserMainActivity;
+import com.apps.andro_socio.ui.roledetails.user.usermain.UserMainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

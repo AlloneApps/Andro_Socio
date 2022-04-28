@@ -210,7 +210,7 @@ tools:context=".ui.registration.RegistrationActivity">
             android:text="@string/select_city_header"
             android:textColor="@color/colorSecondaryText"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/text_city"
@@ -226,7 +226,7 @@ tools:context=".ui.registration.RegistrationActivity">
             android:hint="@string/select_city"
             android:textColor="@color/colorBlack"
             android:textCursorDrawable="@null"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/text_personal_info"
