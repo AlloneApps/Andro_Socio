@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.model.issue.MnIssueSubDetails;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
                 if (mnIssueMaster != null) {
                     holder.textUserIssueHeader.setText(mnIssueMaster.getMnIssueHeader());
                     holder.textUserIssueNumber.setText(mnIssueMaster.getMnIssueType());
-                    holder.textUserIssueAccessType.setText(mnIssueMaster.getMnIssueAccessType());
+                    holder.textUserIssueId.setText(mnIssueMaster.getMnIssuePlacePhotoId());
                     holder.textUserIssueCity.setText(mnIssueMaster.getMnIssueCity());
 
                     int detailsLatest = mnIssueMaster.getMnIssueSubDetailsList().size() - 1;
@@ -108,7 +109,7 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
 
         MnIssueMaster userIssue;
         ImageView userIssueImage;
-        TextView textUserIssueNumber, textUserIssueStatus, textUserIssueAccessType, textUserIssueCity,
+        TextView textUserIssueNumber, textUserIssueStatus, textUserIssueId, textUserIssueCity,
                 textUserIssueHeader, textView, textUpdate;
 
         UserIssueAdapterViewHolder(View itemView) {
@@ -119,7 +120,7 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
             // Text View
             textUserIssueNumber = itemView.findViewById(R.id.text_user_issue_number);
             textUserIssueStatus = itemView.findViewById(R.id.text_user_issue_status);
-            textUserIssueAccessType = itemView.findViewById(R.id.text_user_issue_access_type);
+            textUserIssueId = itemView.findViewById(R.id.text_user_issue_id);
             textUserIssueCity = itemView.findViewById(R.id.text_user_issue_city);
             textUserIssueHeader = itemView.findViewById(R.id.text_user_issue_header);
             textView = itemView.findViewById(R.id.text_view);
@@ -128,12 +129,15 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
 
         public void setItem(MnIssueMaster mnIssueMaster) {
             userIssue = mnIssueMaster;
-
-         /*   Glide.with(itemView)
-                    .load(userIssue.getMnIssuePlacePhotoPath())
-                    .fitCenter()
-                    .centerCrop()
-                    .into(userIssueImage);*/
+            try {
+                Glide.with(itemView)
+                        .load(mnIssueMaster.getMnIssuePlacePhotoPath())
+                        .fitCenter()
+                        .centerCrop()
+                        .into(userIssueImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         @Override

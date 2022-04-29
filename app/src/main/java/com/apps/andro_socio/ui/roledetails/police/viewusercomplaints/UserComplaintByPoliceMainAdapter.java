@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.model.complaint.ComplaintMaster;
 import com.apps.andro_socio.model.complaint.ComplaintSubDetails;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
                 if (complaintMaster != null) {
                     holder.textUserIssueHeader.setText(complaintMaster.getComplaintHeader());
                     holder.textUserIssueNumber.setText(complaintMaster.getComplaintType());
-                    holder.textUserIssueAccessType.setText(complaintMaster.getComplaintAccessType());
+                    holder.textUserIssueId.setText(complaintMaster.getComplaintPlacePhotoId());
                     holder.textUserIssueCity.setText(complaintMaster.getComplaintCity());
 
                     int detailsLatest = complaintMaster.getComplaintsSubDetailsList().size() - 1;
@@ -108,7 +109,7 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
 
         ComplaintMaster userIssue;
         ImageView userIssueImage;
-        TextView textUserIssueNumber, textUserIssueStatus, textUserIssueAccessType, textUserIssueCity,
+        TextView textUserIssueNumber, textUserIssueStatus, textUserIssueId, textUserIssueCity,
                 textUserIssueHeader, textView, textUpdate;
 
         UserComplaintAdapterViewHolder(View itemView) {
@@ -119,7 +120,7 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
             // Text View
             textUserIssueNumber = itemView.findViewById(R.id.text_user_issue_number);
             textUserIssueStatus = itemView.findViewById(R.id.text_user_issue_status);
-            textUserIssueAccessType = itemView.findViewById(R.id.text_user_issue_access_type);
+            textUserIssueId = itemView.findViewById(R.id.text_user_issue_id);
             textUserIssueCity = itemView.findViewById(R.id.text_user_issue_city);
             textUserIssueHeader = itemView.findViewById(R.id.text_user_issue_header);
             textView = itemView.findViewById(R.id.text_view);
@@ -129,11 +130,15 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
         public void setItem(ComplaintMaster complaintMaster) {
             userIssue = complaintMaster;
 
-         /*   Glide.with(itemView)
-                    .load(userIssue.getMnIssuePlacePhotoPath())
-                    .fitCenter()
-                    .centerCrop()
-                    .into(userIssueImage);*/
+            try {
+                Glide.with(itemView)
+                        .load(complaintMaster.getComplaintPlacePhotoPath())
+                        .fitCenter()
+                        .centerCrop()
+                        .into(userIssueImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         @Override

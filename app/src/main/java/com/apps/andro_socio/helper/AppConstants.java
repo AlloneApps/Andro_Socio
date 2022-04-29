@@ -68,5 +68,9 @@ public class AppConstants {
     public static final String ADMIN_SETTINGS_ADD_CITY = "Add City";
     public static final String ADMIN_SETTINGS_PROFILE = "Profile";
 
+    // View Data Transfer
+    public static final String VIEW_MUNICIPAL_ISSUE_DATA = "View Municipal Complaint Data";
+    public static final String VIEW_COMPLAINT_DATA = "View Complaint Data";
+    public static final String VIEW_COMPLAINT_OR_ISSUE_FLAG = "View Complaint Or Issue Flag";
 
 }
