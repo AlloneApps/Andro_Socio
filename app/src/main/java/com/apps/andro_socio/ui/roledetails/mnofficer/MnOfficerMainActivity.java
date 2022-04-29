@@ -18,6 +18,7 @@ import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
+import com.apps.andro_socio.ui.roledetails.mnofficer.viewuserissues.ViewUserIssuesByOfficer;
 
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -72,8 +73,7 @@ public class MnOfficerMainActivity extends AppCompatActivity implements MainActi
                 break;
             case 1:
                 if (checkInternet()) {
-                    AndroSocioToast.showInfoToast(MnOfficerMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new MnOfficerDashboardFragment()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewUserIssuesByOfficer()).commit();
                 }
                 break;
             case 2:

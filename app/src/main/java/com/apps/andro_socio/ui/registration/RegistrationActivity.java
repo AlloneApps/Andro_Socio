@@ -92,6 +92,25 @@ public class RegistrationActivity extends AppCompatActivity {
         textGender = findViewById(R.id.text_gender);
 
         // Radio Group of selecting User Type
+        radioGroupRole.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int radioButtonId) {
+                switch (radioButtonId) {
+                    case R.id.radio_role_user: {
+                        textSelectSubRoleInfo.setVisibility(View.GONE);
+                        radioGroupRoleSub.setVisibility(View.GONE);
+                        break;
+                    }
+                    case R.id.radio_role_police_municipal_officer: {
+                        textSelectSubRoleInfo.setVisibility(View.VISIBLE);
+                        radioGroupRoleSub.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                }
+            }
+        });
+
+        // Radio Group of selecting User Type
         radioGroupUserType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int radioButtonId) {
