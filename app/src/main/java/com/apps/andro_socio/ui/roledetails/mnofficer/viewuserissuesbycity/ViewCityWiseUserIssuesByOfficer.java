@@ -125,7 +125,7 @@ public class ViewCityWiseUserIssuesByOfficer extends Fragment implements UserCit
                 textCityIssuesHeader.setVisibility(View.VISIBLE);
                 recyclerViewUserIssueByOfficer.setVisibility(View.VISIBLE);
             } else {
-                textCityIssuesHeader.setVisibility(View.GONE);
+                textCityIssuesHeader.setVisibility(View.VISIBLE);
                 recyclerViewUserIssueByOfficer.setVisibility(View.GONE);
                 textNoIssuesAvailable.setVisibility(View.VISIBLE);
             }

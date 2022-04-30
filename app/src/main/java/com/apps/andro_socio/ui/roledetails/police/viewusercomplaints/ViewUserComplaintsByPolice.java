@@ -125,7 +125,7 @@ public class ViewUserComplaintsByPolice extends Fragment implements UserComplain
                 recyclerViewUserComplaintByPolice.setVisibility(View.VISIBLE);
             } else {
                 recyclerViewUserComplaintByPolice.setVisibility(View.GONE);
-                textCityComplaintHeader.setVisibility(View.GONE);
+                textCityComplaintHeader.setVisibility(View.VISIBLE);
                 textNoComplaintsAvailable.setVisibility(View.VISIBLE);
             }
 

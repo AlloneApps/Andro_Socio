@@ -260,21 +260,12 @@ public class RegistrationActivity extends AppCompatActivity {
 
         user.setGender(textGender.getText().toString().trim());
 
-        registerUser(user);
-    }
-
-    private void registerUser(User user) {
-        boolean isNotExistUser = verifyUserRegistration(user);
-        if (isNotExistUser) {
-            showProgressDialog(getString(R.string.processing_wait));
-            signUpNewUser(user);
-        } else {
-            AndroSocioToast.showErrorToastWithBottom(RegistrationActivity.this, "Mobile number already exists", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-        }
+        verifyUserRegistration(user);
     }
 
     public void signUpNewUser(User user) {
         try {
+            showProgressDialog(getString(R.string.processing_wait));
             mUserReference.child(user.getMobileNumber()).setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -282,11 +273,9 @@ public class RegistrationActivity extends AppCompatActivity {
                             hideProgressDialog();
                             String responseMessage = "User created successfully.";
                             if (user.getMainRole().equals(AppConstants.ROLE_USER)) {
-//                                AndroSocioToast.showSuccessToastWithBottom(RegistrationActivity.this, responseMessage, AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
                                 responseMessage = "Hi " + user.getFullName() + "..! your role as a \"" + user.getMainRole() + "\" created successfully.";
                             } else {
                                 responseMessage = "Hi " + user.getFullName() + "..! your role as a \"" + user.getMainRole() + "\" created successfully, Contact admin to activate.";
-//                                AndroSocioToast.showSuccessToastWithBottom(RegistrationActivity.this, responseMessage, AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
                             }
                             showSuccessAlertDialogForUserCreated(responseMessage);
                         }
@@ -295,53 +284,52 @@ public class RegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             hideProgressDialog();
-                            AndroSocioToast.showErrorToastWithBottom(RegistrationActivity.this, "Failed to register", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                            AndroSocioToast.showErrorToast(RegistrationActivity.this, "Failed to register", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                         }
                     });
         } catch (Exception e) {
             hideProgressDialog();
-            AndroSocioToast.showErrorToastWithBottom(RegistrationActivity.this, e.getMessage(), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            AndroSocioToast.showErrorToast(RegistrationActivity.this, e.getMessage(), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
             e.printStackTrace();
         }
     }
 
-    public boolean verifyUserRegistration(User user) {
-        final boolean[] returnValue = {true};
+    public void verifyUserRegistration(User user) {
         try {
+            showProgressDialog(getString(R.string.processing_wait));
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(FireBaseDatabaseConstants.USERS_TABLE);
-
             databaseReference.child(user.getMobileNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    hideProgressDialog();
                     if (snapshot.exists()) {
                         String mobileNumber = snapshot.child(FireBaseDatabaseConstants.USER_MOBILE_NUMBER).getValue(String.class);
                         Log.d(TAG, "onDataChange: userMobileNumber: " + user.getMobileNumber());
                         Log.d(TAG, "onDataChange: mobileNumber: " + mobileNumber);
                         if (mobileNumber != null) {
-                            if (mobileNumber.equals(user.getMobileNumber())) {
-                                returnValue[0] = false;
+                            if (!(mobileNumber.equalsIgnoreCase(user.getMobileNumber()))) {
+                                signUpNewUser(user);
                             } else {
-                                returnValue[0] = true;
+                                AndroSocioToast.showErrorToast(RegistrationActivity.this, mobileNumber+" Mobile number already exists", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
                             }
                         } else {
-                            returnValue[0] = true;
+                            signUpNewUser(user);
                         }
                     } else {
-                        returnValue[0] = true;
-                        Log.d(TAG, "onDataChange: snapchat not exists");
+                        signUpNewUser(user);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                    returnValue[0] = true;
-                    Log.d(TAG, "onCancelled: error: " + error.getMessage());
+                   hideProgressDialog();
+                    signUpNewUser(user);
                 }
             });
-            return returnValue[0];
         } catch (Exception e) {
             e.printStackTrace();
-            return returnValue[0];
+            hideProgressDialog();
+            signUpNewUser(user);
         }
     }
 
