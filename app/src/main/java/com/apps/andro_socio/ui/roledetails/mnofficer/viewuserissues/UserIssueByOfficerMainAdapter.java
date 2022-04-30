@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.model.issue.MnIssueSubDetails;
 import com.bumptech.glide.Glide;
@@ -61,6 +62,37 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
 
                         if (mnIssueSubDetails != null) {
                             holder.textUserIssueStatus.setText(mnIssueSubDetails.getMnIssueStatus());
+                            switch (mnIssueSubDetails.getMnIssueStatus()) {
+                                case AppConstants
+                                        .NEW_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue, null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .ACCEPTED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorVeniceBlue, null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .COMPLETED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorSuccess, null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .CANCELLED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError, null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .REJECTED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError, null));
+                                    break;
+                                }
+                                default: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue, null));
+                                    break;
+                                }
+                            }
                         }
                     }
 
@@ -74,7 +106,7 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
                     holder.textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.userIssueViewClicked(mainPosition, mnIssueMaster, holder.userIssueImage,holder.textUserIssueHeader);
+                            listener.userIssueViewClicked(mainPosition, mnIssueMaster, holder.userIssueImage, holder.textUserIssueHeader);
                         }
                     });
                 }
@@ -102,7 +134,7 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
     public interface UserIssueItemClickListener {
         void userIssueUpdateClicked(int position, MnIssueMaster mnIssueMaster, String userIssueStatus);
 
-        void userIssueViewClicked(int position, MnIssueMaster mnIssueMaster,ImageView imageView, TextView textView);
+        void userIssueViewClicked(int position, MnIssueMaster mnIssueMaster, ImageView imageView, TextView textView);
     }
 
     static class UserIssueAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -136,7 +168,7 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
                         .fitCenter()
                         .centerCrop()
                         .into(userIssueImage);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

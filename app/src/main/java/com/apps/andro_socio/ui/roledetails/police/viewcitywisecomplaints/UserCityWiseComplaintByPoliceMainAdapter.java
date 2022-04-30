@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.model.complaint.ComplaintMaster;
 import com.apps.andro_socio.model.complaint.ComplaintSubDetails;
 import com.bumptech.glide.Glide;
@@ -61,6 +62,36 @@ public class UserCityWiseComplaintByPoliceMainAdapter extends RecyclerView.Adapt
 
                         if (complaintSubDetails != null) {
                             holder.textUserIssueStatus.setText(complaintSubDetails.getComplaintStatus());
+
+                            switch (complaintSubDetails.getComplaintStatus()){
+                                case AppConstants
+                                        .NEW_STATUS:{
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue,null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .ACCEPTED_STATUS:{
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorVeniceBlue,null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .COMPLETED_STATUS:{
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorSuccess,null));
+                                    break;
+                                }case AppConstants
+                                        .CANCELLED_STATUS:{
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError,null));
+                                    break;
+                                }case AppConstants
+                                        .REJECTED_STATUS:{
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError,null));
+                                    break;
+                                }
+                                default:{
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue,null));
+                                    break;
+                                }
+                            }
                         }
                     }
 

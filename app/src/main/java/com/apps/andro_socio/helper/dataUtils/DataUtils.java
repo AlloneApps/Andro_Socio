@@ -38,9 +38,7 @@ public class DataUtils {
             }
 
             case AppConstants.ACCEPTED_STATUS: {
-                if (role.equalsIgnoreCase(AppConstants.ROLE_USER)) {
-                    nextStatusList.add(AppConstants.CANCELLED_STATUS);
-                } else {
+                if (!(role.equalsIgnoreCase(AppConstants.ROLE_USER))) {
                     nextStatusList.add(AppConstants.COMPLETED_STATUS);
                     nextStatusList.add(AppConstants.REJECTED_STATUS);
                 }
