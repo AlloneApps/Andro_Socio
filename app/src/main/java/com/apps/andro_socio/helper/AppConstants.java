@@ -5,6 +5,18 @@ import android.Manifest;
 public class AppConstants {
 
     /**
+     * Location permission required for the app
+     */
+    public static final String[] PERMISSIONS_LOCATION = {Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION};
+    public static final int PERMISSION_REQUEST_LOCATION = 111;
+
+    public static final String RECEIVER =".RECEIVER";
+
+    public static final int SUCCESS_RESULT = 0;
+
+    public static final int FAILURE_RESULT = 1;
+    /**
      * Storage permission required for the app
      */
     public static final String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -78,4 +90,22 @@ public class AppConstants {
 
     public static final String COMPLAINT_STATUS = "Complaint Status";
     public static final String MUNICIPAL_ISSUE_STATUS = "Issue Status";
+
+    public static final String RESULT_DATA_KEY = ".RESULT_DATA_KEY";
+
+    public static final String LOCATION_DATA_EXTRA = ".LOCATION_DATA_EXTRA";
+
+
+    public static final String LOCATION_DATA_STREET = ".LOCATION_DATA_STREET";
+    public static final String LOCATION_DATA_AREA = ".LOCATION_DATA_AREA";
+    public static final String LOCATION_DATA_CITY = ".LOCATION_DATA_CITY";
+    public static final String LOCATION_DATA_STATE = ".LOCATION_DATA_STATE";
+    public static final String LOCATION_DATA_ZIP_CODE = ".LOCATION_DATA_ZIP_CODE";
+    public static final String LOCATION_DATA_COUNTRY = ".LOCATION_DATA_COUNTRY";
+    public static final String LOCATION_REQUEST_TYPE = ".LOCATION_REQUEST_TYPE";
+    public static final String LOCATION_SOURCE = ".LOCATION_SOURCE";
+    public static final String LOCATION_DESTINATION = ".LOCATION_DESTINATION";
+    public static final String SOURCE_ADDRESS = ".SOURCE_ADDRESS";
+    public static final String LATITUDE = ".LATITUDE";
+    public static final String LONGITUDE = ".LONGITUDE";
 }

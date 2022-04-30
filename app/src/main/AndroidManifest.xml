@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -110,6 +113,23 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <activity
+            android:name=".ui.placeApiDirection.SourceLocationActivity"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".ui.placeApiDirection.DestinationLocationActivity"
+            android:hardwareAccelerated="true" />
+
+        <activity
+            android:name=".ui.placeApiDirection.AddressPlaceActivity"
+            android:hardwareAccelerated="true"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAUC8qwlWKzruJW3XEgTHI7SrIzI6-wd5Q" />
+
+        <service android:name=".service.GPSTracker" />
+        <service android:name=".service.FetchAddressIntentService" />
         </application>
 
 </manifest>

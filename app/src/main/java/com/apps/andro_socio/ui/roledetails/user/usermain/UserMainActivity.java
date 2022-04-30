@@ -3,6 +3,7 @@ package com.apps.andro_socio.ui.roledetails.user.usermain;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
@@ -37,6 +39,8 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
     private BottomNavigation bottomNavigationUser;
     private ImageView logout;
     private TextView textTitle;
+
+    public static final int SOURCE_ADDRESS_AUTO_REQUEST_CODE = 995;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,15 +203,15 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
-            }else if (fragment instanceof ViewUserComplaintsOrIssues) {
+            } else if (fragment instanceof ViewUserComplaintsOrIssues) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
-            }else if (fragment instanceof SettingsFragment) {
+            } else if (fragment instanceof SettingsFragment) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
-            }else if (fragment instanceof Profile) {
+            } else if (fragment instanceof Profile) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
                 highlightBottomNavigationTabPosition(3);
@@ -234,6 +238,32 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                         break;
                     case CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE:
                         fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main).onActivityResult(requestCode, resultCode, data);
+                        break;
+                    case SOURCE_ADDRESS_AUTO_REQUEST_CODE:
+                        if (resultCode == RESULT_OK) {
+                            Log.d(TAG, "onActivityResult: SOURCE_ADDRESS_AUTO_REQUEST_CODE result code ok");
+                            Bundle bundle = data.getBundleExtra("LOC");
+                            if (bundle != null) {
+                                String dataString = bundle.getString(AppConstants.LOCATION_DATA_STREET, "");
+                                Log.d(TAG, "onActivityResult: data Dtring: " + dataString);
+
+                                double dataLatitude = bundle.getDouble(AppConstants.LATITUDE, 0.0);
+                                double dataLongitude = bundle.getDouble(AppConstants.LONGITUDE, 0.0);
+
+                             /*   if (editSrcAddress != null) {
+                                    editSrcAddress.setText(dataString);
+                                    sourceLatLong = new LatLng(dataLatitude, dataLongitude);
+
+                                    if (!(editDestAddress.getText().toString().trim().isEmpty())) {
+                                        callWalkAPIFragment(sourceLatLong, destinationLatLong);
+                                    }
+                                }*/
+                            }
+
+                            fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main).onActivityResult(requestCode, resultCode, data);
+                        } else {
+                            Log.d(TAG, "onActivityResult: SOURCE_ADDRESS_AUTO_REQUEST_CODE result code not ok");
+                        }
                         break;
                     default:
                         fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main).onActivityResult(requestCode, resultCode, data);

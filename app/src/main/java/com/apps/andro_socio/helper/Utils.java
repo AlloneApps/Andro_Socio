@@ -2,16 +2,28 @@ package com.apps.andro_socio.helper;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.core.content.ContextCompat;
+
+import com.apps.andro_socio.BuildConfig;
 import com.apps.andro_socio.model.User;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -155,4 +168,45 @@ public class Utils {
             return "";
         }
     }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        try {
+            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+    }
+
+    public static BitmapDescriptor getBitmapDescriptor(Context ctx, int id) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(ctx, id);
+        int h = Objects.requireNonNull(vectorDrawable).getIntrinsicHeight();
+        int w = vectorDrawable.getIntrinsicWidth();
+        vectorDrawable.setBounds(0, 0, w, h);
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+        MapsInitializer.initialize(ctx);
+        return BitmapDescriptorFactory.fromBitmap(bm);
+    }
+
+    public static int getDisplayDPI(Context context) {
+        return context.getResources().getDisplayMetrics().densityDpi;
+    }
+
+    public static boolean checkLocationPermission(Context context) {
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Checking location permission");
+        int r1 = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        int r2 = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, ": " + (r1 == PackageManager.PERMISSION_GRANTED && r2 == PackageManager.PERMISSION_GRANTED));
+        return r1 == PackageManager.PERMISSION_GRANTED && r2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+
 }

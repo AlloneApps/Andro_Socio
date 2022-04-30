@@ -67,11 +67,17 @@
     <string name="mn_officer_btn_second_option">My City Issues</string>
     <string name="mn_officer_btn_third_option">City Wise Issues</string>
 
-
-
     <string name="transaction_complaint_or_issue_photo" translatable="false">photo</string>
     <string name="transaction_complaint_or_issue_header" translatable="false">header</string>
     <string name="city_wise_complaints_header">City Wise Complaints</string>
     <string name="my_city_complaints_header">My City Complaints</string>
     <string name="my_issue_or_complaints_ttl">My Issues / Complaints</string>
+
+    <string name="no_address_found">Address not found</string>
+    <string name="no_location_data_provided">No location data provided</string>
+    <string name="service_not_available">Service is not available</string>
+    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="google_maps_api">AIzaSyAUC8qwlWKzruJW3XEgTHI7SrIzI6-wd5Q</string>
 </resources>

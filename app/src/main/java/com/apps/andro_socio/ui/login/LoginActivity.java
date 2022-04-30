@@ -1,9 +1,11 @@
 package com.apps.andro_socio.ui.login;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,9 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 
 import com.apps.andro_socio.BuildConfig;
 import com.apps.andro_socio.R;
@@ -27,6 +32,9 @@ import com.apps.andro_socio.ui.roledetails.admin.AdminMainActivity;
 import com.apps.andro_socio.ui.roledetails.mnofficer.MnOfficerMainActivity;
 import com.apps.andro_socio.ui.roledetails.police.PoliceMainActivity;
 import com.apps.andro_socio.ui.roledetails.user.usermain.UserMainActivity;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RESULT_CODE = 111;
     private ProgressDialog progressDialog;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 999;
 
+    private CoordinatorLayout loginCoordinatorLayout;
     private Button btnLogin;
     private TextView textSignup, textVersion;
     private EditText editMobileNumber;
@@ -53,9 +63,21 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(LoginActivity.this);
 
         setUpViews();
+
+        if (checkPlayServices()) {
+            // If this check succeeds, proceed with normal processing.
+            // Otherwise, prompt user to get valid Play Services APK.
+            if (!(Utils.checkLocationPermission(getApplicationContext()))) {
+                requestPermission();
+            }
+        } else {
+            Toast.makeText(LoginActivity.this, "Location not supported in this device", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setUpViews() {
+        loginCoordinatorLayout = findViewById(R.id.login_coordinator_layout);
+
         btnLogin = findViewById(R.id.btn_login);
         textSignup = findViewById(R.id.text_signup);
         textVersion = findViewById(R.id.text_version);
@@ -252,4 +274,39 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int resultCode = googleAPI.isGooglePlayServicesAvailable(getApplicationContext());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(resultCode)) {
+                googleAPI.getErrorDialog(LoginActivity.this, resultCode,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                LoginActivity.this.finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    private void requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            // Display a SnackBar with an explanation and a button to trigger the request.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Snackbar.make(loginCoordinatorLayout, "Some core functions of the app might not work correctly without these permissions.\nPlease ALLOW them in app settings",
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction("ALLOW", view -> requestPermissions(AppConstants.PERMISSIONS_LOCATION, AppConstants.PERMISSION_REQUEST_LOCATION))
+                        .show();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(AppConstants.PERMISSIONS_LOCATION, AppConstants.PERMISSION_REQUEST_LOCATION);
+            }
+        }
+    }
+
 }

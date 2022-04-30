@@ -46,7 +46,6 @@ import com.apps.andro_socio.BuildConfig;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
-import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.model.User;
@@ -55,6 +54,7 @@ import com.apps.andro_socio.model.complaint.ComplaintMaster;
 import com.apps.andro_socio.model.complaint.ComplaintSubDetails;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.model.issue.MnIssueSubDetails;
+import com.apps.andro_socio.ui.placeApiDirection.AddressPlaceActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -90,6 +90,8 @@ public class CreateIssueOrComplaint extends Fragment {
     private static final String TAG = CreateIssueOrComplaint.class.getSimpleName();
     private View rootView;
     private CoordinatorLayout issueOrComplaintCoordinator;
+
+    public static final int SOURCE_ADDRESS_AUTO_REQUEST_CODE = 995;
 
     private TextView textCity, textIssueAccessTypeHeader;
     private EditText editIssueOrComplaintTitle, editIssueOrComplaintDesc;
@@ -188,6 +190,13 @@ public class CreateIssueOrComplaint extends Fragment {
             imageCameraIcon = rootView.findViewById(R.id.image_camera_icon);
             btnSubmit = rootView.findViewById(R.id.btn_submit);
 
+            RxView.touches(btnSubmit).subscribe(motionEvent -> {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(getContext(), AddressPlaceActivity.class);
+                    startActivityForResult(intent, SOURCE_ADDRESS_AUTO_REQUEST_CODE);
+                }
+            });
+
             User loginUser = Utils.getLoginUserDetails(requireContext());
 
             if (loginUser != null) {
@@ -267,7 +276,7 @@ public class CreateIssueOrComplaint extends Fragment {
 
             imageSelectedPhoto.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.empty_image, null));
 
-            btnSubmit.setOnClickListener(new View.OnClickListener() {
+          /*  btnSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (NetworkUtil.getConnectivityStatus(requireContext())) {
@@ -291,7 +300,7 @@ public class CreateIssueOrComplaint extends Fragment {
                         AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                     }
                 }
-            });
+            });*/
 
             RxView.clicks(imageCameraIcon).subscribe(new Action1<Void>() {
                 @Override
