@@ -72,4 +72,8 @@ public class AppConstants {
     public static final String VIEW_MUNICIPAL_ISSUE_DATA = "View Municipal Complaint Data";
     public static final String VIEW_COMPLAINT_DATA = "View Complaint Data";
     public static final String VIEW_COMPLAINT_OR_ISSUE_FLAG = "View Complaint Or Issue Flag";
+
+    // Issue/Complaint Badges
+    public static final String COMPLAINTS_BADGE = "Complaints";
+    public static final String MUNICIPAL_ISSUES_BADGE = "Issues";
 }

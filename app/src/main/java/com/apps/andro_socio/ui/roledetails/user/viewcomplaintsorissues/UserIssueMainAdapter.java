@@ -1,4 +1,4 @@
-package com.apps.andro_socio.ui.roledetails.user.viewissues;
+package com.apps.andro_socio.ui.roledetails.user.viewcomplaintsorissues;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,8 +13,6 @@ import com.apps.andro_socio.R;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.model.issue.MnIssueSubDetails;
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

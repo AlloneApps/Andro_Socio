@@ -1,4 +1,4 @@
-package com.apps.andro_socio.ui.roledetails.user.viewcomplaints;
+package com.apps.andro_socio.ui.roledetails.user.viewcomplaintsorissues;
 
 import android.content.Context;
 import android.view.LayoutInflater;

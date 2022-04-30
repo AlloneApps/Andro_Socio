@@ -4,7 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".ui.roledetails.user.viewcomplaints.ViewUserComplaints">
+tools:context=".ui.roledetails.user.viewcomplaintsorissues.ViewUserComplaintsOrIssues">
 
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
@@ -16,18 +16,32 @@ tools:context=".ui.roledetails.user.viewcomplaints.ViewUserComplaints">
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/user_issues_or_complaints_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.MaterialComponents.Bridge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabIndicatorColor="@color/colorNewUxBlue"
+            app:tabIndicatorHeight="2dp"
+            android:background="@color/colorWhite"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextAppearance="@style/CustomTextAppearanceTab"
+            app:tabTextColor="@color/colorNewUxLightGray" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_user_complaints"
+            android:id="@+id/recycler_user_complaints_or_issues"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="true"
+            android:layout_below="@+id/user_issues_or_complaints_tab"
             android:layout_marginTop="@dimen/std_10_dp" />
 
         <TextView
-            android:id="@+id/no_complaints_available"
+            android:id="@+id/no_complaints_or_issues_available"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Complaints Available"
+            android:text="No Complaints / Issues Available"
             android:textColor="@color/colorError"
             android:textSize="@dimen/std_16_sp"
             android:layout_marginTop="@dimen/std_300_dp"
