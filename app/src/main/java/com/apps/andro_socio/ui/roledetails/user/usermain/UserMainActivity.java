@@ -23,6 +23,8 @@ import com.apps.andro_socio.ui.roledetails.user.createissueorcomplaint.CreateIss
 import com.apps.andro_socio.ui.roledetails.user.viewcomplaints.ViewUserComplaints;
 import com.apps.andro_socio.ui.roledetails.user.viewissues.ViewUserIssues;
 import com.apps.andro_socio.ui.settings.SettingsFragment;
+import com.apps.andro_socio.ui.settings.profile.Profile;
+import com.apps.andro_socio.ui.settings.updateMpin.UpdateMPin;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.Objects;
@@ -199,6 +201,26 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
+            }else if (fragment instanceof ViewUserComplaints) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
+                highlightBottomNavigationTabPosition(0);
+            }else if (fragment instanceof ViewUserIssues) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
+                highlightBottomNavigationTabPosition(0);
+            }else if (fragment instanceof SettingsFragment) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
+                highlightBottomNavigationTabPosition(0);
+            }else if (fragment instanceof Profile) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
+                highlightBottomNavigationTabPosition(3);
+            } else if (fragment instanceof UpdateMPin) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
+                highlightBottomNavigationTabPosition(3);
             } else {
                 super.onBackPressed();
             }

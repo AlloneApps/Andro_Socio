@@ -20,6 +20,8 @@ import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.admin.citydetails.CityFragment;
 import com.apps.andro_socio.ui.settings.SettingsFragment;
+import com.apps.andro_socio.ui.settings.profile.Profile;
+import com.apps.andro_socio.ui.settings.updateMpin.UpdateMPin;
 
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -184,17 +186,26 @@ public class AdminMainActivity extends AppCompatActivity implements MainActivity
             Fragment fragment = fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main);
             if (fragment instanceof AdminDashboardFragment) {
                 moveTaskToBack(true);
-            } else if (fragment instanceof SettingsFragment) {
-                fragmentManager.popBackStack();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminDashboardFragment()).commit();
-                highlightBottomNavigationTabPosition(0);
             } else if (fragment instanceof ActiveUsersFragment) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
             } else if (fragment instanceof CityFragment) {
                 fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminDashboardFragment()).commit();
+                highlightBottomNavigationTabPosition(0);
+            } else if (fragment instanceof SettingsFragment) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminDashboardFragment()).commit();
+                highlightBottomNavigationTabPosition(0);
+            } else if (fragment instanceof Profile) {
+                fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
+                highlightBottomNavigationTabPosition(3);
+            } else if (fragment instanceof UpdateMPin) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
+                highlightBottomNavigationTabPosition(3);
             } else {
                 super.onBackPressed();
             }

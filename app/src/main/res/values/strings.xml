@@ -68,4 +68,6 @@
 
     <string name="transaction_complaint_or_issue_photo" translatable="false">photo</string>
     <string name="transaction_complaint_or_issue_header" translatable="false">header</string>
+    <string name="update_mpin_title">Update MPin</string>
+    <string name="profile">Profile</string>
 </resources>

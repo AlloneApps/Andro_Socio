@@ -21,6 +21,8 @@ import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
+import com.apps.andro_socio.ui.settings.profile.Profile;
+import com.apps.andro_socio.ui.settings.updateMpin.UpdateMPin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,13 +117,13 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
                 case AppConstants
                         .SETTINGS_PROFILE:
                     if (checkInternet()) {
-//                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new CityFragment()).commit();
+                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new Profile()).commit();
                     }
                     break;
                 case AppConstants
                         .SETTINGS_UPDATE_MPIN:
                     if (checkInternet()) {
-//                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new CityFragment()).commit();
+                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UpdateMPin()).commit();
                     }
                     break;
             }
