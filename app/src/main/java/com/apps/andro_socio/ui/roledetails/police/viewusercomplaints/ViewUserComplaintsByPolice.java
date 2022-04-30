@@ -184,9 +184,9 @@ public class ViewUserComplaintsByPolice extends Fragment implements UserComplain
     public void userComplaintUpdateClicked(int position, ComplaintMaster complaintMaster, String userComplaintStatus) {
         try {
             if (userComplaintStatus.equalsIgnoreCase(AppConstants.COMPLETED_STATUS)) {
-                AndroSocioToast.showErrorToast(requireContext(), "Complaint already Completed.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                AndroSocioToast.showAlertToast(requireContext(), "Complaint already Completed.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
             } else if (userComplaintStatus.equalsIgnoreCase(AppConstants.CANCELLED_STATUS)) {
-                AndroSocioToast.showErrorToast(requireContext(), "Complaint cancelled by User, can't Update.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                AndroSocioToast.showAlertToast(requireContext(), "Complaint cancelled by User, can't Update.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
             } else {
                 showDialogForComplaintOrIssueStatusUpdate(requireContext(), position, userComplaintStatus, complaintMaster);
             }
@@ -376,7 +376,7 @@ public class ViewUserComplaintsByPolice extends Fragment implements UserComplain
                         @Override
                         public void onSuccess(Void aVoid) {
                             hideProgressDialog();
-                            AndroSocioToast.showSuccessToast(requireContext(), "Complaint updated successfully.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                            AndroSocioToast.showSuccessToast(requireContext(), "Complaint status updated successfully.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
                             if (alert != null) {
                                 alert.dismiss();
                             }
