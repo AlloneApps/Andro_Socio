@@ -134,8 +134,8 @@ public class Utils {
 
     public static List<String> getAdminSettingsOption() {
         List<String> settingsOptionList = new ArrayList<>();
-        settingsOptionList.add(AppConstants.ADMIN_SETTINGS_ADD_CITY);
-//        settingsOptionList.add(AppConstants.ADMIN_SETTINGS_PROFILE);
+        settingsOptionList.add(AppConstants.SETTINGS_PROFILE);
+        settingsOptionList.add(AppConstants.SETTINGS_UPDATE_MPIN);
         return settingsOptionList;
     }
 

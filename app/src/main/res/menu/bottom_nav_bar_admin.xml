@@ -19,9 +19,9 @@
     <item
         android:id="@+id/item_third"
         android:color="@color/colorPrimary"
-        android:icon="@drawable/ic_complaints_or_issues"
+        android:icon="@drawable/ic_add_location"
         android:iconTint="@color/colorWhite"
-        android:title="View" />
+        android:title="Add City" />
     <item
         android:id="@+id/item_fourth"
         android:color="@color/colorPrimary"

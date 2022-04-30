@@ -22,6 +22,7 @@ import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.user.createissueorcomplaint.CreateIssueOrComplaint;
 import com.apps.andro_socio.ui.roledetails.user.viewcomplaints.ViewUserComplaints;
 import com.apps.andro_socio.ui.roledetails.user.viewissues.ViewUserIssues;
+import com.apps.andro_socio.ui.settings.SettingsFragment;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.Objects;
@@ -86,11 +87,12 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
             case 2:
                 if (checkInternet()) {
                     fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewUserIssues()).commit();
+//                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewUserComplaints()).commit();
                 }
                 break;
             case 3:
                 if (checkInternet()) {
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewUserComplaints()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
                 }
                 break;
         }

@@ -21,11 +21,11 @@
         android:color="@color/colorPrimary"
         android:icon="@drawable/ic_view_complaint_or_issues"
         android:iconTint="@color/colorWhite"
-        android:title="View" />
+        android:title="View Issues" />
     <item
         android:id="@+id/item_fourth"
         android:color="@color/colorPrimary"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/ic_settings"
         android:iconTint="@color/colorWhite"
-        android:title="Profile" />
+        android:title="Settings" />
 </menu>

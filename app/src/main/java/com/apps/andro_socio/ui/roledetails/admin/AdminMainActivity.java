@@ -19,7 +19,7 @@ import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.admin.citydetails.CityFragment;
-import com.apps.andro_socio.ui.roledetails.admin.settings.AdminSettingsFragment;
+import com.apps.andro_socio.ui.settings.SettingsFragment;
 
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -78,12 +78,11 @@ public class AdminMainActivity extends AppCompatActivity implements MainActivity
                 break;
             case 2:
                 if (checkInternet()) {
-                    AndroSocioToast.showInfoToast(AdminMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminDashboardFragment()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new CityFragment()).commit();
                 }
                 break;
             case 3:
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminSettingsFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
                 break;
         }
     }
@@ -185,7 +184,7 @@ public class AdminMainActivity extends AppCompatActivity implements MainActivity
             Fragment fragment = fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main);
             if (fragment instanceof AdminDashboardFragment) {
                 moveTaskToBack(true);
-            } else if (fragment instanceof AdminSettingsFragment) {
+            } else if (fragment instanceof SettingsFragment) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
@@ -195,7 +194,7 @@ public class AdminMainActivity extends AppCompatActivity implements MainActivity
                 highlightBottomNavigationTabPosition(0);
             } else if (fragment instanceof CityFragment) {
                 fragmentManager.popBackStack();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new AdminSettingsFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
             } else {
                 super.onBackPressed();
             }

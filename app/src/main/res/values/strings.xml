@@ -51,7 +51,11 @@
     <string name="police_dashboard_title">Police Dashboard</string>
     <string name="user_dashboard_title">User Dashboard</string>
     <string name="active_users_title">Active Users</string>
+    <string name="settings_title">Settings</string>
     <string name="admin_settings_title">Admin Settings</string>
+    <string name="user_settings_title">User Settings</string>
+    <string name="police_settings_title">Police Settings</string>
+    <string name="municipal_officer_settings_title">Municipal Officer Settings</string>
     <string name="add_new_city_title">Add New City</string>
 
     <string name="canceling_permission_not_granted">Cancelling, required permissions are not granted</string>

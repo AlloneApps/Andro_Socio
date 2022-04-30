@@ -1,4 +1,4 @@
-package com.apps.andro_socio.ui.roledetails.admin.settings;
+package com.apps.andro_socio.ui.settings;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,9 +14,9 @@ import com.apps.andro_socio.R;
 
 import java.util.List;
 
-public class AdminSettingsMainAdapter extends RecyclerView.Adapter<AdminSettingsMainAdapter.SettingsAdapterViewHolder> {
+public class SettingsMainAdapter extends RecyclerView.Adapter<SettingsMainAdapter.SettingsAdapterViewHolder> {
 
-    private static final String TAG = AdminSettingsMainAdapter.class.getSimpleName();
+    private static final String TAG = SettingsMainAdapter.class.getSimpleName();
     /**
      * ArrayList of type DashboardItem
      */
@@ -26,7 +26,7 @@ public class AdminSettingsMainAdapter extends RecyclerView.Adapter<AdminSettings
     private SettingsItemClickListener listener;
     // endregion
 
-    public AdminSettingsMainAdapter(Context context, List<String> settingOptionsList, SettingsItemClickListener listener) {
+    public SettingsMainAdapter(Context context, List<String> settingOptionsList, SettingsItemClickListener listener) {
         this.context = context;
         this.settingOptionsList = settingOptionsList;
         this.listener = listener;

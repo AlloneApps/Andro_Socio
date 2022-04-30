@@ -19,6 +19,7 @@ import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.police.viewusercomplaints.ViewUserComplaintsByPolice;
+import com.apps.andro_socio.ui.settings.SettingsFragment;
 
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -83,8 +84,7 @@ public class PoliceMainActivity extends AppCompatActivity implements MainActivit
                 }
                 break;
             case 3:
-                AndroSocioToast.showInfoToast(PoliceMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new PoliceDashboardFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
 
                 break;
         }

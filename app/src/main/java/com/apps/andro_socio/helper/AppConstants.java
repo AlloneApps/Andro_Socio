@@ -64,9 +64,9 @@ public class AppConstants {
     public static final String IN_ACTIVE_USER = "InActive";
 
 
-    // Admin Setting Options
-    public static final String ADMIN_SETTINGS_ADD_CITY = "Add City";
-    public static final String ADMIN_SETTINGS_PROFILE = "Profile";
+    // Generic Setting Options
+    public static final String SETTINGS_PROFILE = "Profile";
+    public static final String SETTINGS_UPDATE_MPIN = "Update MPin";
 
     // View Data Transfer
     public static final String VIEW_MUNICIPAL_ISSUE_DATA = "View Municipal Complaint Data";

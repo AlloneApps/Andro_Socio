@@ -1,4 +1,4 @@
-package com.apps.andro_socio.ui.roledetails.admin.settings;
+package com.apps.andro_socio.ui.settings;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,24 +19,24 @@ import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
-import com.apps.andro_socio.ui.roledetails.admin.citydetails.CityFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminSettingsFragment extends Fragment implements AdminSettingsMainAdapter.SettingsItemClickListener {
+public class SettingsFragment extends Fragment implements SettingsMainAdapter.SettingsItemClickListener {
 
-    private static final String TAG = AdminSettingsFragment.class.getSimpleName();
+    private static final String TAG = SettingsFragment.class.getSimpleName();
     private View rootView;
 
     private List<String> adminSettingsOptionList = new ArrayList<>();
     private RecyclerView recyclerAdminSettingOption;
-    private AdminSettingsMainAdapter adminSettingsMainAdapter;
+    private SettingsMainAdapter settingsMainAdapter;
     private FragmentManager fragmentManager;
     private MainActivityInteractor mainActivityInteractor;
 
-    public AdminSettingsFragment() {
+    public SettingsFragment() {
         // Required empty public constructor
     }
 
@@ -44,7 +44,7 @@ public class AdminSettingsFragment extends Fragment implements AdminSettingsMain
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_admin_settings, container, false);
+        rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         return rootView;
     }
 
@@ -57,7 +57,6 @@ public class AdminSettingsFragment extends Fragment implements AdminSettingsMain
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mainActivityInteractor.setScreenTitle(getString(R.string.admin_settings_title));
         adminSettingsOptionList = Utils.getAdminSettingsOption();
         fragmentManager = getParentFragmentManager();
         setUpViews();
@@ -69,9 +68,40 @@ public class AdminSettingsFragment extends Fragment implements AdminSettingsMain
 
             LinearLayoutManager linearLayoutManager = new GridLayoutManager(requireContext(), 1);
             recyclerAdminSettingOption.setLayoutManager(linearLayoutManager);
-            adminSettingsMainAdapter = new AdminSettingsMainAdapter(requireContext(), adminSettingsOptionList, this);
-            recyclerAdminSettingOption.setAdapter(adminSettingsMainAdapter);
-            adminSettingsMainAdapter.notifyDataSetChanged();
+            settingsMainAdapter = new SettingsMainAdapter(requireContext(), adminSettingsOptionList, this);
+            recyclerAdminSettingOption.setAdapter(settingsMainAdapter);
+
+            if (settingsMainAdapter != null) {
+                settingsMainAdapter.notifyDataSetChanged();
+            }
+
+            User loginUser = Utils.getLoginUserDetails(requireContext());
+            if (loginUser != null) {
+                if (loginUser.getMainRole() != null) {
+                    switch (loginUser.getMainRole()) {
+                        case AppConstants.ROLE_ADMIN: {
+                            mainActivityInteractor.setScreenTitle(getString(R.string.admin_settings_title));
+                            break;
+                        }
+                        case AppConstants.ROLE_USER: {
+                            mainActivityInteractor.setScreenTitle(getString(R.string.user_settings_title));
+                            break;
+                        }
+                        case AppConstants.ROLE_POLICE: {
+                            mainActivityInteractor.setScreenTitle(getString(R.string.police_settings_title));
+                            break;
+                        }
+                        case AppConstants.ROLE_MUNICIPAL_OFFICER: {
+                            mainActivityInteractor.setScreenTitle(getString(R.string.municipal_officer_settings_title));
+                            break;
+                        }
+                        default: {
+                            mainActivityInteractor.setScreenTitle(getString(R.string.settings_title));
+                            break;
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,15 +113,15 @@ public class AdminSettingsFragment extends Fragment implements AdminSettingsMain
         try {
             switch (item) {
                 case AppConstants
-                        .ADMIN_SETTINGS_ADD_CITY:
+                        .SETTINGS_PROFILE:
                     if (checkInternet()) {
-                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new CityFragment()).commit();
+//                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new CityFragment()).commit();
                     }
                     break;
                 case AppConstants
-                        .ADMIN_SETTINGS_PROFILE:
+                        .SETTINGS_UPDATE_MPIN:
                     if (checkInternet()) {
-
+//                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new CityFragment()).commit();
                     }
                     break;
             }
