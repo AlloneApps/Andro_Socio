@@ -38,7 +38,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/std_10_dp">
+        android:layout_marginStart="@dimen/std_10_dp"
+        android:layout_marginLeft="@dimen/std_10_dp"
+        android:layout_marginTop="@dimen/std_10_dp"
+        android:layout_marginEnd="@dimen/std_10_dp"
+        android:nestedScrollingEnabled="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -61,7 +65,7 @@
             <ImageView
                 android:id="@+id/complaint_or_issue_photo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/std_260_dp"
+                android:layout_height="@dimen/std_200_dp"
                 android:layout_below="@+id/text_complaint_or_issue_type"
                 android:layout_marginStart="@dimen/std_10_dp"
                 android:layout_marginTop="@dimen/std_10_dp"
@@ -142,6 +146,7 @@
                 android:id="@+id/complaint_issue_place_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_below="@+id/complaint_issue_desc_layout"
                 android:orientation="horizontal">
 
@@ -154,7 +159,7 @@
                     android:layout_marginTop="@dimen/large_margin"
                     android:layout_marginBottom="@dimen/std_10_dp"
                     android:layout_weight="2.1"
-                    android:text="Place : "
+                    android:text="City : "
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/std_16_sp"
                     android:textStyle="bold" />
@@ -170,38 +175,95 @@
                     android:textColor="@color/colorBlack" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_complaint_or_issue_other_details"
-                style="@style/Theme.AndroSocio.Header"
+            <LinearLayout
+                android:id="@+id/complaint_issue_address_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/complaint_issue_place_layout"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                android:layout_marginBottom="@dimen/std_10_dp"
-                android:text="Other Details"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/std_18_sp"
-                android:textStyle="bold"
-                android:visibility="gone"/>
+                android:orientation="horizontal">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_complaint_or_issue_status"
+                <TextView
+                    android:id="@+id/text_complaint_issue_address_header"
+                    style="@style/Theme.AndroSocio.Header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/large_margin"
+                    android:layout_marginBottom="@dimen/std_10_dp"
+                    android:layout_weight="2.1"
+                    android:text="Address : "
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/std_16_sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_complaint_issue_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/large_margin"
+                    android:layout_weight="1"
+                    android:hint="Complaint or Issue Address"
+                    android:textColor="@color/colorBlack" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/complaint_issue_location_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_complaint_or_issue_other_details"
+                android:layout_below="@+id/complaint_issue_address_layout"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_complaint_issue_location_header"
+                    style="@style/Theme.AndroSocio.Header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/large_margin"
+                    android:layout_marginBottom="@dimen/std_10_dp"
+                    android:layout_weight="2.1"
+                    android:text="Location : "
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/std_16_sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_complaint_issue_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/large_margin"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/std_10_dp"
+                    android:hint="Complaint or Issue location latitude and longitude"
+                    android:textColor="@color/colorBlack" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_navigate"
+                style="@style/Theme.AndroSocio.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/complaint_issue_location_layout"
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginBottom="@dimen/std_10_dp"
-                android:visibility="gone"/>
+                android:drawableStart="@drawable/ic_direction"
+                android:drawablePadding="@dimen/std_10_dp"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:text="Click Here - Google Map Direction"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/std_16_sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recycler_complaint_or_issue_status"
+                android:layout_below="@id/text_navigate"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="@dimen/std_20_dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/button_all_radius_rounded_deep_corner"
                 android:gravity="center"

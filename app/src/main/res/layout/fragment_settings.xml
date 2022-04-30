@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:fillViewport="false"
+        android:layout_marginBottom="@dimen/bbn_bottom_navigation_height"
         android:scrollbarStyle="insideOverlay">
 
         <RelativeLayout

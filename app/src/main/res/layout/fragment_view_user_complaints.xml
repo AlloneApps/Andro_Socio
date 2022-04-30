@@ -10,7 +10,7 @@ tools:context=".ui.roledetails.user.viewcomplaintsorissues.ViewUserComplaintsOrI
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="?attr/actionBarSize"
-    android:layout_marginBottom="@dimen/std_20_dp">
+    android:layout_marginBottom="@dimen/bbn_bottom_navigation_height">
 
     <RelativeLayout
         android:layout_width="match_parent"

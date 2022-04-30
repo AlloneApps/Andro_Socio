@@ -1,6 +1,7 @@
 package com.apps.andro_socio.ui.roledetails;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +22,7 @@ import com.bumptech.glide.Glide;
 public class ViewComplaintOrIssueActivity extends AppCompatActivity {
 
     private static final String TAG = ViewComplaintOrIssueActivity.class.getSimpleName();
-    private TextView textTitle, textComplainType, textComplaintHeader, textComplaintDesc, textComplaintPlace;
+    private TextView textTitle, textIssueOrComplainType, textIssueOrComplaintHeader, textIssueOrComplaintDesc, textIssueOrComplaintPlace, textIssueOrComplaintAddress, textIssueOrComplaintLocation, textNavigateToLocation;
     private RecyclerView recyclerSubDetails;
     private ImageView imageComplaintOrIssuePhoto;
     private Button btnBack;
@@ -47,7 +48,7 @@ public class ViewComplaintOrIssueActivity extends AppCompatActivity {
 
             setUpViews();
 
-            loadPhotoDetails();
+            loadIssueOrComplaintDetails();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,10 +56,14 @@ public class ViewComplaintOrIssueActivity extends AppCompatActivity {
 
     private void setUpViews() {
         textTitle = findViewById(R.id.title);
-        textComplainType = findViewById(R.id.text_complaint_or_issue_type);
-        textComplaintHeader = findViewById(R.id.text_complaint_issue_title_value);
-        textComplaintDesc = findViewById(R.id.text_complaint_issue_desc);
-        textComplaintPlace = findViewById(R.id.text_complaint_issue_place);
+        textIssueOrComplainType = findViewById(R.id.text_complaint_or_issue_type);
+        textIssueOrComplaintHeader = findViewById(R.id.text_complaint_issue_title_value);
+        textIssueOrComplaintDesc = findViewById(R.id.text_complaint_issue_desc);
+        textIssueOrComplaintPlace = findViewById(R.id.text_complaint_issue_place);
+
+        textIssueOrComplaintAddress = findViewById(R.id.text_complaint_issue_address);
+        textIssueOrComplaintLocation = findViewById(R.id.text_complaint_issue_location);
+        textNavigateToLocation = findViewById(R.id.text_navigate);
 
         imageComplaintOrIssuePhoto = findViewById(R.id.photo_image);
         btnBack = findViewById(R.id.btn_back);
@@ -68,6 +73,29 @@ public class ViewComplaintOrIssueActivity extends AppCompatActivity {
         } else {
             textTitle.setText("View Municipal Issue Details");
         }
+
+        textNavigateToLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (isComplaint) {
+                        if (complaintMaster != null && (complaintMaster.getComplaintPlaceLatitude() != 0.0)) {
+                            openGoogleMapDirections(complaintMaster.getComplaintPlaceLatitude(), complaintMaster.getComplaintPlaceLongitude());
+                        } else {
+                            AndroSocioToast.showAlertToast(ViewComplaintOrIssueActivity.this, "Unable to fetch location", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                        }
+                    } else {
+                        if (mnIssueMaster != null && (mnIssueMaster.getMnIssuePlaceLatitude() != 0.0)) {
+                            openGoogleMapDirections(mnIssueMaster.getMnIssuePlaceLatitude(), mnIssueMaster.getMnIssuePlaceLongitude());
+                        } else {
+                            AndroSocioToast.showAlertToast(ViewComplaintOrIssueActivity.this, "Unable to fetch location", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,15 +109,45 @@ public class ViewComplaintOrIssueActivity extends AppCompatActivity {
         });
     }
 
-    private void loadPhotoDetails() {
+    private void openGoogleMapDirections(double latitude, double longitude) {
+        try {
+            // By Default set Google Map
+            String mapRequest = "google.navigation:q=" + latitude + "," + longitude + "&avoid=tf";
+            Uri gmmIntentUri = Uri.parse(mapRequest);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadIssueOrComplaintDetails() {
         try {
             if (isComplaint) {
                 if (complaintMaster != null) {
                     String complaintType = complaintMaster.getComplaintType() + " : " + complaintMaster.getComplaintPlacePhotoId();
-                    textComplainType.setText(complaintType);
-                    textComplaintHeader.setText(complaintMaster.getComplaintHeader());
-                    textComplaintDesc.setText(complaintMaster.getComplaintDescription());
-                    textComplaintPlace.setText(complaintMaster.getComplaintCity());
+                    textIssueOrComplainType.setText(complaintType);
+                    textIssueOrComplaintHeader.setText(complaintMaster.getComplaintHeader());
+                    textIssueOrComplaintDesc.setText(complaintMaster.getComplaintDescription());
+                    textIssueOrComplaintPlace.setText(complaintMaster.getComplaintCity());
+
+                    if (complaintMaster.getComplaintPlaceAddress() == null || complaintMaster.getComplaintPlaceAddress().isEmpty()) {
+                        textIssueOrComplaintAddress.setText("Address Not Available");
+                        textIssueOrComplaintAddress.setTextColor(getResources().getColor(R.color.colorError, null));
+                    } else {
+                        textIssueOrComplaintAddress.setText(complaintMaster.getComplaintPlaceAddress());
+                        textIssueOrComplaintAddress.setTextColor(getResources().getColor(R.color.colorBlack, null));
+                    }
+
+                    String locationText = "Location Not Available";
+                    if (complaintMaster.getComplaintPlaceLatitude() != 0.0) {
+                        locationText = "Latitude: " + complaintMaster.getComplaintPlaceLatitude() + ", Longitude: " + complaintMaster.getComplaintPlaceLongitude();
+                        textIssueOrComplaintLocation.setTextColor(getResources().getColor(R.color.colorBlack, null));
+                    }else{
+                        textIssueOrComplaintLocation.setTextColor(getResources().getColor(R.color.colorError, null));
+                    }
+                    textIssueOrComplaintLocation.setText(locationText);
 
                     imageComplaintOrIssuePhoto = findViewById(R.id.complaint_or_issue_photo);
 
@@ -103,10 +161,28 @@ public class ViewComplaintOrIssueActivity extends AppCompatActivity {
             } else {
                 if (mnIssueMaster != null) {
                     String complaintType = mnIssueMaster.getMnIssueType() + " : " + mnIssueMaster.getMnIssuePlacePhotoId();
-                    textComplainType.setText(complaintType);
-                    textComplaintHeader.setText(mnIssueMaster.getMnIssueHeader());
-                    textComplaintDesc.setText(mnIssueMaster.getMnIssueDescription());
-                    textComplaintPlace.setText(mnIssueMaster.getMnIssueCity());
+                    textIssueOrComplainType.setText(complaintType);
+                    textIssueOrComplaintHeader.setText(mnIssueMaster.getMnIssueHeader());
+                    textIssueOrComplaintDesc.setText(mnIssueMaster.getMnIssueDescription());
+                    textIssueOrComplaintPlace.setText(mnIssueMaster.getMnIssueCity());
+
+                    if (mnIssueMaster.getMnIssuePlaceAddress() == null || mnIssueMaster.getMnIssuePlaceAddress().isEmpty()) {
+                        textIssueOrComplaintAddress.setText("Address Not Available");
+                        textIssueOrComplaintAddress.setTextColor(getResources().getColor(R.color.colorError, null));
+                    } else {
+                        textIssueOrComplaintAddress.setText(mnIssueMaster.getMnIssuePlaceAddress());
+                        textIssueOrComplaintAddress.setTextColor(getResources().getColor(R.color.colorBlack, null));
+                    }
+
+                    String locationText = "Location Not Available";
+                    if (mnIssueMaster.getMnIssuePlaceLatitude() != 0.0) {
+                        locationText = "Latitude: " + mnIssueMaster.getMnIssuePlaceLatitude() + ", Longitude: " + mnIssueMaster.getMnIssuePlaceLongitude();
+                        textIssueOrComplaintLocation.setTextColor(getResources().getColor(R.color.colorBlack, null));
+                    }else{
+                        textIssueOrComplaintLocation.setTextColor(getResources().getColor(R.color.colorError, null));
+                    }
+
+                    textIssueOrComplaintLocation.setText(locationText);
 
                     imageComplaintOrIssuePhoto = findViewById(R.id.complaint_or_issue_photo);
 

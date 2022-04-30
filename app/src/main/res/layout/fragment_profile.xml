@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/user_profile_coordinator_layout"
-android:layout_width="match_parent"
-android:background="@color/colorWhite"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_profile_coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/bbn_bottom_navigation_height"
-android:layout_height="match_parent">
+    android:background="@color/colorWhite">
 
     <ScrollView
         android:id="@+id/user_profile_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false"
         android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="false"
         android:scrollbarStyle="insideOverlay">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/std_20_dp"
-            android:paddingBottom="@dimen/relative_vertical_padding"
-            android:paddingEnd="@dimen/relative_horizontal_padding"
+            android:paddingStart="@dimen/relative_horizontal_padding"
             android:paddingLeft="@dimen/relative_horizontal_padding"
+            android:paddingEnd="@dimen/relative_horizontal_padding"
             android:paddingRight="@dimen/relative_horizontal_padding"
-            android:paddingStart="@dimen/relative_horizontal_padding">
+            android:paddingBottom="@dimen/relative_vertical_padding">
 
             <RelativeLayout
                 android:id="@+id/image_driver_layout"
@@ -42,15 +42,15 @@ android:layout_height="match_parent">
 
             </RelativeLayout>
 
-              <TextView
+            <TextView
                 android:id="@+id/text_personal_info"
                 style="@style/Theme.AndroSocio.Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                  android:textStyle="bold"
                 android:layout_below="@+id/image_driver_layout"
                 android:layout_marginTop="@dimen/extra_large_margin"
-                android:text="Personal Info" />
+                android:text="Personal Info"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_mobile_number_header"
@@ -73,9 +73,9 @@ android:layout_height="match_parent">
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
-                android:paddingStart="@dimen/std_10_dp"
                 android:background="@drawable/text_border"
                 android:hint="Mobile Number"
+                android:paddingStart="@dimen/std_10_dp"
                 android:textColor="@color/colorBlack"
                 android:textCursorDrawable="@null" />
 
@@ -96,10 +96,10 @@ android:layout_height="match_parent">
                 style="@style/Theme.AndroSocio.Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/text_user_name_header"
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
-                android:layout_below="@+id/text_user_name_header"
                 android:background="@drawable/text_border"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:hint="Enter full Name"
@@ -129,8 +129,8 @@ android:layout_height="match_parent">
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
-                android:drawableEnd="@drawable/ic_drop_down"
                 android:background="@drawable/text_border"
+                android:drawableEnd="@drawable/ic_drop_down"
                 android:hint="Select gender"
                 android:nextFocusDown="@+id/btn_update"
                 android:textColor="@color/colorBlack"
