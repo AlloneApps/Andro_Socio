@@ -74,7 +74,7 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
                     holder.textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.userIssueViewClicked(mainPosition, mnIssueMaster);
+                            listener.userIssueViewClicked(mainPosition, mnIssueMaster, holder.userIssueImage,holder.textUserIssueHeader);
                         }
                     });
                 }
@@ -102,7 +102,7 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
     public interface UserIssueItemClickListener {
         void userIssueUpdateClicked(int position, MnIssueMaster mnIssueMaster, String userIssueStatus);
 
-        void userIssueViewClicked(int position, MnIssueMaster mnIssueMaster);
+        void userIssueViewClicked(int position, MnIssueMaster mnIssueMaster,ImageView imageView, TextView textView);
     }
 
     static class UserIssueAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -48,6 +48,7 @@ public class ViewUserComplaints extends Fragment implements UserComplaintMainAda
     private View rootView;
     private MainActivityInteractor mainActivityInteractor;
     private ProgressDialog progressDialog;
+    private TextView textNoComplaintsAvailable;
 
     // Firebase Storage
     FirebaseDatabase firebaseDatabase;
@@ -98,7 +99,16 @@ public class ViewUserComplaints extends Fragment implements UserComplaintMainAda
 
     private void setUpViews() {
         try {
+            textNoComplaintsAvailable = rootView.findViewById(R.id.no_complaints_available);
             recyclerViewUserComplaint = rootView.findViewById(R.id.recycler_user_complaints);
+
+            if (complaintMasterList.size() > 0) {
+                textNoComplaintsAvailable.setVisibility(View.GONE);
+                recyclerViewUserComplaint.setVisibility(View.VISIBLE);
+            } else {
+                recyclerViewUserComplaint.setVisibility(View.GONE);
+                textNoComplaintsAvailable.setVisibility(View.VISIBLE);
+            }
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
             recyclerViewUserComplaint.setLayoutManager(linearLayoutManager);
@@ -157,14 +167,15 @@ public class ViewUserComplaints extends Fragment implements UserComplaintMainAda
 
     @Override
     public void userComplaintViewClicked(int position, ComplaintMaster complaintMaster, ImageView imageView, TextView textView) {
-        if (NetworkUtil.getConnectivityStatus(requireContext())) {
-            Intent intentView = new Intent(requireContext(), ViewComplaintOrIssueActivity.class);
-            intentView.putExtra(AppConstants.VIEW_MUNICIPAL_ISSUE_DATA, new MnIssueMaster());
-            intentView.putExtra(AppConstants.VIEW_COMPLAINT_DATA, complaintMaster);
-            intentView.putExtra(AppConstants.VIEW_COMPLAINT_OR_ISSUE_FLAG, true);
+        try {
+            if (NetworkUtil.getConnectivityStatus(requireContext())) {
+                Intent intentView = new Intent(requireContext(), ViewComplaintOrIssueActivity.class);
+                intentView.putExtra(AppConstants.VIEW_MUNICIPAL_ISSUE_DATA, new MnIssueMaster());
+                intentView.putExtra(AppConstants.VIEW_COMPLAINT_DATA, complaintMaster);
+                intentView.putExtra(AppConstants.VIEW_COMPLAINT_OR_ISSUE_FLAG, true);
 
-            Pair<View, String> transactionPairOne = Pair.create((View) imageView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_photo));
-            Pair<View, String> transactionPairTwo = Pair.create((View) textView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_header));
+                Pair<View, String> transactionPairOne = Pair.create((View) imageView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_photo));
+                Pair<View, String> transactionPairTwo = Pair.create((View) textView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_header));
 
            /*
            // Call single Shared Transaction
@@ -172,16 +183,18 @@ public class ViewUserComplaints extends Fragment implements UserComplaintMainAda
                     makeSceneTransitionAnimation(requireActivity(), (View) imagePlace, requireContext().getResources().getString(R.string.transaction_name));
             */
 
-            // Call Multiple Shared Transaction using Pair Option
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(requireActivity(), transactionPairOne, transactionPairTwo);
-            startActivityForResult(intentView, 3, options.toBundle());
+                // Call Multiple Shared Transaction using Pair Option
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(requireActivity(), transactionPairOne, transactionPairTwo);
+                startActivityForResult(intentView, 3, options.toBundle());
 
-        } else {
-            AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            } else {
+                AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
 
     private void showProgressDialog(String message) {
         try {

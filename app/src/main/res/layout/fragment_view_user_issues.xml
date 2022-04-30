@@ -23,6 +23,18 @@ tools:context=".ui.roledetails.user.viewissues.ViewUserIssues">
             android:nestedScrollingEnabled="true"
             android:layout_marginTop="@dimen/std_10_dp" />
 
+        <TextView
+            android:id="@+id/no_issues_available"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Municipal Issues Available"
+            android:textColor="@color/colorError"
+            android:textSize="@dimen/std_16_sp"
+            android:layout_marginTop="@dimen/std_300_dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -14,6 +14,8 @@ import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.model.issue.MnIssueSubDetails;
 import com.bumptech.glide.Glide;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdapter.UserIssueAdapterViewHolder> {
@@ -74,7 +76,7 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
                     holder.textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.userIssueViewClicked(mainPosition, mnIssueMaster);
+                            listener.userIssueViewClicked(mainPosition, mnIssueMaster, holder.userIssueImage, holder.textUserIssueHeader);
                         }
                     });
                 }
@@ -102,7 +104,7 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
     public interface UserIssueItemClickListener {
         void userIssueUpdateClicked(int position, MnIssueMaster mnIssueMaster, String userIssueStatus);
 
-        void userIssueViewClicked(int position, MnIssueMaster mnIssueMaster);
+        void userIssueViewClicked(int position, MnIssueMaster mnIssueMaster, ImageView imageView, TextView textView);
     }
 
     static class UserIssueAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

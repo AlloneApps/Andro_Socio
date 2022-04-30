@@ -74,7 +74,7 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
                     holder.textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.userComplaintViewClicked(mainPosition, complaintMaster);
+                            listener.userComplaintViewClicked(mainPosition, complaintMaster, holder.userIssueImage, holder.textUserIssueHeader);
                         }
                     });
                 }
@@ -102,7 +102,7 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
     public interface UserComplaintItemClickListener {
         void userComplaintUpdateClicked(int position, ComplaintMaster complaintMaster, String userComplaintStatus);
 
-        void userComplaintViewClicked(int position, ComplaintMaster complaintMaster);
+        void userComplaintViewClicked(int position, ComplaintMaster complaintMaster, ImageView imageView, TextView textView);
     }
 
     static class UserComplaintAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -136,7 +136,7 @@ public class UserComplaintByPoliceMainAdapter extends RecyclerView.Adapter<UserC
                         .fitCenter()
                         .centerCrop()
                         .into(userIssueImage);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

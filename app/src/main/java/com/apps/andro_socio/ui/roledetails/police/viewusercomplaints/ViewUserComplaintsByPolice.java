@@ -2,14 +2,19 @@ package com.apps.andro_socio.ui.roledetails.police.viewusercomplaints;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,10 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
+import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
+import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.model.complaint.ComplaintMaster;
+import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
+import com.apps.andro_socio.ui.roledetails.ViewComplaintOrIssueActivity;
 import com.apps.andro_socio.ui.roledetails.user.createissueorcomplaint.CreateIssueOrComplaint;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +48,7 @@ public class ViewUserComplaintsByPolice extends Fragment implements UserComplain
     private View rootView;
     private MainActivityInteractor mainActivityInteractor;
     private ProgressDialog progressDialog;
+    private TextView textNoComplaintsAvailable;
 
     // Firebase Storage
     FirebaseDatabase firebaseDatabase;
@@ -90,6 +100,15 @@ public class ViewUserComplaintsByPolice extends Fragment implements UserComplain
     private void setUpViews() {
         try {
             recyclerViewUserComplaintByPolice = rootView.findViewById(R.id.recycler_user_issues_by_police);
+            textNoComplaintsAvailable = rootView.findViewById(R.id.no_complaints_available);
+
+            if(complaintMasterList.size() > 0){
+                textNoComplaintsAvailable.setVisibility(View.GONE);
+                recyclerViewUserComplaintByPolice.setVisibility(View.VISIBLE);
+            }else{
+                recyclerViewUserComplaintByPolice.setVisibility(View.GONE);
+                textNoComplaintsAvailable.setVisibility(View.VISIBLE);
+            }
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
             recyclerViewUserComplaintByPolice.setLayoutManager(linearLayoutManager);
@@ -149,8 +168,34 @@ public class ViewUserComplaintsByPolice extends Fragment implements UserComplain
     }
 
     @Override
-    public void userComplaintViewClicked(int position, ComplaintMaster complaintMaster) {
+    public void userComplaintViewClicked(int position, ComplaintMaster complaintMaster, ImageView imageView, TextView textView) {
+        try {
+            if (NetworkUtil.getConnectivityStatus(requireContext())) {
+                Intent intentView = new Intent(requireContext(), ViewComplaintOrIssueActivity.class);
+                intentView.putExtra(AppConstants.VIEW_MUNICIPAL_ISSUE_DATA, new MnIssueMaster());
+                intentView.putExtra(AppConstants.VIEW_COMPLAINT_DATA, complaintMaster);
+                intentView.putExtra(AppConstants.VIEW_COMPLAINT_OR_ISSUE_FLAG, true);
 
+                Pair<View, String> transactionPairOne = Pair.create((View) imageView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_photo));
+                Pair<View, String> transactionPairTwo = Pair.create((View) textView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_header));
+
+           /*
+           // Call single Shared Transaction
+           ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(requireActivity(), (View) imagePlace, requireContext().getResources().getString(R.string.transaction_name));
+            */
+
+                // Call Multiple Shared Transaction using Pair Option
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(requireActivity(), transactionPairOne, transactionPairTwo);
+                startActivityForResult(intentView, 3, options.toBundle());
+
+            } else {
+                AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
