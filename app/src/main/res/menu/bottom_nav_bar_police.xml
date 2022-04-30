@@ -15,13 +15,13 @@
         android:color="@color/colorPrimary"
         android:icon="@drawable/ic_complaints_or_issues"
         android:iconTint="@color/colorWhite"
-        android:title="Complaints" />
+        android:title="My City Cmplt" />
     <item
         android:id="@+id/item_third"
         android:color="@color/colorPrimary"
         android:icon="@drawable/ic_view_complaint_or_issues"
         android:iconTint="@color/colorWhite"
-        android:title="View Complaints" />
+        android:title="City Wise Cmplt" />
     <item
         android:id="@+id/item_fourth"
         android:color="@color/colorPrimary"

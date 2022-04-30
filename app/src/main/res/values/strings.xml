@@ -71,4 +71,6 @@
 
     <string name="transaction_complaint_or_issue_photo" translatable="false">photo</string>
     <string name="transaction_complaint_or_issue_header" translatable="false">header</string>
+    <string name="city_wise_complaints_header">City Wise Complaints</string>
+    <string name="my_city_complaints_header">My City Complaints</string>
 </resources>

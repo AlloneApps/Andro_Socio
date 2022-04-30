@@ -15,11 +15,11 @@
         android:color="@color/colorPrimary"
         android:icon="@drawable/ic_persons"
         android:iconTint="@color/colorWhite"
-        android:title="Users" />
+        android:title="Active Users" />
     <item
         android:id="@+id/item_third"
         android:color="@color/colorPrimary"
-        android:icon="@drawable/ic_add_location"
+        android:icon="@drawable/ic_add_new_city"
         android:iconTint="@color/colorWhite"
         android:title="Add City" />
     <item
