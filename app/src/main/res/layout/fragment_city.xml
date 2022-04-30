@@ -43,7 +43,7 @@
                 android:background="@drawable/text_border"
                 android:hint="Enter city name"
                 android:imeOptions="actionDone"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:nextFocusDown="@+id/edit_dob"
                 android:textColor="@color/colorBlack"
                 android:textCursorDrawable="@null" />
