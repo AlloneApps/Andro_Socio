@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
@@ -68,7 +69,7 @@ public class UpdateMPin extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            mainActivityInteractor.setScreenTitle(getString(R.string.update_mpin_title));
+            mainActivityInteractor.setScreenTitle(AppConstants.SETTINGS_UPDATE_MPIN);
 
             progressDialog = new ProgressDialog(requireContext());
 
@@ -166,7 +167,6 @@ public class UpdateMPin extends Fragment {
                         public void onSuccess(Void aVoid) {
                             hideProgressDialog();
                             Utils.saveLoginUserDetails(requireContext(), userMain);
-                            Log.d(TAG, "onSuccess: " + Utils.getLoginUserDetails(requireContext()));
                             AndroSocioToast.showSuccessToastWithBottom(requireContext(), "mPin updated successfully", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                             clearFields();
                         }

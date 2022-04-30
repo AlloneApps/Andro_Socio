@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
@@ -73,7 +74,7 @@ public class Profile extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            mainActivityInteractor.setScreenTitle(getString(R.string.profile));
+            mainActivityInteractor.setScreenTitle(AppConstants.SETTINGS_MY_PROFILE);
 
             progressDialog = new ProgressDialog(requireContext());
             textMobileNumber = rootView.findViewById(R.id.text_mobile_number_value);

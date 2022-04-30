@@ -115,7 +115,7 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
         try {
             switch (item) {
                 case AppConstants
-                        .SETTINGS_PROFILE:
+                        .SETTINGS_MY_PROFILE:
                     if (checkInternet()) {
                         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new Profile()).commit();
                     }

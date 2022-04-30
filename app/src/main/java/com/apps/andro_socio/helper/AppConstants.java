@@ -65,12 +65,11 @@ public class AppConstants {
 
 
     // Generic Setting Options
-    public static final String SETTINGS_PROFILE = "Profile";
+    public static final String SETTINGS_MY_PROFILE = "My Profile";
     public static final String SETTINGS_UPDATE_MPIN = "Update MPin";
 
     // View Data Transfer
     public static final String VIEW_MUNICIPAL_ISSUE_DATA = "View Municipal Complaint Data";
     public static final String VIEW_COMPLAINT_DATA = "View Complaint Data";
     public static final String VIEW_COMPLAINT_OR_ISSUE_FLAG = "View Complaint Or Issue Flag";
-
 }

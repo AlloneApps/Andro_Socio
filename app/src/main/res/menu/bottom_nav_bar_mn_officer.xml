@@ -15,13 +15,13 @@
         android:color="@color/colorPrimary"
         android:icon="@drawable/ic_complaints_or_issues"
         android:iconTint="@color/colorWhite"
-        android:title="Issues" />
+        android:title="@string/mn_officer_btn_second_option" />
     <item
         android:id="@+id/item_third"
         android:color="@color/colorPrimary"
         android:icon="@drawable/ic_view_complaint_or_issues"
         android:iconTint="@color/colorWhite"
-        android:title="View Issues" />
+        android:title="@string/mn_officer_btn_third_option" />
     <item
         android:id="@+id/item_fourth"
         android:color="@color/colorPrimary"

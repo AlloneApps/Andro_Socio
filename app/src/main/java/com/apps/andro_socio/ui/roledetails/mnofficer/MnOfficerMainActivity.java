@@ -19,7 +19,7 @@ import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.mnofficer.viewuserissues.ViewUserIssuesByOfficer;
-import com.apps.andro_socio.ui.roledetails.police.PoliceDashboardFragment;
+import com.apps.andro_socio.ui.roledetails.mnofficer.viewuserissuesbycity.ViewCityWiseUserIssuesByOfficer;
 import com.apps.andro_socio.ui.settings.SettingsFragment;
 import com.apps.andro_socio.ui.settings.profile.Profile;
 import com.apps.andro_socio.ui.settings.updateMpin.UpdateMPin;
@@ -82,8 +82,7 @@ public class MnOfficerMainActivity extends AppCompatActivity implements MainActi
                 break;
             case 2:
                 if (checkInternet()) {
-                    AndroSocioToast.showInfoToast(MnOfficerMainActivity.this, "Implementation Pending", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new MnOfficerDashboardFragment()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new ViewCityWiseUserIssuesByOfficer()).commit();
                 }
                 break;
             case 3:
@@ -193,11 +192,15 @@ public class MnOfficerMainActivity extends AppCompatActivity implements MainActi
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new MnOfficerDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
-            }else if (fragment instanceof SettingsFragment) {
+            } else if (fragment instanceof ViewCityWiseUserIssuesByOfficer) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new MnOfficerDashboardFragment()).commit();
                 highlightBottomNavigationTabPosition(0);
-            }else if (fragment instanceof Profile) {
+            } else if (fragment instanceof SettingsFragment) {
+                fragmentManager.popBackStack();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new MnOfficerDashboardFragment()).commit();
+                highlightBottomNavigationTabPosition(0);
+            } else if (fragment instanceof Profile) {
                 fragmentManager.popBackStack();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new SettingsFragment()).commit();
                 highlightBottomNavigationTabPosition(3);

@@ -64,10 +64,11 @@
     <string name="view_complaints">View Complaints</string>
     <string name="view_municipal_issues">View Municipal Issues</string>
 
+    <string name="mn_officer_btn_second_option">My City Issues</string>
+    <string name="mn_officer_btn_third_option">City Wise Issues</string>
+
 
 
     <string name="transaction_complaint_or_issue_photo" translatable="false">photo</string>
     <string name="transaction_complaint_or_issue_header" translatable="false">header</string>
-    <string name="update_mpin_title">Update MPin</string>
-    <string name="profile">Profile</string>
 </resources>

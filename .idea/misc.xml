@@ -43,6 +43,7 @@
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_splash.xml" value="0.18070652173913043" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_update_mpin.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_user_dashboard.xml" value="0.20416666666666666" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_view_user_city_wise_issues_by_officer.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_view_user_complaints.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_view_user_complaints_by_police.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_view_user_issues.xml" value="0.20416666666666666" />
@@ -52,6 +53,7 @@
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_city_name.xml" value="0.10778985507246377" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_settings_main.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_user_issue_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_user_issue_only_view_main.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/nav_header_main.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/menu/activity_main_drawer.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/menu/bottom_nav_bar_admin.xml" value="0.20416666666666666" />
