@@ -11,7 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.SliderUtils;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
+
+import java.util.List;
 
 public class AdminDashboardFragment extends Fragment {
     private View rootView;
@@ -37,6 +43,13 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void setUpViews() {
-
+        try {
+            ImageSlider imageSlider = rootView.findViewById(R.id.image_slider);
+            List<SlideModel> slideModelList = SliderUtils.getAdminDashboardSliderItemList();
+            imageSlider.setImageList(slideModelList, ScaleTypes.FIT); // for all images
+            imageSlider.startSliding(SliderUtils.SLIDER_TIME); // with new period
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
