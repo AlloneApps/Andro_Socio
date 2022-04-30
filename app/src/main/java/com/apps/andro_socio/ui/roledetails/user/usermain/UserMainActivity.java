@@ -250,6 +250,10 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                                 double dataLatitude = bundle.getDouble(AppConstants.LATITUDE, 0.0);
                                 double dataLongitude = bundle.getDouble(AppConstants.LONGITUDE, 0.0);
 
+                                Log.d(TAG, "onActivityResult dataLatitude: "+dataLatitude);
+                                Log.d(TAG, "onActivityResult dataLongitude: "+dataLongitude);
+
+
                              /*   if (editSrcAddress != null) {
                                     editSrcAddress.setText(dataString);
                                     sourceLatLong = new LatLng(dataLatitude, dataLongitude);

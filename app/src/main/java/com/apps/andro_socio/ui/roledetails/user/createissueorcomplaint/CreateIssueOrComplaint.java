@@ -46,6 +46,7 @@ import com.apps.andro_socio.BuildConfig;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
+import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.model.User;
@@ -54,8 +55,9 @@ import com.apps.andro_socio.model.complaint.ComplaintMaster;
 import com.apps.andro_socio.model.complaint.ComplaintSubDetails;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.apps.andro_socio.model.issue.MnIssueSubDetails;
-import com.apps.andro_socio.ui.placeApiDirection.AddressPlaceActivity;
+import com.apps.andro_socio.ui.placeselection.AddressPlaceActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -101,6 +103,10 @@ public class CreateIssueOrComplaint extends Fragment {
     private long MAX_2_MB = 2000000;
     private String issueOrComplaintType = "";
     private String issueAccessType = AppConstants.ISSUE_ACCESS_TYPE_PRIVATE;
+
+    private LatLng selectedLatlng;
+    private String selectedAddress;
+    private TextView textSelectLocation, textSelectedAddress, textSelectedLatLong;
 
     String[] permissions = new String[]{
             Manifest.permission.CAMERA,
@@ -175,6 +181,11 @@ public class CreateIssueOrComplaint extends Fragment {
         try {
             issueOrComplaintCoordinator = rootView.findViewById(R.id.create_issue_or_complaint_coordinate);
             textCity = rootView.findViewById(R.id.text_city);
+
+            textSelectLocation = rootView.findViewById(R.id.text_select_location_header);
+            textSelectedAddress = rootView.findViewById(R.id.text_location);
+            textSelectedLatLong = rootView.findViewById(R.id.text_location_latlong);
+
             editIssueOrComplaintTitle = rootView.findViewById(R.id.edit_issue_or_complaint);
             editIssueOrComplaintDesc = rootView.findViewById(R.id.edit_complaint_or_issue_desc);
 
@@ -190,7 +201,7 @@ public class CreateIssueOrComplaint extends Fragment {
             imageCameraIcon = rootView.findViewById(R.id.image_camera_icon);
             btnSubmit = rootView.findViewById(R.id.btn_submit);
 
-            RxView.touches(btnSubmit).subscribe(motionEvent -> {
+            RxView.touches(textSelectLocation).subscribe(motionEvent -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     Intent intent = new Intent(getContext(), AddressPlaceActivity.class);
                     startActivityForResult(intent, SOURCE_ADDRESS_AUTO_REQUEST_CODE);
@@ -276,7 +287,7 @@ public class CreateIssueOrComplaint extends Fragment {
 
             imageSelectedPhoto.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.empty_image, null));
 
-          /*  btnSubmit.setOnClickListener(new View.OnClickListener() {
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (NetworkUtil.getConnectivityStatus(requireContext())) {
@@ -300,7 +311,7 @@ public class CreateIssueOrComplaint extends Fragment {
                         AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                     }
                 }
-            });*/
+            });
 
             RxView.clicks(imageCameraIcon).subscribe(new Action1<Void>() {
                 @Override
@@ -342,8 +353,9 @@ public class CreateIssueOrComplaint extends Fragment {
             // Initial PhotoPath is Empty
             mnIssueMaster.setMnIssuePlacePhotoPath("");
             mnIssueMaster.setMnIssueCreatedOn(mainIssueId);
-            mnIssueMaster.setMnIssuePlaceLatitude(0.0);
-            mnIssueMaster.setMnIssuePlaceLongitude(0.0);
+            mnIssueMaster.setMnIssuePlaceLatitude(selectedLatlng.latitude);
+            mnIssueMaster.setMnIssuePlaceLongitude(selectedLatlng.longitude);
+            mnIssueMaster.setMnIssuePlaceAddress(textSelectedAddress.getText().toString().trim());
 
             List<MnIssueSubDetails> mnIssueSubDetailsList = new ArrayList<>();
             MnIssueSubDetails mnIssueSubDetails = new MnIssueSubDetails();
@@ -417,8 +429,9 @@ public class CreateIssueOrComplaint extends Fragment {
             // Initial PhotoPath is Empty
             complaintMaster.setComplaintPlacePhotoPath("");
             complaintMaster.setComplaintCreatedOn(mainComplaintId);
-            complaintMaster.setComplaintPlaceLatitude(0.0);
-            complaintMaster.setComplaintPlaceLongitude(0.0);
+            complaintMaster.setComplaintPlaceLatitude(selectedLatlng.latitude);
+            complaintMaster.setComplaintPlaceLongitude(selectedLatlng.longitude);
+            complaintMaster.setComplaintPlaceAddress(textSelectedAddress.getText().toString().trim());
 
             List<ComplaintSubDetails> complaintSubDetailsList = new ArrayList<>();
             ComplaintSubDetails complaintSubDetails = new ComplaintSubDetails();
@@ -484,6 +497,12 @@ public class CreateIssueOrComplaint extends Fragment {
                 return false;
             } else if (editIssueOrComplaintDesc.getText().toString().trim().isEmpty()) {
                 AndroSocioToast.showErrorToast(requireContext(), "Please enter issue or complaint description", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                return false;
+            } else if (textSelectedAddress.getText().toString().trim().isEmpty()) {
+                AndroSocioToast.showErrorToast(requireContext(), "Please select place location", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                return false;
+            } else if (selectedLatlng == null) {
+                AndroSocioToast.showErrorToast(requireContext(), "Please select place location", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                 return false;
             } else if (photoUploadUri == null) {
                 AndroSocioToast.showErrorToast(requireContext(), "Please select photo", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
@@ -758,6 +777,10 @@ public class CreateIssueOrComplaint extends Fragment {
             radioIssueAccessType.clearCheck();
             photoUploadUri = null;
             cropImageUri = null;
+            selectedLatlng = null;
+            selectedAddress = null;
+            textSelectedAddress.setText("");
+            textSelectedLatLong.setText("");
             editIssueOrComplaintTitle.setText("");
             editIssueOrComplaintDesc.setText("");
             imageSelectedPhoto.setImageURI(null);
@@ -1034,6 +1057,37 @@ public class CreateIssueOrComplaint extends Fragment {
                                 .start(requireActivity());
                     }
                     break;
+
+                case SOURCE_ADDRESS_AUTO_REQUEST_CODE: {
+                    if (resultCode == RESULT_OK) {
+                        try {
+                            Log.d(TAG, "onActivityResult: local result code ok");
+                            Bundle bundle = data.getBundleExtra("LOC");
+                            if (bundle != null) {
+                                String address = bundle.getString(AppConstants.LOCATION_DATA_STREET, "");
+                                Log.d(TAG, "onActivityResult: local data String: " + address);
+
+                                double dataLatitude = bundle.getDouble(AppConstants.LATITUDE, 0.0);
+                                double dataLongitude = bundle.getDouble(AppConstants.LONGITUDE, 0.0);
+
+                                Log.d(TAG, "onActivityResult local dataLatitude: " + dataLatitude);
+                                Log.d(TAG, "onActivityResult local dataLongitude: " + dataLongitude);
+                                if (textSelectedAddress != null) {
+                                    selectedAddress = address;
+                                    textSelectedAddress.setText(address);
+                                    selectedLatlng = new LatLng(dataLatitude, dataLongitude);
+                                    String latLongText = "Latitude: " + dataLatitude + ", Longitude: " + dataLongitude;
+                                    textSelectedLatLong.setText(latLongText);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.d(TAG, "onActivityResult: SOURCE_ADDRESS_AUTO_REQUEST_CODE result code not ok");
+                    }
+                }
+                break;
             }
         } catch (Exception e) {
             e.printStackTrace();

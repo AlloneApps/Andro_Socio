@@ -21,6 +21,7 @@ public class ComplaintMaster implements Parcelable {
     private String complaintPlacePhotoUploadedDate;
     private double complaintPlaceLatitude;
     private double complaintPlaceLongitude;
+    private String complaintPlaceAddress;
 
     private List<ComplaintSubDetails> complaintsSubDetailsList = new ArrayList<>();
 
@@ -42,6 +43,7 @@ public class ComplaintMaster implements Parcelable {
         complaintPlacePhotoUploadedDate = in.readString();
         complaintPlaceLatitude = in.readDouble();
         complaintPlaceLongitude = in.readDouble();
+        complaintPlaceAddress = in.readString();
         complaintsSubDetailsList = in.createTypedArrayList(ComplaintSubDetails.CREATOR);
     }
 
@@ -169,6 +171,14 @@ public class ComplaintMaster implements Parcelable {
         this.complaintPlaceLongitude = complaintPlaceLongitude;
     }
 
+    public String getComplaintPlaceAddress() {
+        return complaintPlaceAddress;
+    }
+
+    public void setComplaintPlaceAddress(String complaintPlaceAddress) {
+        this.complaintPlaceAddress = complaintPlaceAddress;
+    }
+
     public List<ComplaintSubDetails> getComplaintsSubDetailsList() {
         return complaintsSubDetailsList;
     }
@@ -194,6 +204,7 @@ public class ComplaintMaster implements Parcelable {
                 ", complaintPlacePhotoUploadedDate='" + complaintPlacePhotoUploadedDate + '\'' +
                 ", complaintPlaceLatitude=" + complaintPlaceLatitude +
                 ", complaintPlaceLongitude=" + complaintPlaceLongitude +
+                ", complaintPlaceAddress='" + complaintPlaceAddress + '\'' +
                 ", complaintsSubDetailsList=" + complaintsSubDetailsList +
                 '}';
     }
@@ -219,6 +230,7 @@ public class ComplaintMaster implements Parcelable {
         parcel.writeString(complaintPlacePhotoUploadedDate);
         parcel.writeDouble(complaintPlaceLatitude);
         parcel.writeDouble(complaintPlaceLongitude);
+        parcel.writeString(complaintPlaceAddress);
         parcel.writeTypedList(complaintsSubDetailsList);
     }
 }

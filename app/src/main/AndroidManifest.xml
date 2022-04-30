@@ -114,14 +114,7 @@
         </provider>
 
         <activity
-            android:name=".ui.placeApiDirection.SourceLocationActivity"
-            android:hardwareAccelerated="true" />
-        <activity
-            android:name=".ui.placeApiDirection.DestinationLocationActivity"
-            android:hardwareAccelerated="true" />
-
-        <activity
-            android:name=".ui.placeApiDirection.AddressPlaceActivity"
+            android:name=".ui.placeselection.AddressPlaceActivity"
             android:hardwareAccelerated="true"/>
 
         <meta-data

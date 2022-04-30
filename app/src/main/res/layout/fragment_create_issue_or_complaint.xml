@@ -82,6 +82,7 @@
                     android:layout_weight="1"
                     android:text="Police Complaint" />
             </RadioGroup>
+
             <TextView
                 android:id="@+id/text_issue_access_type_header"
                 style="@style/Theme.AndroSocio.Header"
@@ -92,8 +93,8 @@
                 android:layout_marginTop="@dimen/large_margin"
                 android:text="Select Issue Access Type"
                 android:textColor="@color/colorSecondaryText"
-                android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <RadioGroup
                 android:id="@+id/radio_issue_access_type"
@@ -104,8 +105,8 @@
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
                 android:checkedButton="@id/radio_role_user"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/radio_issue_access_private"
@@ -144,9 +145,9 @@
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
-                android:inputType="textCapSentences"
                 android:background="@drawable/text_border"
                 android:hint="Enter complaint or issue title"
+                android:inputType="textCapSentences"
                 android:textColor="@color/colorBlack"
                 android:textCursorDrawable="@null" />
 
@@ -181,13 +182,56 @@
                 android:textColor="@color/colorBlack"
                 android:textCursorDrawable="@null" />
 
+            <TextView
+                android:id="@+id/text_select_location_header"
+                style="@style/Theme.AndroSocio.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_complaint_or_issue_desc"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/std_20_dp"
+                android:drawableStart="@drawable/ic_add_new_city"
+                android:drawablePadding="@dimen/std_10_dp"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:text="Select Location (Click Here)"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_location"
+                style="@style/Theme.AndroSocio.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_select_location_header"
+                android:layout_marginStart="@dimen/std_20_dp"
+                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/std_10_dp"
+                android:drawableStart="@drawable/ic_photo_selection"
+                android:drawablePadding="@dimen/std_10_dp"
+                android:hint="Selected Location"
+                android:textColor="@color/colorSecondaryText" />
+
+            <TextView
+                android:id="@+id/text_location_latlong"
+                style="@style/Theme.AndroSocio.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_location"
+                android:layout_marginStart="@dimen/std_20_dp"
+                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/std_10_dp"
+                android:drawableStart="@drawable/ic_location"
+                android:drawablePadding="@dimen/std_10_dp"
+                android:hint="Location Latitude and Logitude"
+                android:textColor="@color/colorSecondaryText" />
 
             <TextView
                 android:id="@+id/text_capture_picture_header"
                 style="@style/Theme.AndroSocio.Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/edit_complaint_or_issue_desc"
+                android:layout_below="@+id/text_location_latlong"
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/large_margin"
                 android:text="Capture Picture"

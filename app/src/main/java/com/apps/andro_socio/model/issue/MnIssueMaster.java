@@ -21,6 +21,7 @@ public class MnIssueMaster implements Parcelable {
     private String mnIssuePlacePhotoUploadedDate;
     private double mnIssuePlaceLatitude;
     private double mnIssuePlaceLongitude;
+    private String mnIssuePlaceAddress;
     private String mnIssueCreatedBy;
     private String mnIssueCreatedOn;
 
@@ -42,6 +43,7 @@ public class MnIssueMaster implements Parcelable {
         mnIssuePlacePhotoUploadedDate = in.readString();
         mnIssuePlaceLatitude = in.readDouble();
         mnIssuePlaceLongitude = in.readDouble();
+        mnIssuePlaceAddress = in.readString();
         mnIssueCreatedBy = in.readString();
         mnIssueCreatedOn = in.readString();
         mnIssueSubDetailsList = in.createTypedArrayList(MnIssueSubDetails.CREATOR);
@@ -155,6 +157,14 @@ public class MnIssueMaster implements Parcelable {
         this.mnIssuePlaceLongitude = mnIssuePlaceLongitude;
     }
 
+    public String getMnIssuePlaceAddress() {
+        return mnIssuePlaceAddress;
+    }
+
+    public void setMnIssuePlaceAddress(String mnIssuePlaceAddress) {
+        this.mnIssuePlaceAddress = mnIssuePlaceAddress;
+    }
+
     public String getMnIssueCreatedBy() {
         return mnIssueCreatedBy;
     }
@@ -194,6 +204,7 @@ public class MnIssueMaster implements Parcelable {
                 ", mnIssuePlacePhotoUploadedDate='" + mnIssuePlacePhotoUploadedDate + '\'' +
                 ", mnIssuePlaceLatitude=" + mnIssuePlaceLatitude +
                 ", mnIssuePlaceLongitude=" + mnIssuePlaceLongitude +
+                ", mnIssuePlaceAddress='" + mnIssuePlaceAddress + '\'' +
                 ", mnIssueCreatedBy='" + mnIssueCreatedBy + '\'' +
                 ", mnIssueCreatedOn='" + mnIssueCreatedOn + '\'' +
                 ", mnIssueSubDetailsList=" + mnIssueSubDetailsList +
@@ -219,6 +230,7 @@ public class MnIssueMaster implements Parcelable {
         parcel.writeString(mnIssuePlacePhotoUploadedDate);
         parcel.writeDouble(mnIssuePlaceLatitude);
         parcel.writeDouble(mnIssuePlaceLongitude);
+        parcel.writeString(mnIssuePlaceAddress);
         parcel.writeString(mnIssueCreatedBy);
         parcel.writeString(mnIssueCreatedOn);
         parcel.writeTypedList(mnIssueSubDetailsList);
