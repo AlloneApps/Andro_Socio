@@ -1,17 +1,7 @@
 package com.apps.andro_socio.helper.dataUtils;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
-
 import com.apps.andro_socio.helper.AppConstants;
-import com.apps.andro_socio.model.issue.MnIssueMaster;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,49 +24,42 @@ public class DataUtils {
         return genderType;
     }
 
-    public static List<MnIssueMaster> getMnIssueStatusList(Context context) {
-        List<MnIssueMaster> mnIssueStatusList = new ArrayList<>();
-        try {
-            // load tasks from preference
-            SharedPreferences prefs = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
-            Gson gson = new Gson();
-            String readString = prefs.getString(AppConstants.MN_ISSUE_STATUS_LIST, "");
-            if (!TextUtils.isEmpty(readString)) {
-                Type type = new TypeToken<ArrayList<MnIssueMaster>>() {
-                }.getType();
-                mnIssueStatusList = gson.fromJson(readString, type);
-                return mnIssueStatusList;
-            } else {
-                return mnIssueStatusList;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return mnIssueStatusList;
-        }
-    }
-
-  /*  public static List<String> getMnStatusStatusStringList(Context context) {
-        List<String> mnIssueStatusStringList = new ArrayList<>();
-        List<MnIssueMaster> mnIssueStatusList = new ArrayList<>();
-        try {
-            // load tasks from preference
-            SharedPreferences prefs = context.getSharedPreferences(AppConstants.APP_PREFS, MODE_PRIVATE);
-            Gson gson = new Gson();
-            String readString = prefs.getString(AppConstants.MN_ISSUE_STATUS_LIST, "");
-            if (!TextUtils.isEmpty(readString)) {
-                Type type = new TypeToken<ArrayList<MnIssueMaster>>() {
-                }.getType();
-                mnIssueStatusList = gson.fromJson(readString, type);
-                for (MnIssueMaster taskStatus : mnIssueStatusList) {
-                    mnIssueStatusStringList.add(taskStatus.getIssue());
+    public static List<String> getNextStatusBasedOnRole(String currentStatus, String role) {
+        List<String> nextStatusList = new ArrayList<>();
+        switch (currentStatus) {
+            case AppConstants.NEW_STATUS: {
+                if (role.equalsIgnoreCase(AppConstants.ROLE_USER)) {
+                    nextStatusList.add(AppConstants.CANCELLED_STATUS);
+                } else {
+                    nextStatusList.add(AppConstants.ACCEPTED_STATUS);
+                    nextStatusList.add(AppConstants.REJECTED_STATUS);
                 }
-                return mnIssueStatusStringList;
-            } else {
-                return mnIssueStatusStringList;
+                break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return mnIssueStatusStringList;
+
+            case AppConstants.ACCEPTED_STATUS: {
+                if (role.equalsIgnoreCase(AppConstants.ROLE_USER)) {
+                    nextStatusList.add(AppConstants.CANCELLED_STATUS);
+                } else {
+                    nextStatusList.add(AppConstants.COMPLETED_STATUS);
+                    nextStatusList.add(AppConstants.REJECTED_STATUS);
+                }
+                break;
+            }
+            case AppConstants.CANCELLED_STATUS: {
+                if (role.equalsIgnoreCase(AppConstants.ROLE_USER)) {
+                    nextStatusList.add(AppConstants.NEW_STATUS);
+                }
+                break;
+            }
+            case AppConstants.REJECTED_STATUS: {
+                if (!(role.equalsIgnoreCase(AppConstants.ROLE_USER))) {
+                    nextStatusList.add(AppConstants.ACCEPTED_STATUS);
+                }
+                break;
+            }
         }
-    }*/
+
+        return nextStatusList;
+    }
 }

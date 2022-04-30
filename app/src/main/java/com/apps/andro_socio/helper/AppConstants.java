@@ -41,8 +41,7 @@ public class AppConstants {
     // Issue/Complaint Status
     public static final String NEW_STATUS = "New";
     public static final String ACCEPTED_STATUS = "Accepted";
-    public static final String VERIFYING_STATUS = "Verifying";
-    public static final String VERIFIED_STATUS = "Verified";
+    public static final String COMPLETED_STATUS = "Completed";
     public static final String CANCELLED_STATUS = "Cancelled";
     public static final String REJECTED_STATUS = "Rejected";
 
@@ -76,4 +75,7 @@ public class AppConstants {
     // Issue/Complaint Badges
     public static final String COMPLAINTS_BADGE = "Complaints";
     public static final String MUNICIPAL_ISSUES_BADGE = "Issues";
+
+    public static final String COMPLAINT_STATUS = "Complaint Status";
+    public static final String MUNICIPAL_ISSUE_STATUS = "Issue Status";
 }
