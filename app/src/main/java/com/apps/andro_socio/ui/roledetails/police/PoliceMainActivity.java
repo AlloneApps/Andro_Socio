@@ -2,27 +2,40 @@ package com.apps.andro_socio.ui.roledetails.police;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
+import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.police.viewcitywisecomplaints.ViewCityWiseUserComplaintsByPolice;
 import com.apps.andro_socio.ui.roledetails.police.viewusercomplaints.ViewUserComplaintsByPolice;
+import com.apps.andro_socio.ui.roledetails.user.usermain.UserMainActivity;
 import com.apps.andro_socio.ui.settings.SettingsFragment;
 import com.apps.andro_socio.ui.settings.profile.Profile;
 import com.apps.andro_socio.ui.settings.updateMpin.UpdateMPin;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -33,6 +46,8 @@ public class PoliceMainActivity extends AppCompatActivity implements MainActivit
     private BottomNavigation bottomNavigationPolice;
     private TextView textTitle;
 
+    private User loginUser;
+
     private ImageView logout;
 
     @Override
@@ -42,7 +57,12 @@ public class PoliceMainActivity extends AppCompatActivity implements MainActivit
         textTitle = findViewById(R.id.title);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new PoliceDashboardFragment()).commit();
+
         setUpViews();
+
+        loginUser = Utils.getLoginUserDetails(PoliceMainActivity.this);
+
+        verifyUserActiveStatus(loginUser);
     }
 
     private void setUpViews() {
@@ -217,6 +237,35 @@ public class PoliceMainActivity extends AppCompatActivity implements MainActivit
             } else {
                 super.onBackPressed();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void verifyUserActiveStatus(User user) {
+        try {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(FireBaseDatabaseConstants.USERS_TABLE);
+
+            databaseReference.child(user.getMobileNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String isActiveStatus = snapshot.child(FireBaseDatabaseConstants.IS_ACTIVE).getValue(String.class);
+                        Log.d(TAG, "onDataChange: isActiveStatus: " + isActiveStatus);
+                        if (isActiveStatus != null) {
+                            if (isActiveStatus.equalsIgnoreCase(AppConstants.IN_ACTIVE_USER)) {
+                                AndroSocioToast.showErrorToastWithBottom(PoliceMainActivity.this, "You are DeActivated now, Please contact your admin", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                                logout();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

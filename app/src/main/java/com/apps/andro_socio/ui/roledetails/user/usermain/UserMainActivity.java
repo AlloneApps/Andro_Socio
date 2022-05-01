@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -16,9 +17,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.AppConstants;
+import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.login.LoginActivity;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.apps.andro_socio.ui.roledetails.user.createissueorcomplaint.CreateIssueOrComplaint;
@@ -26,7 +29,14 @@ import com.apps.andro_socio.ui.roledetails.user.viewcomplaintsorissues.ViewUserC
 import com.apps.andro_socio.ui.settings.SettingsFragment;
 import com.apps.andro_socio.ui.settings.profile.Profile;
 import com.apps.andro_socio.ui.settings.updateMpin.UpdateMPin;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -39,6 +49,7 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
     private BottomNavigation bottomNavigationUser;
     private ImageView logout;
     private TextView textTitle;
+    private User loginUser;
 
     public static final int SOURCE_ADDRESS_AUTO_REQUEST_CODE = 995;
 
@@ -51,6 +62,10 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, new UserDashboardFragment()).commit();
 
         setUpViews();
+
+        loginUser = Utils.getLoginUserDetails(UserMainActivity.this);
+
+        verifyUserActiveStatus(loginUser);
     }
 
     private void setUpViews() {
@@ -250,8 +265,8 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
                                 double dataLatitude = bundle.getDouble(AppConstants.LATITUDE, 0.0);
                                 double dataLongitude = bundle.getDouble(AppConstants.LONGITUDE, 0.0);
 
-                                Log.d(TAG, "onActivityResult dataLatitude: "+dataLatitude);
-                                Log.d(TAG, "onActivityResult dataLongitude: "+dataLongitude);
+                                Log.d(TAG, "onActivityResult dataLatitude: " + dataLatitude);
+                                Log.d(TAG, "onActivityResult dataLongitude: " + dataLongitude);
 
 
                              /*   if (editSrcAddress != null) {
@@ -276,6 +291,36 @@ public class UserMainActivity extends AppCompatActivity implements MainActivityI
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main)).onActivityResult(requestCode, resultCode, data);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void verifyUserActiveStatus(User user) {
+        try {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(FireBaseDatabaseConstants.USERS_TABLE);
+
+            databaseReference.child(user.getMobileNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String isActiveStatus = snapshot.child(FireBaseDatabaseConstants.IS_ACTIVE).getValue(String.class);
+                        Log.d(TAG, "onDataChange: isActiveStatus: " + isActiveStatus);
+                        if (isActiveStatus != null) {
+                            if (isActiveStatus.equalsIgnoreCase(AppConstants.IN_ACTIVE_USER)) {
+                                AndroSocioToast.showErrorToastWithBottom(UserMainActivity.this, "You are DeActivated now, Please contact your admin", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                                logout();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

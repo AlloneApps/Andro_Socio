@@ -11,6 +11,8 @@ public class FireBaseDatabaseConstants {
     public static final String MN_ISSUE_LIST_TABLE = "mnIssueList";
     public static final String MN_ISSUE_SUB_DETAILS_LIST_TABLE = "mnIssueSubDetailsList";
 
+    public static final String IS_ACTIVE = "isActive";
+
 
     // User Details
     public static final String USER_MOBILE_NUMBER = "mobileNumber";

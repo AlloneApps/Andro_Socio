@@ -74,7 +74,6 @@ public class AppConstants {
     public static final String ACTIVE_USER = "Active";
     public static final String IN_ACTIVE_USER = "InActive";
 
-
     // Generic Setting Options
     public static final String SETTINGS_MY_PROFILE = "My Profile";
     public static final String SETTINGS_UPDATE_MPIN = "Update MPin";
