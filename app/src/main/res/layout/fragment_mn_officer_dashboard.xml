@@ -24,6 +24,58 @@ tools:context=".ui.roledetails.mnofficer.MnOfficerMainActivity">
             app:iss_auto_cycle="true"
             app:iss_delay="0"
             app:iss_period="1000" />
+
+        <LinearLayout
+            android:id="@+id/issues_status_chart_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/std_4_dp"
+            android:layout_below="@+id/image_slider"
+            android:layout_marginTop="@dimen/std_10_dp"
+            android:layout_marginBottom="@dimen/std_10_dp"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/all_complaints_status_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="All issues status pie chart"
+                android:textStyle="bold"
+                android:textSize="@dimen/std_18_sp"
+                android:gravity="center"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/std_10_dp"
+                android:textColor="@color/colorPrimary"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart_all_issues_status"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/std_260_dp"
+                android:layout_marginTop="@dimen/std_20_dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="visible"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/no_issues_available"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No issues available"
+            android:textStyle="bold"
+            android:textSize="@dimen/std_18_sp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_below="@+id/issues_status_chart_layout"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/std_200_dp"
+            android:textColor="@color/colorAccepted"/>
+
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
