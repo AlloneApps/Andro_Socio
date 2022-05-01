@@ -270,7 +270,6 @@ public class MnOfficerDashboardFragment extends Fragment {
         }
     }
 
-
     private void showProgressDialog(String message) {
         try {
             if (progressDialog != null) {

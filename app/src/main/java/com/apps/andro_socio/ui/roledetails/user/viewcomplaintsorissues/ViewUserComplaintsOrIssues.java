@@ -316,26 +316,37 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
             mUserReferenceComplaint.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                    hideProgressDialog();
-                    if (snapshot.exists()) {
-                        Log.d(TAG, "onDataChange: snapshot: " + snapshot);
+                    try {
+                        if (snapshot.exists()) {
+                            Log.d(TAG, "onDataChange: snapshot: " + snapshot);
 
-                        DataSnapshot dataSnapshot = snapshot.child(user.getUserCity()).child(AppConstants.COMPLAINT_TYPE).child(user.getMobileNumber());
-                        Log.d(TAG, "onDataChange: dataSnapshot: " + dataSnapshot);
-                        complaintMasterList.clear();
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            ComplaintMaster complaintMaster = postSnapshot.getValue(ComplaintMaster.class);
-                            if (complaintMaster != null) {
-                                complaintMasterList.add(complaintMaster);
+                            DataSnapshot dataSnapshot = snapshot.child(user.getUserCity()).child(AppConstants.COMPLAINT_TYPE).child(user.getMobileNumber());
+                            Log.d(TAG, "onDataChange: dataSnapshot: " + dataSnapshot);
+                            complaintMasterList.clear();
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                ComplaintMaster complaintMaster = postSnapshot.getValue(ComplaintMaster.class);
+                                if (complaintMaster != null) {
+                                    complaintMasterList.add(complaintMaster);
+                                }
                             }
                         }
-                    }
-                    Log.d(TAG, "onDataChange: complaintMasterList:" + complaintMasterList);
+                        Log.d(TAG, "onDataChange: complaintMasterList:" + complaintMasterList);
 
-                    if (isShowProgress) {
-                        loadUserComplaints(false);
-                    } else {
-                        loadUserComplaints(true);
+                        hideProgressDialog();
+
+                        if (isShowProgress) {
+                            loadUserComplaints(false);
+                        } else {
+                            loadUserComplaints(true);
+                        }
+                    }catch (Exception e){
+                        hideProgressDialog();
+                        if (isShowProgress) {
+                            loadUserComplaints(false);
+                        } else {
+                            loadUserComplaints(true);
+                        }
+                        e.printStackTrace();
                     }
                 }
 

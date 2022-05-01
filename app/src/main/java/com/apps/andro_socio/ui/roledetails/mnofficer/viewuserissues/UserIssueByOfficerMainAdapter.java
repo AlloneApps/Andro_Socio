@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.andro_socio.R;
@@ -51,6 +52,15 @@ public class UserIssueByOfficerMainAdapter extends RecyclerView.Adapter<UserIssu
                 MnIssueMaster mnIssueMaster = mnIssueMasterList.get(mainPosition);
                 if (mnIssueMaster != null) {
                     holder.textUserIssueHeader.setText(mnIssueMaster.getMnIssueHeader());
+                    if (mnIssueMaster.getMnIssueAccessType().equalsIgnoreCase(AppConstants.ISSUE_ACCESS_TYPE_PUBLIC)) {
+                        holder.textUserIssueHeader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_public_lock, 0, 0, 0);
+                        holder.textUserIssueHeader.setCompoundDrawablePadding((int) context.getResources().getDimension(R.dimen.std_10_dp));
+                        holder.textUserIssueHeader.getCompoundDrawables()[0].setTint(context.getResources().getColor(R.color.colorSuccess, null));
+                    } else {
+                        holder.textUserIssueHeader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_private_lock, 0, 0, 0);
+                        holder.textUserIssueHeader.setCompoundDrawablePadding((int) context.getResources().getDimension(R.dimen.std_10_dp));
+                        holder.textUserIssueHeader.getCompoundDrawables()[0].setTint(context.getResources().getColor(R.color.colorLightOrange, null));
+                    }
                     holder.textUserIssueNumber.setText(mnIssueMaster.getMnIssueType());
                     holder.textUserIssueId.setText(mnIssueMaster.getMnIssuePlacePhotoId());
                     holder.textUserIssueCity.setText(mnIssueMaster.getMnIssueCity());

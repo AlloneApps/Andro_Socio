@@ -51,6 +51,15 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
                 MnIssueMaster mnIssueMaster = mnIssueMasterList.get(mainPosition);
                 if (mnIssueMaster != null) {
                     holder.textUserIssueHeader.setText(mnIssueMaster.getMnIssueHeader());
+                    if (mnIssueMaster.getMnIssueAccessType().equalsIgnoreCase(AppConstants.ISSUE_ACCESS_TYPE_PUBLIC)) {
+                        holder.textUserIssueHeader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_public_lock, 0, 0, 0);
+                        holder.textUserIssueHeader.setCompoundDrawablePadding((int) context.getResources().getDimension(R.dimen.std_10_dp));
+                        holder.textUserIssueHeader.getCompoundDrawables()[0].setTint(context.getResources().getColor(R.color.colorSuccess, null));
+                    } else {
+                        holder.textUserIssueHeader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_private_lock, 0, 0, 0);
+                        holder.textUserIssueHeader.setCompoundDrawablePadding((int) context.getResources().getDimension(R.dimen.std_10_dp));
+                        holder.textUserIssueHeader.getCompoundDrawables()[0].setTint(context.getResources().getColor(R.color.colorLightOrange, null));
+                    }
                     holder.textUserIssueNumber.setText(mnIssueMaster.getMnIssueType());
                     holder.textUserIssueId.setText(mnIssueMaster.getMnIssuePlacePhotoId());
                     holder.textUserIssueCity.setText(mnIssueMaster.getMnIssueCity());
@@ -62,32 +71,34 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
 
                         if (mnIssueSubDetails != null) {
                             holder.textUserIssueStatus.setText(mnIssueSubDetails.getMnIssueStatus());
-                            switch (mnIssueSubDetails.getMnIssueStatus()){
+                            switch (mnIssueSubDetails.getMnIssueStatus()) {
                                 case AppConstants
-                                        .NEW_STATUS:{
-                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue,null));
+                                        .NEW_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue, null));
                                     break;
                                 }
                                 case AppConstants
-                                        .ACCEPTED_STATUS:{
-                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorVeniceBlue,null));
+                                        .ACCEPTED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorVeniceBlue, null));
                                     break;
                                 }
                                 case AppConstants
-                                        .COMPLETED_STATUS:{
-                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorSuccess,null));
-                                    break;
-                                }case AppConstants
-                                        .CANCELLED_STATUS:{
-                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError,null));
-                                    break;
-                                }case AppConstants
-                                        .REJECTED_STATUS:{
-                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError,null));
+                                        .COMPLETED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorSuccess, null));
                                     break;
                                 }
-                                default:{
-                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue,null));
+                                case AppConstants
+                                        .CANCELLED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError, null));
+                                    break;
+                                }
+                                case AppConstants
+                                        .REJECTED_STATUS: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorError, null));
+                                    break;
+                                }
+                                default: {
+                                    holder.textUserIssueStatus.setTextColor(context.getResources().getColor(R.color.colorNewUxBlue, null));
                                     break;
                                 }
                             }
@@ -165,7 +176,7 @@ public class UserIssueMainAdapter extends RecyclerView.Adapter<UserIssueMainAdap
                         .fitCenter()
                         .centerCrop()
                         .into(userIssueImage);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

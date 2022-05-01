@@ -34,6 +34,7 @@
     <color name="colorLightGrey">#FFFFFFFF</color>
     <color name="colorLightAccent">#cefa7d21</color>
     <color name="colorDarkOrange">#f57210</color>
+    <color name="colorLightOrange">#FF9800</color>
 
     <color name="colorBorder">#66847c7c</color>
     <color name="colorBgLog">#FBFBFB</color>

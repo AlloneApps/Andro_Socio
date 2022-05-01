@@ -13,6 +13,8 @@
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/ic_gallery.xml" value="0.1605" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/ic_home.xml" value="0.1" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/ic_pin_drop_pickup.xml" value="0.102" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/ic_private_lock.xml" value="0.1535" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/ic_public_lock.xml" value="0.1535" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/ic_tracking.xml" value="0.102" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/icon_background_dark_gray.xml" value="0.1335" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/drawable/rounded_corner_map.xml" value="0.102" />
@@ -60,8 +62,10 @@
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/fragment_view_user_issues_by_police.xml" value="0.1" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_admin_active_user.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_city_name.xml" value="0.10778985507246377" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_issues_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_issues_main_dashboard.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_settings_main.xml" value="0.20416666666666666" />
-        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_user_complaint_only_view_main.xml" value="1.2960526315789473" />
+        <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_user_complaint_only_view_main.xml" value="0.20616113744075829" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_user_issue_main.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/item_user_issue_only_view_main.xml" value="0.20416666666666666" />
         <entry key="..\:/SHIVU_MANTUR/my_workspace/Project/AndroSocio/app/src/main/res/layout/nav_header_main.xml" value="0.20416666666666666" />

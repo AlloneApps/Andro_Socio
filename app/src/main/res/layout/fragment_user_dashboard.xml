@@ -6,32 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".ui.roledetails.user.usermain.UserMainActivity">
 
-    <androidx.core.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="@dimen/std_60_dp">
 
-        <RelativeLayout
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/std_200_dp"
+            android:background="@drawable/empty_image"
+            app:iss_auto_cycle="true"
+            app:iss_delay="0"
+            app:iss_period="1000" />
 
-            <com.denzcoskun.imageslider.ImageSlider
-                android:id="@+id/image_slider"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/std_200_dp"
-                android:background="@drawable/empty_image"
-                app:iss_auto_cycle="true"
-                app:iss_delay="0"
-                app:iss_period="1000" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_public_issue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_slider"
+            android:layout_marginTop="@dimen/std_10_dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_user_dashboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_slider"
-                android:layout_marginTop="@dimen/std_10_dp" />
+        <TextView
+            android:id="@+id/no_issues_available"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/image_slider"
+            android:layout_marginTop="@dimen/std_200_dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="No public issues available"
+            android:textColor="@color/colorNewUxOrange"
+            android:textSize="@dimen/std_18_sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
-        </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

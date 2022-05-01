@@ -260,11 +260,6 @@ public class ViewCityWiseUserComplaintsByPolice extends Fragment implements User
                 Pair<View, String> transactionPairOne = Pair.create((View) imageView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_photo));
                 Pair<View, String> transactionPairTwo = Pair.create((View) textView, requireContext().getResources().getString(R.string.transaction_complaint_or_issue_header));
 
-           /*
-           // Call single Shared Transaction
-           ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(requireActivity(), (View) imagePlace, requireContext().getResources().getString(R.string.transaction_name));
-            */
 
                 // Call Multiple Shared Transaction using Pair Option
                 ActivityOptionsCompat options = ActivityOptionsCompat.
