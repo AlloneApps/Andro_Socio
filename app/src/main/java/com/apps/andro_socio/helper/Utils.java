@@ -145,10 +145,14 @@ public class Utils {
         }
     }
 
-    public static List<String> getAdminSettingsOption() {
+    public static List<String> getAdminSettingsOption(String role) {
         List<String> settingsOptionList = new ArrayList<>();
-        settingsOptionList.add(AppConstants.SETTINGS_MY_PROFILE);
-        settingsOptionList.add(AppConstants.SETTINGS_UPDATE_MPIN);
+        if (role.equalsIgnoreCase(AppConstants.ROLE_ADMIN)) {
+            settingsOptionList.add(AppConstants.SETTINGS_MY_PROFILE);
+        } else {
+            settingsOptionList.add(AppConstants.SETTINGS_MY_PROFILE);
+            settingsOptionList.add(AppConstants.SETTINGS_UPDATE_MPIN);
+        }
         return settingsOptionList;
     }
 

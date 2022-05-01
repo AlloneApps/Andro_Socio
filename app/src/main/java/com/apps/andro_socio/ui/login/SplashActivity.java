@@ -3,6 +3,7 @@ package com.apps.andro_socio.ui.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         try {
             String loginToken = Utils.getSharedPrefsString(SplashActivity.this, AppConstants.LOGIN_TOKEN);
             String userRole = Utils.getSharedPrefsString(SplashActivity.this, AppConstants.USER_ROLE);
+
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     if (loginToken.isEmpty()) {
@@ -61,6 +63,9 @@ public class SplashActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
+                        }else{
+                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                            finish();
                         }
                     }
                 }

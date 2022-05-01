@@ -31,6 +31,7 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
 
     private static final String TAG = SettingsFragment.class.getSimpleName();
     private View rootView;
+    private User loginUser;
 
     private List<String> adminSettingsOptionList = new ArrayList<>();
     private RecyclerView recyclerAdminSettingOption;
@@ -59,7 +60,8 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adminSettingsOptionList = Utils.getAdminSettingsOption();
+        loginUser = Utils.getLoginUserDetails(requireContext());
+        adminSettingsOptionList = Utils.getAdminSettingsOption(loginUser.getMainRole());
         fragmentManager = getParentFragmentManager();
         setUpViews();
     }
@@ -77,7 +79,6 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
                 settingsMainAdapter.notifyDataSetChanged();
             }
 
-            User loginUser = Utils.getLoginUserDetails(requireContext());
             if (loginUser != null) {
                 if (loginUser.getMainRole() != null) {
                     switch (loginUser.getMainRole()) {
