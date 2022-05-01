@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/image_slider"
-            android:layout_marginTop="@dimen/std_200_dp"
+            android:layout_marginTop="@dimen/std_20_dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="No public issues available"
