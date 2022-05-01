@@ -14,36 +14,44 @@ public class SliderUtils {
     // Admin Dashboard Slider Items
     public static List<SlideModel> getAdminDashboardSliderItemList() {
         List<SlideModel> adminSliderList = new ArrayList<>();
-        adminSliderList.add(new SlideModel(R.drawable.ic_slider_1, ScaleTypes.FIT));
-        adminSliderList.add(new SlideModel(R.drawable.ic_slider_2, ScaleTypes.FIT));
-        adminSliderList.add(new SlideModel(R.drawable.ic_slider_3, ScaleTypes.FIT));
+        adminSliderList.add(new SlideModel(R.drawable.ic_admin_slider_1, ScaleTypes.FIT));
+        adminSliderList.add(new SlideModel(R.drawable.ic_admin_slider_2, ScaleTypes.FIT));
+        adminSliderList.add(new SlideModel(R.drawable.ic_admin_slider_3, ScaleTypes.FIT));
+        adminSliderList.add(new SlideModel(R.drawable.ic_admin_slider_4, ScaleTypes.FIT));
+        adminSliderList.add(new SlideModel(R.drawable.ic_admin_slider_5, ScaleTypes.FIT));
         return adminSliderList;
     }
 
     // User Dashboard Slider Items
     public static List<SlideModel> getUserDashboardSliderItemList() {
         List<SlideModel> userSliderList = new ArrayList<>();
-        userSliderList.add(new SlideModel(R.drawable.ic_slider_1, ScaleTypes.FIT));
-        userSliderList.add(new SlideModel(R.drawable.ic_slider_2, ScaleTypes.FIT));
-        userSliderList.add(new SlideModel(R.drawable.ic_slider_3, ScaleTypes.FIT));
+        userSliderList.add(new SlideModel(R.drawable.ic_user_slider_1, ScaleTypes.FIT));
+        userSliderList.add(new SlideModel(R.drawable.ic_user_slider_2, ScaleTypes.FIT));
+        userSliderList.add(new SlideModel(R.drawable.ic_user_slider_3, ScaleTypes.FIT));
+        userSliderList.add(new SlideModel(R.drawable.ic_user_slider_4, ScaleTypes.FIT));
+        userSliderList.add(new SlideModel(R.drawable.ic_user_slider_5, ScaleTypes.FIT));
         return userSliderList;
     }
 
     // Police Dashboard Slider Items
     public static List<SlideModel> getPoliceDashboardSliderItemList() {
         List<SlideModel> policeSliderList = new ArrayList<>();
-        policeSliderList.add(new SlideModel(R.drawable.ic_slider_1, ScaleTypes.FIT));
-        policeSliderList.add(new SlideModel(R.drawable.ic_slider_2, ScaleTypes.FIT));
-        policeSliderList.add(new SlideModel(R.drawable.ic_slider_3, ScaleTypes.FIT));
+        policeSliderList.add(new SlideModel(R.drawable.ic_police_slider_1, ScaleTypes.FIT));
+        policeSliderList.add(new SlideModel(R.drawable.ic_police_slider_2, ScaleTypes.FIT));
+        policeSliderList.add(new SlideModel(R.drawable.ic_police_slider_3, ScaleTypes.FIT));
+        policeSliderList.add(new SlideModel(R.drawable.ic_police_slider_4, ScaleTypes.FIT));
+        policeSliderList.add(new SlideModel(R.drawable.ic_police_slider_5, ScaleTypes.FIT));
         return policeSliderList;
     }
 
     // MnOfficer Dashboard Slider Items
     public static List<SlideModel> getMnOfficerDashboardSliderItemList() {
         List<SlideModel> mnOfficerSliderList = new ArrayList<>();
-        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_slider_1, ScaleTypes.FIT));
-        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_slider_2, ScaleTypes.FIT));
-        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_slider_3, ScaleTypes.FIT));
+        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_mn_officer_slider_1, ScaleTypes.FIT));
+        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_mn_officer_slider_2, ScaleTypes.FIT));
+        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_mn_officer_slider_3, ScaleTypes.FIT));
+        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_mn_officer_slider_4, ScaleTypes.FIT));
+        mnOfficerSliderList.add(new SlideModel(R.drawable.ic_mn_officer_slider_5, ScaleTypes.FIT));
         return mnOfficerSliderList;
     }
 
