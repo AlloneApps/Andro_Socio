@@ -107,4 +107,5 @@ public class AppConstants {
     public static final String SOURCE_ADDRESS = ".SOURCE_ADDRESS";
     public static final String LATITUDE = ".LATITUDE";
     public static final String LONGITUDE = ".LONGITUDE";
+
 }

@@ -51,6 +51,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.functions.Action1;
+
 public class ViewUserIssuesByOfficer extends Fragment implements UserIssueByOfficerMainAdapter.UserIssueItemClickListener {
     private static final String TAG = ViewUserIssuesByOfficer.class.getSimpleName();
     private View rootView;
@@ -266,12 +268,21 @@ public class ViewUserIssuesByOfficer extends Fragment implements UserIssueByOffi
             // TextView and EditText Initialization
             TextView textMainHeader = dialogView.findViewById(R.id.text_complaint_or_issue_status_update_main_header);
             TextView textComplaintOrIssueHeader = dialogView.findViewById(R.id.text_complaint_or_issue_header);
+            TextView textComplaintOrIssueAccessTypeHeader = dialogView.findViewById(R.id.text_complaint_or_issue_access_type_header);
+            TextView textComplaintOrIssueAccessTypeValue = dialogView.findViewById(R.id.text_complaint_or_issue_access_type_value);
             TextView textComplaintOrIssueStatusHeader = dialogView.findViewById(R.id.text_complaint_or_issue_status_header);
             TextView textComplaintOrIssueStatusValue = dialogView.findViewById(R.id.text_complaint_or_issue_status_value);
 
             //Button Initialization
             Button btnUpdate = dialogView.findViewById(R.id.btn_update);
             Button btnClose = dialogView.findViewById(R.id.btn_close);
+
+            RxView.clicks(textComplaintOrIssueAccessTypeValue).subscribe(new Action1<Void>() {
+                @Override
+                public void call(Void unused) {
+                    AndroSocioToast.showAlertToast(requireContext(),getString(R.string.dont_have_issue_access_type),AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                }
+            });
 
             List<String> complaintOrIssueNextStatusList = DataUtils.getNextStatusBasedOnRole(currentStatus, loginUser.getMainRole());
 
@@ -304,6 +315,9 @@ public class ViewUserIssuesByOfficer extends Fragment implements UserIssueByOffi
                     e.printStackTrace();
                 }
             });
+
+            textComplaintOrIssueAccessTypeHeader.setText(R.string.complaint_access_type_header);
+            textComplaintOrIssueAccessTypeValue.setText(mnIssueMaster.getMnIssueAccessType());
 
             String headerMessage = mnIssueMaster.getMnIssueType() + " : " + mnIssueMaster.getMnIssuePlacePhotoId();
             textMainHeader.setText(headerMessage);

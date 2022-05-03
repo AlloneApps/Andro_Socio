@@ -16,6 +16,13 @@ public class DataUtils {
         return taskTypeList;
     }
 
+    public static List<String> getComplaintOrIssueAccessTypeList() {
+        List<String> taskTypeList = new ArrayList<>();
+        taskTypeList.add(AppConstants.ISSUE_ACCESS_TYPE_PUBLIC);
+        taskTypeList.add(AppConstants.ISSUE_ACCESS_TYPE_PRIVATE);
+        return taskTypeList;
+    }
+
     public static List<String> getGenderType() {
         List<String> genderType = new ArrayList<>();
         genderType.add(AppConstants.MALE_GENDER);

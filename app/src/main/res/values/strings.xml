@@ -80,4 +80,10 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="google_maps_api">AIzaSyAUC8qwlWKzruJW3XEgTHI7SrIzI6-wd5Q</string>
+    <string name="andro_socio_admin_text">Andro-Socio Admin</string>
+    <string name="issue_access_type_title">Issue Access Type</string>
+    <string name="complaint_access_type_header">Complaint Access Type</string>
+    <string name="complaint_access_type_not_allowed_to_update">Complaint access type can\'t allow to update</string>
+    <string name="dont_have_issue_access_type">You don\'t have permission to update Issue access type.</string>
+    <string name="select_access_type">Select Access Type</string>
 </resources>

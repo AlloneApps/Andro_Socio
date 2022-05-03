@@ -37,14 +37,46 @@
                 android:layout_marginTop="@dimen/std_6_dp"
                 android:drawableLeft="@drawable/ic_tasks_direction"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/std_16_sp"/>
+                android:textSize="@dimen/std_16_sp" />
+
+            <LinearLayout
+                android:id="@+id/layout_complaint_or_issue_access_type_update_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/std_10_dp"
+                android:layout_below="@+id/text_complaint_or_issue_header"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_complaint_or_issue_access_type_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/std_10_dp"
+                    android:layout_marginLeft="@dimen/std_10_dp"
+                    android:layout_marginBottom="@dimen/std_10_dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorVeniceBlue"
+                    android:textSize="@dimen/std_18_sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_complaint_or_issue_access_type_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/std_10_dp"
+                    android:layout_marginLeft="@dimen/std_10_dp"
+                    android:drawableEnd="@drawable/ic_drop_down"
+                    android:paddingEnd="@dimen/std_10_dp"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/std_18_sp"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_complaint_or_issue_status_update_sub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/std_10_dp"
-                android:layout_below="@+id/text_complaint_or_issue_header"
+                android:layout_below="@+id/layout_complaint_or_issue_access_type_update_sub"
                 android:orientation="vertical">
 
                 <TextView

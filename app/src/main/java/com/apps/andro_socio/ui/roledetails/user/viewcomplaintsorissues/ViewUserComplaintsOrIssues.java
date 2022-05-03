@@ -55,6 +55,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.functions.Action1;
+
 public class ViewUserComplaintsOrIssues extends Fragment implements UserComplaintMainAdapter.UserComplaintItemClickListener, UserIssueMainAdapter.UserIssueItemClickListener {
 
     private static final String TAG = CreateIssueOrComplaint.class.getSimpleName();
@@ -488,6 +490,7 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
     public void showDialogForIssueStatusUpdate(Context context, int position, String currentStatus, MnIssueMaster mnIssueMaster) {
         try {
             String lastStatus = "";
+            String issueAccessStatus = "";
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             LayoutInflater inflater = this.getLayoutInflater();
@@ -498,12 +501,46 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
             // TextView and EditText Initialization
             TextView textMainHeader = dialogView.findViewById(R.id.text_complaint_or_issue_status_update_main_header);
             TextView textComplaintOrIssueHeader = dialogView.findViewById(R.id.text_complaint_or_issue_header);
+            TextView textComplaintOrIssueAccessTypeHeader = dialogView.findViewById(R.id.text_complaint_or_issue_access_type_header);
+            TextView textComplaintOrIssueAccessTypeValue = dialogView.findViewById(R.id.text_complaint_or_issue_access_type_value);
             TextView textComplaintOrIssueStatusHeader = dialogView.findViewById(R.id.text_complaint_or_issue_status_header);
             TextView textComplaintOrIssueStatusValue = dialogView.findViewById(R.id.text_complaint_or_issue_status_value);
 
             //Button Initialization
             Button btnUpdate = dialogView.findViewById(R.id.btn_update);
             Button btnClose = dialogView.findViewById(R.id.btn_close);
+
+            List<String> issueAccessTypeList = DataUtils.getComplaintOrIssueAccessTypeList();
+
+            RxView.touches(textComplaintOrIssueAccessTypeValue).subscribe(motionEvent -> {
+                try {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        AlertDialog.Builder builderSingle = new AlertDialog.Builder(requireContext());
+                        builderSingle.setTitle(R.string.select_access_type);
+
+                        final ArrayAdapter<String> taskStatusSelectionAdapter = new ArrayAdapter<String>(requireContext(),
+                                android.R.layout.select_dialog_singlechoice, issueAccessTypeList) {
+                            @NonNull
+                            @Override
+                            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                View view = super.getView(position, convertView, parent);
+                                TextView text = view.findViewById(android.R.id.text1);
+                                text.setTextColor(Color.BLACK);
+                                return view;
+                            }
+                        };
+
+                        builderSingle.setNegativeButton("Cancel", (dialog, subPosition) -> dialog.dismiss());
+
+                        builderSingle.setAdapter(taskStatusSelectionAdapter, (dialog, subPosition) -> {
+                            textComplaintOrIssueAccessTypeValue.setText(taskStatusSelectionAdapter.getItem(subPosition));
+                        });
+                        builderSingle.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
             List<String> complaintOrIssueNextStatusList = DataUtils.getNextStatusBasedOnRole(currentStatus, loginUser.getMainRole());
 
@@ -537,6 +574,10 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
                 }
             });
 
+            textComplaintOrIssueAccessTypeHeader.setText(R.string.issue_access_type_title);
+            textComplaintOrIssueAccessTypeValue.setText(mnIssueMaster.getMnIssueAccessType());
+            issueAccessStatus = mnIssueMaster.getMnIssueAccessType();
+
             String headerMessage = mnIssueMaster.getMnIssueType() + " : " + mnIssueMaster.getMnIssuePlacePhotoId();
             textMainHeader.setText(headerMessage);
             textMainHeader.setTextColor(context.getResources().getColor(R.color.error_color, null));
@@ -558,12 +599,15 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
             alert.show();
 
             String finalLastStatus = lastStatus;
+            String finalAccessType = issueAccessStatus;
             btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
-                        if (!(finalLastStatus.equalsIgnoreCase(textComplaintOrIssueStatusValue.getText().toString().trim()))) {
+                        if (!(finalLastStatus.equalsIgnoreCase(textComplaintOrIssueStatusValue.getText().toString().trim())) || !(finalAccessType.equalsIgnoreCase(textComplaintOrIssueAccessTypeValue.getText().toString().trim())) ) {
                             User loginUser = Utils.getLoginUserDetails(requireContext());
+
+                            mnIssueMaster.setMnIssueAccessType(textComplaintOrIssueAccessTypeValue.getText().toString().trim());
 
                             MnIssueSubDetails mnIssueSubDetails = new MnIssueSubDetails();
                             mnIssueSubDetails.setMnIssueId(mnIssueMaster.getMnIssuePlacePhotoId());
@@ -647,12 +691,21 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
             // TextView and EditText Initialization
             TextView textMainHeader = dialogView.findViewById(R.id.text_complaint_or_issue_status_update_main_header);
             TextView textComplaintOrIssueHeader = dialogView.findViewById(R.id.text_complaint_or_issue_header);
+            TextView textComplaintOrIssueAccessTypeHeader = dialogView.findViewById(R.id.text_complaint_or_issue_access_type_header);
+            TextView textComplaintOrIssueAccessTypeValue = dialogView.findViewById(R.id.text_complaint_or_issue_access_type_value);
             TextView textComplaintOrIssueStatusHeader = dialogView.findViewById(R.id.text_complaint_or_issue_status_header);
             TextView textComplaintOrIssueStatusValue = dialogView.findViewById(R.id.text_complaint_or_issue_status_value);
 
             //Button Initialization
             Button btnUpdate = dialogView.findViewById(R.id.btn_update);
             Button btnClose = dialogView.findViewById(R.id.btn_close);
+
+            RxView.clicks(textComplaintOrIssueAccessTypeValue).subscribe(new Action1<Void>() {
+                @Override
+                public void call(Void unused) {
+                    AndroSocioToast.showAlertToast(requireContext(),getString(R.string.complaint_access_type_not_allowed_to_update),AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                }
+            });
 
             List<String> complaintOrIssueNextStatusList = DataUtils.getNextStatusBasedOnRole(currentStatus, loginUser.getMainRole());
 
@@ -685,6 +738,9 @@ public class ViewUserComplaintsOrIssues extends Fragment implements UserComplain
                     e.printStackTrace();
                 }
             });
+
+            textComplaintOrIssueAccessTypeHeader.setText(R.string.complaint_access_type_header);
+            textComplaintOrIssueAccessTypeValue.setText(complaintMaster.getComplaintAccessType());
 
             String headerMessage = complaintMaster.getComplaintType() + " : " + complaintMaster.getComplaintPlacePhotoId();
             textMainHeader.setText(headerMessage);

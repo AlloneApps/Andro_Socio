@@ -21,6 +21,7 @@ import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.model.citydetails.City;
 import com.apps.andro_socio.model.citydetails.Taluk;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
@@ -49,6 +50,7 @@ public class CityFragment extends Fragment {
 
     private ProgressDialog progressDialog;
     private Button btnAddCity;
+    private User loginUser;
 
     // Firebase Storage
     FirebaseDatabase firebaseDatabase;
@@ -75,6 +77,7 @@ public class CityFragment extends Fragment {
         progressDialog = new ProgressDialog(requireContext());
         firebaseDatabase = FirebaseDatabase.getInstance();
         mCityReference = FirebaseDatabase.getInstance().getReference(FireBaseDatabaseConstants.CITY_TABLE);
+        loginUser = Utils.getLoginUserDetails(requireContext());
 
         showProgressDialog("Processing please wait");
 
@@ -108,7 +111,15 @@ public class CityFragment extends Fragment {
                 showProgressDialog(getString(R.string.processing_wait));
                 City city = new City();
                 city.setCityName(editAddNewCity.getText().toString().trim());
-                city.setCreatedBy("Andro-Socio Admin");
+                if(loginUser != null){
+                    if(loginUser.getMobileNumber() != null){
+                        city.setCreatedBy(loginUser.getMobileNumber());
+                    }else{
+                        city.setCreatedBy(getString(R.string.andro_socio_admin_text));
+                    }
+                }else{
+                    city.setCreatedBy(getString(R.string.andro_socio_admin_text));
+                }
                 city.setCreatedOn(Utils.getCurrentTimeStampWithSeconds());
                 city.setTalukList(new ArrayList<Taluk>());
                 createNewCity(editAddNewCity.getText().toString().trim(), city);
