@@ -104,7 +104,7 @@ public class UserDashboardFragment extends Fragment implements UserDashboardMain
                 textNoPublicIssuesAvailable.setVisibility(View.GONE);
                 recyclerPublicIssues.setVisibility(View.VISIBLE);
 
-                LinearLayoutManager linearLayoutManager = new GridLayoutManager(requireContext(), 2);
+                LinearLayoutManager linearLayoutManager = new GridLayoutManager(requireContext(), 1);
                 recyclerPublicIssues.setLayoutManager(linearLayoutManager);
                 userDashboardIssueMainAdapter = new UserDashboardMainAdapter(requireContext(), issuesMasterList, this);
                 recyclerPublicIssues.setAdapter(userDashboardIssueMainAdapter);
@@ -167,7 +167,8 @@ public class UserDashboardFragment extends Fragment implements UserDashboardMain
     @Override
     public void mnIssueMasterClicked(int position, ImageView imageIssue, TextView textIssueHeader, MnIssueMaster mnIssueMaster) {
         try {
-            if (NetworkUtil.getConnectivityStatus(requireContext())) {
+
+        /*    if (NetworkUtil.getConnectivityStatus(requireContext())) {
                 Intent intentView = new Intent(requireContext(), ViewComplaintOrIssueActivity.class);
                 intentView.putExtra(AppConstants.VIEW_MUNICIPAL_ISSUE_DATA, mnIssueMaster);
                 intentView.putExtra(AppConstants.VIEW_COMPLAINT_DATA, new ComplaintMaster());
@@ -183,7 +184,8 @@ public class UserDashboardFragment extends Fragment implements UserDashboardMain
 
             } else {
                 AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-            }
+            }*/
+
         } catch (Exception e) {
             e.printStackTrace();
         }

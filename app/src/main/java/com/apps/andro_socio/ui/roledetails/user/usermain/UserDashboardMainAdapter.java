@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.andro_socio.R;
+import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.model.issue.MnIssueMaster;
 import com.bumptech.glide.Glide;
 
@@ -49,7 +50,12 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
                 holder.setItem(mnIssueMasterMainItemList.get(olderPosition));
                 MnIssueMaster mnIssueMaster = mnIssueMasterMainItemList.get(olderPosition);
                 if (mnIssueMaster != null) {
+                    String textIssueMainHeader = AppConstants.MUNICIPAL_ISSUE_TYPE + " : " + mnIssueMaster.getMnIssuePlacePhotoId();
+                    holder.textIssueHeader.setText(textIssueMainHeader);
                     holder.textTitle.setText(mnIssueMaster.getMnIssueHeader());
+                    holder.textCity.setText(mnIssueMaster.getMnIssueCity());
+                    holder.textDescription.setText(mnIssueMaster.getMnIssueDescription());
+                    holder.textAddress.setText(mnIssueMaster.getMnIssuePlaceAddress());
 
                     holder.imageIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -101,7 +107,7 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
 
         MnIssueMaster mnIssueMaster;
         ImageView imageIcon;
-        TextView textTitle;
+        TextView textIssueHeader, textTitle, textCity, textDescription, textAddress;
         CardView mnIssueMasterCardView;
 
         MnIssuesMainAdapterViewHolder(View itemView) {
@@ -110,7 +116,11 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
             // Image View
             imageIcon = itemView.findViewById(R.id.item_icon);
             // Text View
+            textIssueHeader = itemView.findViewById(R.id.item_header_main);
             textTitle = itemView.findViewById(R.id.item_title);
+            textCity = itemView.findViewById(R.id.item_city);
+            textDescription = itemView.findViewById(R.id.item_description);
+            textAddress = itemView.findViewById(R.id.item_address);
             // Card View
             mnIssueMasterCardView = itemView.findViewById(R.id.places_item_cardview);
         }
