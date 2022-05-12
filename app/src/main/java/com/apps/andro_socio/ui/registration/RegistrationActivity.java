@@ -57,7 +57,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private EditText editMobilePhone, editUserFullName;
     private TextInputEditText editMPin;
-    private TextView textSelectSubRoleInfo, textCityHeader, textCity, textUserFullNameHeader, textGender;
+    private TextView textSelectSubRoleInfo, textCityHeader, textCity, textUserFullNameHeader, textGender,textSelectUserTypeHeader;
     private Button btnSignup;
     private RadioGroup radioGroupRole, radioGroupUserType, radioGroupRoleSub;
 
@@ -90,6 +90,7 @@ public class RegistrationActivity extends AppCompatActivity {
         textCity = findViewById(R.id.text_city);
         textUserFullNameHeader = findViewById(R.id.text_user_full_name_header);
         textGender = findViewById(R.id.text_gender);
+        textSelectUserTypeHeader = findViewById(R.id.text_user_type_header);
 
         // Radio Group of selecting User Type
         radioGroupRole.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -99,11 +100,15 @@ public class RegistrationActivity extends AppCompatActivity {
                     case R.id.radio_role_user: {
                         textSelectSubRoleInfo.setVisibility(View.GONE);
                         radioGroupRoleSub.setVisibility(View.GONE);
+                        textSelectUserTypeHeader.setVisibility(View.VISIBLE);
+                        radioGroupUserType.setVisibility(View.VISIBLE);
                         break;
                     }
                     case R.id.radio_role_police_municipal_officer: {
                         textSelectSubRoleInfo.setVisibility(View.VISIBLE);
                         radioGroupRoleSub.setVisibility(View.VISIBLE);
+                        textSelectUserTypeHeader.setVisibility(View.GONE);
+                        radioGroupUserType.setVisibility(View.GONE);
                         break;
                     }
                 }
