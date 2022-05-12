@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/address_cooradinator"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/address_cooradinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.placeselection.AddressPlaceActivity">
@@ -11,16 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/std_10_dp"
+            android:layout_marginTop="@dimen/std_8_dp"
+            android:layout_marginEnd="@dimen/std_10_dp"
+            android:layout_marginBottom="@dimen/std_8_dp"
+            android:elevation="5dp"
+            android:outlineProvider="bounds"
+            app:mt_hint="Search a location"
+            app:mt_maxSuggestionsCount="10"
+            app:mt_navIconEnabled="false"
+            app:mt_placeholder="Search a location"
+            app:mt_speechMode="false" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:layout_below="@+id/searchBar">
             <TextView
                 android:id="@+id/text_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/large_margin"
-                android:text="Selected Address"
+                android:text="Selected location"
                 android:textColor="@android:color/darker_gray" />
 
             <TextView
@@ -29,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_address"
                 android:padding="@dimen/large_margin"
-                android:text="Address"
+                android:text="Location"
                 android:textColor="@android:color/darker_gray"
                 android:visibility="gone" />
 
@@ -83,38 +100,6 @@
 
     </RelativeLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout><!--
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.direction.AddressPlaceActivity">
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/idCardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_marginTop="5dp"
-        app:cardCornerRadius="4dp"
-        tools:ignore="MissingConstraints">
-        <fragment
-            android:id="@+id/place_autocomplete_fragment"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </androidx.cardview.widget.CardView>
-    <TextView
-        android:id="@+id/placeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Place selected"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
--->
 

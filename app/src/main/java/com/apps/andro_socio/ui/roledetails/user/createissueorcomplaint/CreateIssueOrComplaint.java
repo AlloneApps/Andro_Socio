@@ -60,6 +60,8 @@ import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,7 +90,7 @@ import java.util.Objects;
 
 import rx.functions.Action1;
 
-public class CreateIssueOrComplaint extends Fragment {
+public class CreateIssueOrComplaint extends Fragment{
     private static final String TAG = CreateIssueOrComplaint.class.getSimpleName();
     private View rootView;
     private CoordinatorLayout issueOrComplaintCoordinator;
@@ -107,6 +109,11 @@ public class CreateIssueOrComplaint extends Fragment {
     private LatLng selectedLatlng;
     private String selectedAddress;
     private TextView textSelectLocation, textSelectedAddress, textSelectedLatLong;
+
+    private PlacesClient placesClient;
+    private AutocompleteSessionToken autocompleteSessionToken;
+
+    private StringBuilder mResult;
 
     String[] permissions = new String[]{
             Manifest.permission.CAMERA,
@@ -1168,5 +1175,4 @@ public class CreateIssueOrComplaint extends Fragment {
         }
         return true;
     }
-
 }

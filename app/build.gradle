@@ -11,7 +11,7 @@ android {
         minSdk 23
         targetSdk 31
         versionCode 1
-        versionName "4.0"
+        versionName "4.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -103,4 +103,7 @@ dependencies {
 
     // Image Slider
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+
+    // Location Serach Bar
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.1'
 }

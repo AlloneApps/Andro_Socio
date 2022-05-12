@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apps.andro_socio.BuildConfig;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
@@ -32,6 +34,7 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
     private static final String TAG = SettingsFragment.class.getSimpleName();
     private View rootView;
     private User loginUser;
+    private String appVersion;
 
     private List<String> adminSettingsOptionList = new ArrayList<>();
     private RecyclerView recyclerAdminSettingOption;
@@ -63,6 +66,7 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
         loginUser = Utils.getLoginUserDetails(requireContext());
         adminSettingsOptionList = Utils.getAdminSettingsOption(loginUser.getMainRole());
         fragmentManager = getParentFragmentManager();
+        appVersion = "v." + BuildConfig.VERSION_NAME;
         setUpViews();
     }
 
@@ -83,23 +87,28 @@ public class SettingsFragment extends Fragment implements SettingsMainAdapter.Se
                 if (loginUser.getMainRole() != null) {
                     switch (loginUser.getMainRole()) {
                         case AppConstants.ROLE_ADMIN: {
-                            mainActivityInteractor.setScreenTitle(getString(R.string.admin_settings_title));
+                            String settingAdminTitle =getString(R.string.admin_settings_title)+" [" +appVersion+"]";
+                            mainActivityInteractor.setScreenTitle(settingAdminTitle);
                             break;
                         }
                         case AppConstants.ROLE_USER: {
-                            mainActivityInteractor.setScreenTitle(getString(R.string.user_settings_title));
+                            String settingUserTitle =getString(R.string.user_settings_title)+" [" +appVersion+"]";
+                            mainActivityInteractor.setScreenTitle(settingUserTitle);
                             break;
                         }
                         case AppConstants.ROLE_POLICE: {
-                            mainActivityInteractor.setScreenTitle(getString(R.string.police_settings_title));
+                            String settingPoliceTitle =getString(R.string.police_settings_title)+" [" +appVersion+"]";
+                            mainActivityInteractor.setScreenTitle(settingPoliceTitle);
                             break;
                         }
                         case AppConstants.ROLE_MUNICIPAL_OFFICER: {
-                            mainActivityInteractor.setScreenTitle(getString(R.string.municipal_officer_settings_title));
+                            String settingMunicipalTitle =getString(R.string.municipal_officer_settings_title)+" [" +appVersion+"]";
+                            mainActivityInteractor.setScreenTitle(settingMunicipalTitle);
                             break;
                         }
                         default: {
-                            mainActivityInteractor.setScreenTitle(getString(R.string.settings_title));
+                            String settingsTitle =getString(R.string.settings_title)+" [" +appVersion+"]";
+                            mainActivityInteractor.setScreenTitle(settingsTitle);
                             break;
                         }
                     }
