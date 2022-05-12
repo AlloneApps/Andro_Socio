@@ -53,7 +53,7 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
                     String textIssueMainHeader = AppConstants.MUNICIPAL_ISSUE_TYPE + " : " + mnIssueMaster.getMnIssuePlacePhotoId();
                     holder.textIssueHeader.setText(textIssueMainHeader);
                     holder.textTitle.setText(mnIssueMaster.getMnIssueHeader());
-                    holder.textCity.setText(mnIssueMaster.getMnIssueCity());
+                    holder.textUserName.setText(mnIssueMaster.getMnIssueAcceptedOfficerName());
                     holder.textDescription.setText(mnIssueMaster.getMnIssueDescription());
                     holder.textAddress.setText(mnIssueMaster.getMnIssuePlaceAddress());
 
@@ -107,7 +107,7 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
 
         MnIssueMaster mnIssueMaster;
         ImageView imageIcon;
-        TextView textIssueHeader, textTitle, textCity, textDescription, textAddress;
+        TextView textIssueHeader, textTitle, textUserName, textDescription, textAddress;
         CardView mnIssueMasterCardView;
 
         MnIssuesMainAdapterViewHolder(View itemView) {
@@ -118,7 +118,7 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
             // Text View
             textIssueHeader = itemView.findViewById(R.id.item_header_main);
             textTitle = itemView.findViewById(R.id.item_title);
-            textCity = itemView.findViewById(R.id.item_city);
+            textUserName = itemView.findViewById(R.id.item_user_name);
             textDescription = itemView.findViewById(R.id.item_description);
             textAddress = itemView.findViewById(R.id.item_address);
             // Card View

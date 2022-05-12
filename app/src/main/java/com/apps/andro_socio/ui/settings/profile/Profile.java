@@ -41,8 +41,10 @@ public class Profile extends Fragment {
     private View rootView;
 
     private EditText editUserName;
-    private TextView textGender, textMobileNumber;
+    private TextView textGender, textMobileNumber, textUserNameHeader;
     private Button btnUpdate;
+
+    private User loginUser;
 
     private ProgressDialog progressDialog;
 
@@ -82,10 +84,11 @@ public class Profile extends Fragment {
             firebaseDatabase = FirebaseDatabase.getInstance();
             mUserReference = FirebaseDatabase.getInstance().getReference(FireBaseDatabaseConstants.USERS_TABLE);
 
+            loginUser = Utils.getLoginUserDetails(requireContext());
+            Log.d(TAG, "onViewCreated: loginUser: " + loginUser);
+
             setUpViews();
 
-            User loginUser = Utils.getLoginUserDetails(requireContext());
-            Log.d(TAG, "onViewCreated: loginUser: " + loginUser);
             updateUserDetailsToView(loginUser);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,8 +100,19 @@ public class Profile extends Fragment {
             editUserName = rootView.findViewById(R.id.edit_user_name);
 
             textGender = rootView.findViewById(R.id.text_gender);
+            textUserNameHeader = rootView.findViewById(R.id.text_user_name_header);
 
             btnUpdate = rootView.findViewById(R.id.btn_update);
+
+            if (loginUser.getMainRole().equalsIgnoreCase(AppConstants.ROLE_USER)) {
+                if (loginUser.getUserType().equalsIgnoreCase(AppConstants.USER_TYPE_ANONYMOUS)) {
+                    textUserNameHeader.setText("Full Name (Anonymous Not Editable)");
+                    editUserName.setEnabled(false);
+                } else {
+                    textUserNameHeader.setText("Full Name");
+                    editUserName.setEnabled(true);
+                }
+            }
 
             List<String> genderTypeList = DataUtils.getGenderType();
 

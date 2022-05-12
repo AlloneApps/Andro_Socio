@@ -63,17 +63,17 @@
                     android:contentDescription="places icon" />
 
                 <TextView
-                    android:id="@+id/item_city"
+                    android:id="@+id/item_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_gravity="end|top"
-                    android:drawableEnd="@drawable/ic_location"
-                    android:drawableRight="@drawable/ic_location"
+                    android:drawableEnd="@drawable/ic_person_full"
+                    android:drawableRight="@drawable/ic_person_full"
                     android:drawablePadding="@dimen/std_6_dp"
                     android:drawableTint="@color/colorSuccess"
                     android:gravity="end|top"
-                    android:hint="City"
+                    android:hint="User Name"
                     android:paddingTop="@dimen/std_6_dp"
                     android:paddingBottom="@dimen/std_6_dp"
                     android:textColor="@color/colorWhite"
