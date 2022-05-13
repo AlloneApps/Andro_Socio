@@ -131,7 +131,7 @@ public class UserDashboardMainAdapter extends RecyclerView.Adapter<UserDashboard
             Glide.with(itemView)
                     .load(mnIssueMaster.getMnIssuePlacePhotoPath())
                     .fitCenter()
-                    .centerCrop()
+                    .centerInside()
                     .into(imageIcon);
         }
 
