@@ -162,8 +162,10 @@ public class AdminDashboardFragment extends Fragment {
                         User userMain = postSnapshot.getValue(User.class);
                         Log.d(TAG, "onDataChange: userMain: " + userMain);
                         if (userMain != null) {
-                            if (!(userMain.getMainRole().equalsIgnoreCase(AppConstants.ROLE_ADMIN))) {
-                                userList.add(userMain);
+                            if(userMain.getMainRole() != null) {
+                                if (!(userMain.getMainRole().equalsIgnoreCase(AppConstants.ROLE_ADMIN))) {
+                                    userList.add(userMain);
+                                }
                             }
                         }
                     }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apps.andro_socio.R;
 import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.Utils;
+import com.apps.andro_socio.helper.encryption.AESHelper;
 import com.apps.andro_socio.model.User;
 
 import java.util.List;
@@ -70,7 +71,7 @@ public class AdminActiveUserMainAdapter extends RecyclerView.Adapter<AdminActive
                     holder.textName.setText(user.getFullName());
                     holder.textRole.setText(user.getMainRole());
 
-                    String maskedMobileNumber = Utils.applyMaskAndShowLastDigits(user.getMobileNumber(), 4);
+                    String maskedMobileNumber = Utils.applyMaskAndShowLastDigits(AESHelper.decryptData(user.getMobileNumber()), 4);
                     holder.textMobileNumber.setText(maskedMobileNumber);
 
                     if (user.getIsActive().equalsIgnoreCase(AppConstants.ACTIVE_USER)) {
@@ -132,7 +133,6 @@ public class AdminActiveUserMainAdapter extends RecyclerView.Adapter<AdminActive
     }
 
     static class SettingsAdapterViewHolder extends RecyclerView.ViewHolder {
-
         User user;
         TextView textName, textMobileNumber, textRole, textSwitch;
         Switch activeSwitch;

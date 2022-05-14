@@ -28,6 +28,7 @@ import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.helper.dataUtils.DataUtils;
+import com.apps.andro_socio.helper.encryption.AESHelper;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.model.citydetails.City;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -270,8 +271,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void signUpNewUser(User user) {
         try {
+            String userMobileNumber = user.getMobileNumber();
+            user.setMobileNumber(AESHelper.encryptData(userMobileNumber));
+            user.setmPin(AESHelper.encryptData(user.getmPin()));
             showProgressDialog(getString(R.string.processing_wait));
-            mUserReference.child(user.getMobileNumber()).setValue(user)
+            mUserReference.child(userMobileNumber).setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -312,7 +316,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: userMobileNumber: " + user.getMobileNumber());
                         Log.d(TAG, "onDataChange: mobileNumber: " + mobileNumber);
                         if (mobileNumber != null) {
-                            if (!(mobileNumber.equalsIgnoreCase(user.getMobileNumber()))) {
+                            if (!(AESHelper.decryptData(mobileNumber).equalsIgnoreCase(user.getMobileNumber()))) {
                                 signUpNewUser(user);
                             } else {
                                 AndroSocioToast.showErrorToast(RegistrationActivity.this, mobileNumber+" Mobile number already exists", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);

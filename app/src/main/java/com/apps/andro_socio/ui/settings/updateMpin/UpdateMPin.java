@@ -21,16 +21,14 @@ import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.helper.encryption.AESHelper;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UpdateMPin extends Fragment {
     private static final String TAG = UpdateMPin.class.getSimpleName();
@@ -102,8 +100,8 @@ public class UpdateMPin extends Fragment {
                         if (validateFields()) {
                             User loginUser = Utils.getLoginUserDetails(requireContext());
                             Log.d(TAG, "onClick: loginUser:" + loginUser);
-                            if (loginUser.getmPin().equals(editOldMPin.getText().toString().trim())) {
-                                loginUser.setmPin(editNewMPin.getText().toString().trim());
+                            if (AESHelper.decryptData(loginUser.getmPin()).equals(editOldMPin.getText().toString().trim())) {
+                                loginUser.setmPin(AESHelper.encryptData(editNewMPin.getText().toString().trim()));
                                 showProgressDialog("Processing please wait.");
                                 Log.d(TAG, "onClick: loginUser:" + loginUser);
                                 updateUserDetails(loginUser);
@@ -161,11 +159,14 @@ public class UpdateMPin extends Fragment {
 
     public void updateUserDetails(User userMain) {
         try {
-            mUserReference.child(userMain.getMobileNumber()).setValue(userMain)
+            String mobileNumber = userMain.getMobileNumber();
+            userMain.setMobileNumber(AESHelper.encryptData(mobileNumber));
+            mUserReference.child(mobileNumber).setValue(userMain)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             hideProgressDialog();
+                            userMain.setMobileNumber(mobileNumber);
                             Utils.saveLoginUserDetails(requireContext(), userMain);
                             AndroSocioToast.showSuccessToastWithBottom(requireContext(), "mPin updated successfully", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
                             clearFields();

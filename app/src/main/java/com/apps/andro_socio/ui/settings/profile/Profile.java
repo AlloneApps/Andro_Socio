@@ -26,6 +26,7 @@ import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
 import com.apps.andro_socio.helper.dataUtils.DataUtils;
+import com.apps.andro_socio.helper.encryption.AESHelper;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -104,7 +105,7 @@ public class Profile extends Fragment {
 
             btnUpdate = rootView.findViewById(R.id.btn_update);
 
-            if (loginUser.getMainRole().equalsIgnoreCase(AppConstants.ROLE_USER)) {
+            if (loginUser.getMainRole().equalsIgnoreCase(AppConstants.ROLE_USER) || loginUser.getMainRole().equalsIgnoreCase(AppConstants.ROLE_ADMIN)) {
                 if (loginUser.getUserType().equalsIgnoreCase(AppConstants.USER_TYPE_ANONYMOUS)) {
                     textUserNameHeader.setText("Full Name (Anonymous Not Editable)");
                     editUserName.setEnabled(false);
@@ -210,16 +211,16 @@ public class Profile extends Fragment {
 
     public void updateUserDetails(User userMain) {
         try {
-            mUserReference.child(userMain.getMobileNumber()).setValue(userMain)
+            String mobileNumber = userMain.getMobileNumber();
+            userMain.setMobileNumber(AESHelper.encryptData(mobileNumber));
+            mUserReference.child(mobileNumber).setValue(userMain)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             hideProgressDialog();
-
+                            userMain.setMobileNumber(mobileNumber);
                             Utils.saveLoginUserDetails(requireContext(), userMain);
-
                             Log.d(TAG, "onSuccess: loginUserUpdate: " + Utils.getLoginUserDetails(requireContext()));
-
                             AndroSocioToast.showSuccessToastWithBottom(requireContext(), "User details updated successfully", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
 
                             updateUserDetailsToView(userMain);

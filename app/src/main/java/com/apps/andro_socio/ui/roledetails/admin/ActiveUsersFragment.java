@@ -23,6 +23,7 @@ import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.NetworkUtil;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.helper.encryption.AESHelper;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.roledetails.MainActivityInteractor;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -67,56 +68,68 @@ public class ActiveUsersFragment extends Fragment implements AdminActiveUserMain
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mainActivityInteractor = (MainActivityInteractor) requireActivity();
+        try {
+            mainActivityInteractor = (MainActivityInteractor) requireActivity();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mainActivityInteractor.setScreenTitle(getString(R.string.active_users_title));
-        progressDialog = new ProgressDialog(requireContext());
+        try {
+            mainActivityInteractor.setScreenTitle(getString(R.string.active_users_title));
+            progressDialog = new ProgressDialog(requireContext());
 
-        textNoUsersAvailable = rootView.findViewById(R.id.no_users_available);
-        recyclerActiveUser = rootView.findViewById(R.id.recycler_active_user_option);
+            textNoUsersAvailable = rootView.findViewById(R.id.no_users_available);
+            recyclerActiveUser = rootView.findViewById(R.id.recycler_active_user_option);
 
-        getAllUserDetailsInList(requireContext(), false);
+            getAllUserDetailsInList(requireContext(), false);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setUpViews() {
-        if (allUserList.size() > 0) {
-            recyclerActiveUser.setVisibility(View.VISIBLE);
-            textNoUsersAvailable.setVisibility(View.GONE);
-        } else {
-            recyclerActiveUser.setVisibility(View.GONE);
-            textNoUsersAvailable.setVisibility(View.VISIBLE);
-        }
-
-        LinearLayoutManager linearLayoutManager = new GridLayoutManager(requireContext(), 1);
-        recyclerActiveUser.setLayoutManager(linearLayoutManager);
-        adminActiveUserMainAdapter = new AdminActiveUserMainAdapter(requireContext(), allUserList, this);
-        recyclerActiveUser.setAdapter(adminActiveUserMainAdapter);
-
-        if (adminActiveUserMainAdapter != null) {
-            adminActiveUserMainAdapter.notifyDataSetChanged();
-        }
-
-        swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(R.color.colorAccent,
-                R.color.colorAccent,
-                R.color.colorAccent,
-                R.color.colorAccent);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (NetworkUtil.getConnectivityStatus(requireContext())) {
-                    getAllUserDetailsInList(requireContext(), true);
-                } else {
-                    swipeContainer.setRefreshing(false);
-                    AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
-                }
+        try {
+            if (allUserList.size() > 0) {
+                recyclerActiveUser.setVisibility(View.VISIBLE);
+                textNoUsersAvailable.setVisibility(View.GONE);
+            } else {
+                recyclerActiveUser.setVisibility(View.GONE);
+                textNoUsersAvailable.setVisibility(View.VISIBLE);
             }
-        });
+
+            LinearLayoutManager linearLayoutManager = new GridLayoutManager(requireContext(), 1);
+            recyclerActiveUser.setLayoutManager(linearLayoutManager);
+            adminActiveUserMainAdapter = new AdminActiveUserMainAdapter(requireContext(), allUserList, this);
+            recyclerActiveUser.setAdapter(adminActiveUserMainAdapter);
+
+            if (adminActiveUserMainAdapter != null) {
+                adminActiveUserMainAdapter.notifyDataSetChanged();
+            }
+
+            swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+            // Configure the refreshing colors
+            swipeContainer.setColorSchemeResources(R.color.colorAccent,
+                    R.color.colorAccent,
+                    R.color.colorAccent,
+                    R.color.colorAccent);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (NetworkUtil.getConnectivityStatus(requireContext())) {
+                        getAllUserDetailsInList(requireContext(), true);
+                    } else {
+                        swipeContainer.setRefreshing(false);
+                        AndroSocioToast.showErrorToast(requireContext(), getString(R.string.no_internet), AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_SHORT);
+                    }
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -309,8 +322,9 @@ public class ActiveUsersFragment extends Fragment implements AdminActiveUserMain
         try {
             showProgressDialog("Processing your request.");
 
+            String userMobile = AESHelper.decryptData(user.getMobileNumber());
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(FireBaseDatabaseConstants.USERS_TABLE);
-            databaseReference.child(user.getMobileNumber()).setValue(user)
+            databaseReference.child(userMobile).setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

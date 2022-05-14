@@ -26,6 +26,7 @@ import com.apps.andro_socio.helper.AppConstants;
 import com.apps.andro_socio.helper.FireBaseDatabaseConstants;
 import com.apps.andro_socio.helper.Utils;
 import com.apps.andro_socio.helper.androSocioToast.AndroSocioToast;
+import com.apps.andro_socio.helper.encryption.AESHelper;
 import com.apps.andro_socio.model.User;
 import com.apps.andro_socio.ui.registration.RegistrationActivity;
 import com.apps.andro_socio.ui.roledetails.admin.AdminMainActivity;
@@ -149,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: mobileNumber: " + mobileNumber);
                         Log.d(TAG, "onDataChange: mobileNumber: " + mobilePin);
                         if (mobileNumber != null && mobilePin != null) {
-                            if (userMobileNumber.equals(mobileNumber) && mobilePin.equals(mPin)) {
+                            if (AESHelper.encryptData(userMobileNumber).equals(mobileNumber) && mobilePin.equals(AESHelper.encryptData(mPin))) {
                                 String userMPin = snapshot.child(FireBaseDatabaseConstants.USER_M_PIN).getValue(String.class);
                                 String userMainRole = snapshot.child(FireBaseDatabaseConstants.USER_MAIN_ROLE).getValue(String.class);
                                 String userCity = snapshot.child(FireBaseDatabaseConstants.USER_CITY).getValue(String.class);
@@ -162,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "onDataChange: userIsActive: " + userIsActive);
                                 if (userIsActive.equalsIgnoreCase(AppConstants.ACTIVE_USER)) {
                                     User user = new User();
-                                    user.setMobileNumber(mobileNumber);
+                                    user.setMobileNumber(userMobileNumber);
                                     user.setmPin(userMPin);
                                     user.setMainRole(userMainRole);
                                     user.setUserCity(userCity);
@@ -170,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                                     user.setFullName(userFullName);
                                     user.setGender(userGender);
                                     user.setIsActive(userIsActive);
-                                    Utils.saveSharedPrefsString(context, AppConstants.LOGIN_TOKEN, user.getMobileNumber());
+                                    Utils.saveSharedPrefsString(context, AppConstants.LOGIN_TOKEN, userMobileNumber);
                                     Utils.saveSharedPrefsString(context, AppConstants.USER_ROLE, user.getMainRole());
                                     Utils.saveLoginUserDetails(context, user);
                                     hideProgressDialog();
@@ -179,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                                     navigateToDashboard(user.getMainRole());
                                 } else {
                                     hideProgressDialog();
-                                    AndroSocioToast.showErrorToastWithBottom(context, mobileNumber + " is not activated or deActivated, Please contact admin.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
+                                    AndroSocioToast.showErrorToastWithBottom(context, userMobileNumber + " is not activated or deActivated, Please contact admin.", AndroSocioToast.ANDRO_SOCIO_TOAST_LENGTH_LONG);
                                 }
                             } else {
                                 hideProgressDialog();
